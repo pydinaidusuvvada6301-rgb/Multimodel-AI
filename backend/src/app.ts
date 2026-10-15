@@ -16,6 +16,7 @@ import aiRoutes from './routes/ai.routes.js';
 import conversationsRoutes from './routes/conversations.routes.js';
 import artifactsRoutes from './routes/artifacts.routes.js';
 import healthRoutes from './routes/health.routes.js';
+import jobsRoutes from './routes/jobs.routes.js';
 
 export function createApp(): Express {
   const app = express();
@@ -71,13 +72,22 @@ export function createApp(): Express {
   apiV1.use('/auth', authRoutes);
   apiV1.use('/workspaces', workspacesRoutes);
   apiV1.use('/documents', documentsRoutes);
+  apiV1.use('/jobs', jobsRoutes);
   apiV1.use('/search', searchRoutes);
   apiV1.use('/ai', aiRoutes);
+  // Alias /chat directly to ai routes
+  apiV1.use('/chat', (req, res, next) => {
+    req.url = '/chat';
+    aiRoutes(req, res, next);
+  });
   apiV1.use('/conversations', conversationsRoutes);
   apiV1.use('/artifacts', artifactsRoutes);
   apiV1.use('/', healthRoutes);
 
   app.use(env.API_BASE_URL, apiV1);
+  if (env.API_BASE_URL !== '/api') {
+    app.use('/api', apiV1);
+  }
 
   // 5. 404 Handler
   app.use((req: Request, res: Response) => {

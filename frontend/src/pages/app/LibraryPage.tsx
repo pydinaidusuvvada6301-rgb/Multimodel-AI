@@ -14,12 +14,14 @@ import {
 import { api } from '../../lib/api.js';
 import { DocumentItem } from '../../types/index.js';
 import { useAuth } from '../../context/AuthContext.js';
+import { useToast } from '../../context/ToastContext.js';
 import { Card } from '../../components/ui/Card.js';
 import { Button } from '../../components/ui/Button.js';
 import { formatBytes, formatDate, getModalityColor, getStatusBadge } from '../../lib/utils.js';
 
 export const LibraryPage: React.FC = () => {
   const { workspaces, activeWorkspace } = useAuth();
+  const { toast } = useToast();
   const navigate = useNavigate();
 
   const [documents, setDocuments] = useState<DocumentItem[]>([]);
@@ -60,9 +62,11 @@ export const LibraryPage: React.FC = () => {
     e.stopPropagation();
     try {
       await api.post(`/documents/${docId}/retry`);
+      toast.info('Document re-queued for processing.');
       fetchDocuments();
     } catch (err) {
       console.error('Failed to retry document:', err);
+      toast.error('Failed to retry document processing.');
     }
   };
 
@@ -71,9 +75,11 @@ export const LibraryPage: React.FC = () => {
     if (!confirm('Are you sure you want to delete this file and remove its knowledge chunks?')) return;
     try {
       await api.delete(`/documents/${docId}`);
+      toast.success('Document and indexed knowledge deleted.');
       fetchDocuments();
     } catch (err) {
       console.error('Failed to delete document:', err);
+      toast.error('Failed to delete document.');
     }
   };
 

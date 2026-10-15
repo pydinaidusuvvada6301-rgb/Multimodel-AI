@@ -2,6 +2,7 @@ import pdfParse from 'pdf-parse';
 import mammoth from 'mammoth';
 import { parse as parseCsv } from 'csv-parse/sync';
 import { ModalityType } from '../../types/index.js';
+import { GeminiService } from '../gemini/gemini.service.js';
 
 export interface ExtractionResult {
   text: string;
@@ -130,27 +131,28 @@ export class ExtractionService {
         };
       }
 
-      // 6. Images
+      // 6. Images (Gemini Multimodal Vision Analysis)
       if (modality === 'image') {
+        const visionResult = await GeminiService.extractVisionContent(buffer, mimeType, filename);
         return {
-          text: `[Image: ${filename}] (Ready for Gemini Multimodal Vision Analysis)`,
+          text: visionResult.text,
           metadata: {
-            isImage: true,
-            mimeType,
-            sizeBytes: buffer.length,
+            ...visionResult.metadata,
+            filename,
           },
         };
       }
 
-      // 7. Audio & Video
+      // 7. Audio & Video (Gemini Multimodal Temporal & Audio Analysis)
       if (modality === 'audio' || modality === 'video') {
+        const mediaResult = await GeminiService.extractMediaContent(buffer, mimeType, filename, modality);
         return {
-          text: `[${modality.toUpperCase()}: ${filename}] (Ready for Gemini Audio/Video Temporal & Transcript Analysis)`,
-          durationSeconds: 0,
+          text: mediaResult.text,
+          durationSeconds: mediaResult.durationSeconds,
           metadata: {
-            isMedia: true,
-            mimeType,
-            sizeBytes: buffer.length,
+            ...mediaResult.metadata,
+            transcriptExcerpt: mediaResult.transcript.slice(0, 500),
+            filename,
           },
         };
       }

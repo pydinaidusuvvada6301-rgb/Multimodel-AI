@@ -3,6 +3,7 @@ import { UploadCloud, File, X, CheckCircle2, AlertTriangle, Loader2 } from 'luci
 import { Button } from '../ui/Button.js';
 import { cn, formatBytes } from '../../lib/utils.js';
 import { api } from '../../lib/api.js';
+import { useToast } from '../../context/ToastContext.js';
 
 interface FileDropzoneProps {
   workspaceId: string;
@@ -18,6 +19,7 @@ interface StagedFile {
 }
 
 export const FileDropzone: React.FC<FileDropzoneProps> = ({ workspaceId, onUploadComplete }) => {
+  const { toast } = useToast();
   const [isDragOver, setIsDragOver] = useState(false);
   const [stagedFiles, setStagedFiles] = useState<StagedFile[]>([]);
   const [isUploading, setIsUploading] = useState(false);
@@ -41,7 +43,7 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({ workspaceId, onUploa
     Array.from(files).forEach((file) => {
       // Validate file size (25MB limit)
       if (file.size > 25 * 1024 * 1024) {
-        alert(`File "${file.name}" exceeds the maximum allowed size of 25MB.`);
+        toast.error(`File "${file.name}" exceeds the maximum allowed size of 25MB.`);
         return;
       }
       newFiles.push({
@@ -90,6 +92,7 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({ workspaceId, onUploa
         setStagedFiles((prev) =>
           prev.map((f) => ({ ...f, status: 'completed', progress: 100 }))
         );
+        toast.success(`Successfully uploaded and queued ${stagedFiles.length} file(s) for processing.`);
         setTimeout(() => {
           setStagedFiles([]);
           if (onUploadComplete) onUploadComplete();
@@ -98,6 +101,7 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({ workspaceId, onUploa
     } catch (err: any) {
       console.error('Upload error:', err);
       const errMsg = err.response?.data?.error?.message || 'Upload failed.';
+      toast.error(errMsg);
       setStagedFiles((prev) =>
         prev.map((f) => ({ ...f, status: 'error', errorMessage: errMsg }))
       );

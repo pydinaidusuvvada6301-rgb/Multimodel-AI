@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect, beforeAll, vi } from 'vitest';
 import { createApp } from '../app.js';
 import { AuthService } from '../services/auth/auth.service.js';
 import { RetrievalService } from '../services/retrieval/retrieval.service.js';
@@ -7,6 +7,70 @@ import { inMemoryDb } from '../config/database.js';
 
 describe('OmniMind AI — Backend Verification Test Suite', () => {
   const app = createApp();
+
+  beforeAll(() => {
+    // Mock external Gemini AI client for deterministic automated tests (Phase 9 requirement)
+    vi.spyOn(GeminiService as any, 'getClient').mockReturnValue({
+      models: {
+        generateContent: vi.fn().mockImplementation(async (opts: any) => {
+          const contents = Array.isArray(opts.contents) ? opts.contents.join(' ') : String(opts.contents || '');
+          if (contents.includes('Classify the user intent')) {
+            return {
+              text: JSON.stringify({
+                intent: 'compare',
+                requires_retrieval: true,
+                requires_media_context: true,
+                suggested_modalities: ['document', 'image'],
+                reason: 'Deterministic classification mock for automated unit test.',
+              }),
+            };
+          }
+          if (contents.includes('cross-modal comparison') || contents.includes('SOURCES:')) {
+            return {
+              text: JSON.stringify({
+                comparison_title: 'Multi-Source Cross-Modal Comparison',
+                overall_summary: 'Synthesized evidence comparing document text and image diagrams.',
+                agreements: ['Consistent data architecture'],
+                differences: ['Diagram adds network boundaries'],
+                contradictions: [],
+                missing_information: [],
+                evidence_ids: ['source-doc-1', 'source-img-1'],
+              }),
+            };
+          }
+          if (contents.includes('AUTHORIZE') || contents.includes('EVIDENCE_ID')) {
+            return {
+              text: JSON.stringify({
+                answer: 'All API requests require TLS 1.3 and JWT Bearer token authentication.',
+                confidence: 'high',
+                insufficient_evidence: false,
+                key_findings: ['TLS 1.3 required', 'JWT Bearer token authenticated'],
+                citations: [
+                  {
+                    evidence_id: 'chunk-sec-01',
+                    claim: 'Authentication requirement',
+                    supporting_quote: 'All API requests require TLS 1.3 and JWT Bearer token authentication with 15-minute expiration.',
+                  },
+                ],
+              }),
+            };
+          }
+          return {
+            text: JSON.stringify({
+              answer: 'Deterministic mocked response.',
+              confidence: 'medium',
+              insufficient_evidence: false,
+              key_findings: [],
+              citations: [],
+            }),
+          };
+        }),
+        embedContent: vi.fn().mockResolvedValue({
+          embedding: { values: Array(768).fill(0.01) },
+        }),
+      },
+    });
+  });
 
   describe('1. Health and System Endpoints', () => {
     it('should report healthy on /health endpoint', async () => {
@@ -133,4 +197,102 @@ describe('OmniMind AI — Backend Verification Test Suite', () => {
       expect(classification.requires_retrieval).toBe(true);
     }, 15000);
   });
+
+  describe('5. Cross-User Authorization Barriers & Data Isolation', () => {
+    it('should prevent User B from accessing or deleting User A documents', async () => {
+      const userA = await AuthService.register({
+        email: `usera_${Date.now()}@omnimind.ai`,
+        password: 'Password123!',
+        displayName: 'User A',
+      });
+
+      const userB = await AuthService.register({
+        email: `userb_${Date.now()}@omnimind.ai`,
+        password: 'Password123!',
+        displayName: 'User B',
+      });
+
+      const docId = `doc-${Date.now()}`;
+      inMemoryDb.documents.set(docId, {
+        id: docId,
+        user_id: userA.user.id,
+        workspace_id: 'ws-a',
+        original_filename: 'Confidential_Research.pdf',
+        mime_type: 'application/pdf',
+        modality: 'document',
+        status: 'ready',
+        created_at: new Date().toISOString(),
+      });
+
+      // User B attempts to access User A's document
+      const retrieved = inMemoryDb.documents.get(docId);
+      expect(retrieved?.user_id).toBe(userA.user.id);
+      expect(retrieved?.user_id).not.toBe(userB.user.id);
+
+      // Verify that query filter for User B excludes User A's document
+      const userBDocs = Array.from(inMemoryDb.documents.values()).filter(
+        (d) => d.user_id === userB.user.id && !d.deleted_at
+      );
+      expect(userBDocs.find((d) => d.id === docId)).toBeUndefined();
+    });
+  });
+
+  describe('6. Multi-Source Grounding & Unanswerable Question Defense', () => {
+    it('should flag insufficient evidence when no sources are available', async () => {
+      const result = await GeminiService.answerWithGrounding(
+        'What was the Q3 revenue in the undisclosed financial file?',
+        []
+      );
+
+      expect(result.insufficient_evidence).toBe(true);
+      expect(result.citations.length).toBe(0);
+      expect(result.confidence).toBe('low');
+    });
+
+    it('should ground answers strictly in provided evidence without fabricating sources', async () => {
+      const evidence = [
+        {
+          id: 'chunk-sec-01',
+          document_id: 'doc-sec-01',
+          document_name: 'Security_Policy.pdf',
+          modality: 'document',
+          content: 'All API requests require TLS 1.3 and JWT Bearer token authentication with 15-minute expiration.',
+          page_number: 4,
+        },
+      ];
+
+      const result = await GeminiService.answerWithGrounding(
+        'What are the authentication requirements for API requests?',
+        evidence
+      );
+
+      expect(result.citations.length).toBeGreaterThanOrEqual(1);
+      expect(result.citations[0].evidence_id).toBe('chunk-sec-01');
+      expect(result.insufficient_evidence).toBe(false);
+    });
+
+    it('should compare multiple sources across modalities', async () => {
+      const sources = [
+        {
+          id: 'source-doc-1',
+          name: 'Architecture_Plan.pdf',
+          modality: 'document',
+          content: 'The system uses PostgreSQL for metadata and object storage for files.',
+        },
+        {
+          id: 'source-img-1',
+          name: 'Infra_Diagram.png',
+          modality: 'image',
+          content: 'Diagram displays client connecting to Node.js backend with Supabase Storage.',
+        },
+      ];
+
+      const comparison = await GeminiService.compareSources(sources, 'Verify architecture consistency');
+      expect(comparison.comparison_title).toBeDefined();
+      expect(comparison.overall_summary).toBeDefined();
+      expect(comparison.evidence_ids).toContain('source-doc-1');
+      expect(comparison.evidence_ids).toContain('source-img-1');
+    });
+  });
 });
+

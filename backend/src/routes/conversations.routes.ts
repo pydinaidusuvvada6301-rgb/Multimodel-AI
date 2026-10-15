@@ -61,6 +61,46 @@ router.post('/', async (req: AuthenticatedRequest, res: Response, next: NextFunc
   }
 });
 
+// GET /api/v1/conversations/:conversationId
+router.get('/:conversationId', async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user!.id;
+    const conversationId = req.params.conversationId as string;
+
+    const conv = inMemoryDb.conversations.get(conversationId);
+    if (!conv || conv.user_id !== userId) {
+      res.status(404).json({
+        success: false,
+        error: { code: 'CONVERSATION_NOT_FOUND', message: 'Conversation not found or unauthorized.' },
+      });
+      return;
+    }
+
+    const messages = [];
+    for (const msg of inMemoryDb.messages.values()) {
+      if (msg.conversation_id === conversationId) {
+        const citations = [];
+        for (const cit of inMemoryDb.message_citations.values()) {
+          if (cit.message_id === msg.id) citations.push(cit);
+        }
+        messages.push({ ...msg, citations });
+      }
+    }
+
+    messages.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+
+    res.json({
+      success: true,
+      data: {
+        ...conv,
+        messages,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 // GET /api/v1/conversations/:conversationId/messages
 router.get('/:conversationId/messages', async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {

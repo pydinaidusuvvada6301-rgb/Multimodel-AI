@@ -643,4 +643,123 @@ Return valid JSON conforming to this schema:
       return null;
     }
   }
+
+  /**
+   * 8. Direct Multimodal Vision Content Extraction
+   */
+  public static async extractVisionContent(
+    buffer: Buffer,
+    mimeType: string,
+    filename: string
+  ): Promise<{ text: string; metadata: Record<string, any> }> {
+    if (!this.isConfigured() || buffer.length > 15 * 1024 * 1024) {
+      return {
+        text: `[Image: ${filename}] Modality: image, Format: ${mimeType}, Size: ${buffer.length} bytes.`,
+        metadata: { isImage: true, mimeType, sizeBytes: buffer.length },
+      };
+    }
+
+    try {
+      return await this.executeWithRetry(async () => {
+        const client = this.getClient();
+        const response = await client.models.generateContent({
+          model: env.GEMINI_MODEL,
+          contents: [
+            {
+              inlineData: {
+                mimeType,
+                data: buffer.toString('base64'),
+              },
+            },
+            `Exhaustively analyze and transcribe this image (${filename}). Extract:
+1. All visible text and labels (OCR)
+2. Chart or diagram data, node connections, flows, and data points
+3. Layout, visual structure, and key entities
+4. Summary of the image meaning and significance.
+Provide a clear, detailed transcription suitable for full-text search indexing and evidence grounding.`,
+          ],
+        });
+
+        const extractedText = response.text?.trim() || `[Image: ${filename}]`;
+        return {
+          text: extractedText,
+          metadata: {
+            isImage: true,
+            mimeType,
+            sizeBytes: buffer.length,
+            extractedViaGeminiVision: true,
+          },
+        };
+      });
+    } catch (err: any) {
+      console.warn(`⚠️ Vision extraction fallback for ${filename}:`, err.message);
+      return {
+        text: `[Image: ${filename}] (${mimeType}, ${buffer.length} bytes)`,
+        metadata: { isImage: true, mimeType, sizeBytes: buffer.length, visionFallback: true },
+      };
+    }
+  }
+
+  /**
+   * 9. Direct Multimodal Audio/Video Content Extraction & Transcription
+   */
+  public static async extractMediaContent(
+    buffer: Buffer,
+    mimeType: string,
+    filename: string,
+    modality: 'audio' | 'video'
+  ): Promise<{ text: string; transcript: string; durationSeconds: number; metadata: Record<string, any> }> {
+    if (!this.isConfigured() || buffer.length > 15 * 1024 * 1024) {
+      return {
+        text: `[${modality.toUpperCase()}: ${filename}] Format: ${mimeType}, Size: ${buffer.length} bytes.`,
+        transcript: '',
+        durationSeconds: 0,
+        metadata: { isMedia: true, mimeType, sizeBytes: buffer.length },
+      };
+    }
+
+    try {
+      return await this.executeWithRetry(async () => {
+        const client = this.getClient();
+        const response = await client.models.generateContent({
+          model: env.GEMINI_MODEL,
+          contents: [
+            {
+              inlineData: {
+                mimeType,
+                data: buffer.toString('base64'),
+              },
+            },
+            `Perform a deep transcription and temporal analysis of this ${modality} recording (${filename}).
+Extract:
+1. Complete spoken transcript with speaker identifiers and timestamps (e.g. [00:15] Speaker: ...) where audible.
+2. Scene or acoustic breakdown with timestamps.
+3. Summary of core discussion topics, decisions, and action items.
+Format the output clearly for search and retrieval.`,
+          ],
+        });
+
+        const extractedText = response.text?.trim() || `[${modality.toUpperCase()}: ${filename}]`;
+        return {
+          text: extractedText,
+          transcript: extractedText,
+          durationSeconds: 0,
+          metadata: {
+            isMedia: true,
+            mimeType,
+            sizeBytes: buffer.length,
+            extractedViaGeminiMultimodal: true,
+          },
+        };
+      });
+    } catch (err: any) {
+      console.warn(`⚠️ Media extraction fallback for ${filename}:`, err.message);
+      return {
+        text: `[${modality.toUpperCase()}: ${filename}] (${mimeType}, ${buffer.length} bytes)`,
+        transcript: '',
+        durationSeconds: 0,
+        metadata: { isMedia: true, mimeType, sizeBytes: buffer.length, mediaFallback: true },
+      };
+    }
+  }
 }
