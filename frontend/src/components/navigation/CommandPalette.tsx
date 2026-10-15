@@ -161,7 +161,7 @@ export const CommandPalette: React.FC = () => {
       {/* Backdrop */}
       <div
         onClick={() => setIsOpen(false)}
-        className="fixed inset-0 bg-[#202938]/40 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-[#070B17]/80 backdrop-blur-sm transition-opacity"
       />
 
       {/* Modal Container */}

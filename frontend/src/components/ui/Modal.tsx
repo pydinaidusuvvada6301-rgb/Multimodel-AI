@@ -48,7 +48,7 @@ export const Modal: React.FC<ModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-150">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-[#202938]/40 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-[#070B17]/75 backdrop-blur-sm transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -59,24 +59,24 @@ export const Modal: React.FC<ModalProps> = ({
         aria-modal="true"
         aria-labelledby={title ? 'modal-title' : undefined}
         className={cn(
-          'relative w-full rounded-xl bg-white border border-[#E5EAF1] p-6 shadow-modal',
-          'z-10 overflow-hidden transform transition-all text-[#202938]',
+          'relative w-full rounded-2xl bg-[#0D1428]/95 backdrop-blur-xl border border-[#4F8CFF]/25 p-6 shadow-2xl',
+          'z-10 overflow-hidden transform transition-all text-[#F4F7FF]',
           maxWidths[maxWidth]
         )}
       >
         <div className="flex items-start justify-between mb-4">
           <div>
             {title && (
-              <h3 id="modal-title" className="text-base font-semibold text-[#202938]">
+              <h3 id="modal-title" className="text-base font-semibold text-[#F4F7FF]">
                 {title}
               </h3>
             )}
-            {description && <p className="text-xs text-[#667085] mt-1">{description}</p>}
+            {description && <p className="text-xs text-[#9AA8C7] mt-1">{description}</p>}
           </div>
           <button
             onClick={onClose}
             aria-label="Close modal"
-            className="p-1.5 text-[#667085] hover:text-[#202938] rounded-md hover:bg-[#F7F9FC] transition-colors focus:outline-none focus:ring-2 focus:ring-[#356AE6]"
+            className="p-1.5 text-[#9AA8C7] hover:text-[#F4F7FF] rounded-lg hover:bg-[#4F8CFF]/15 transition-colors focus:outline-none focus:ring-2 focus:ring-[#42E8F5]"
           >
             <X className="w-4 h-4" />
           </button>

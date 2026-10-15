@@ -20,10 +20,10 @@ export const ChatMessage: React.FC<{ message: ChatMessageType }> = ({ message })
   return (
     <div
       className={cn(
-        'flex gap-3 sm:gap-4 p-4 sm:p-5 rounded-xl transition-colors',
+        'flex gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl transition-all',
         isUser
-          ? 'bg-brand-50/70 border border-brand-100 ml-6 sm:ml-16'
-          : 'bg-surface-primary border border-border-default shadow-xs mr-4 sm:mr-12'
+          ? 'bg-[#4F8CFF]/15 border border-[#4F8CFF]/30 ml-6 sm:ml-16 shadow-[0_0_15px_-3px_rgba(79,140,255,0.15)] text-[#F4F7FF]'
+          : 'bg-[#0D1428]/85 border border-[#4F8CFF]/20 shadow-xl mr-4 sm:mr-12 text-[#F4F7FF]'
       )}
     >
       {/* Avatar */}
@@ -31,8 +31,8 @@ export const ChatMessage: React.FC<{ message: ChatMessageType }> = ({ message })
         className={cn(
           'w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-semibold shadow-xs',
           isUser
-            ? 'bg-surface-primary text-text-primary border border-border-default'
-            : 'bg-brand-50 text-brand-600 border border-brand-100'
+            ? 'bg-[#4F8CFF] text-white shadow-[0_0_12px_rgba(79,140,255,0.5)]'
+            : 'bg-[#42E8F5]/15 text-[#42E8F5] border border-[#42E8F5]/30 shadow-[0_0_10px_rgba(66,232,245,0.25)]'
         )}
       >
         {isUser ? <User className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}

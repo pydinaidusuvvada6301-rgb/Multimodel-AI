@@ -82,6 +82,14 @@ export function createApp(): Express {
     req.url = '/chat';
     aiRoutes(req, res, next);
   });
+  // Alias /analyze directly to aiRoutes
+  apiV1.use('/analyze', (req, res, next) => {
+    req.url = '/analyze' + req.url;
+    aiRoutes(req, res, next);
+  });
+  // Alias /files directly to documentsRoutes
+  apiV1.use('/files', documentsRoutes);
+  apiV1.use('/models', healthRoutes);
   apiV1.use('/conversations', conversationsRoutes);
   apiV1.use('/artifacts', artifactsRoutes);
   apiV1.use('/', healthRoutes);

@@ -300,6 +300,118 @@ router.post('/analyze', async (req: AuthenticatedRequest, res: Response, next: N
   }
 });
 
+// POST /api/v1/ai/analyze/document (Section 12 & 15.2 Document Analysis)
+router.post('/analyze/document', async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user!.id;
+    const { documentId, content, filename } = req.body;
+    let targetDoc: any = documentId ? inMemoryDb.documents.get(documentId) : null;
+    if (documentId && (!targetDoc || targetDoc.user_id !== userId || targetDoc.deleted_at)) {
+      res.status(404).json({ success: false, error: { code: 'DOCUMENT_NOT_FOUND', message: 'Document not found or unauthorized.' } });
+      return;
+    }
+    const textToAnalyze = targetDoc ? (targetDoc.extracted_text || targetDoc.summary || '') : (content || '');
+    const docName = targetDoc ? targetDoc.original_filename : (filename || 'Document');
+    const result = await GeminiService.analyzeDocument(docName, textToAnalyze, 'document');
+    res.json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// POST /api/v1/ai/analyze/image (Section 12 & 15.5 Image Analysis)
+router.post('/analyze/image', async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user!.id;
+    const { documentId, content, filename } = req.body;
+    let targetDoc: any = documentId ? inMemoryDb.documents.get(documentId) : null;
+    if (documentId && (!targetDoc || targetDoc.user_id !== userId || targetDoc.deleted_at)) {
+      res.status(404).json({ success: false, error: { code: 'DOCUMENT_NOT_FOUND', message: 'Image document not found or unauthorized.' } });
+      return;
+    }
+    const textToAnalyze = targetDoc ? (targetDoc.extracted_text || targetDoc.summary || '') : (content || '');
+    const docName = targetDoc ? targetDoc.original_filename : (filename || 'Image');
+    const result = await GeminiService.analyzeDocument(docName, textToAnalyze, 'image');
+    res.json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// POST /api/v1/ai/analyze/audio (Section 12 & 15.4 Audio Analysis & Transcription)
+router.post('/analyze/audio', async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user!.id;
+    const { documentId, content, filename } = req.body;
+    let targetDoc: any = documentId ? inMemoryDb.documents.get(documentId) : null;
+    if (documentId && (!targetDoc || targetDoc.user_id !== userId || targetDoc.deleted_at)) {
+      res.status(404).json({ success: false, error: { code: 'DOCUMENT_NOT_FOUND', message: 'Audio document not found or unauthorized.' } });
+      return;
+    }
+    const textToAnalyze = targetDoc ? (targetDoc.extracted_text || targetDoc.summary || '') : (content || '');
+    const docName = targetDoc ? targetDoc.original_filename : (filename || 'Audio Recording');
+    const result = await GeminiService.analyzeMedia(docName, 'audio', textToAnalyze);
+    res.json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// POST /api/v1/ai/analyze/video (Section 12 & 15.5 Video Analysis)
+router.post('/analyze/video', async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user!.id;
+    const { documentId, content, filename } = req.body;
+    let targetDoc: any = documentId ? inMemoryDb.documents.get(documentId) : null;
+    if (documentId && (!targetDoc || targetDoc.user_id !== userId || targetDoc.deleted_at)) {
+      res.status(404).json({ success: false, error: { code: 'DOCUMENT_NOT_FOUND', message: 'Video document not found or unauthorized.' } });
+      return;
+    }
+    const textToAnalyze = targetDoc ? (targetDoc.extracted_text || targetDoc.summary || '') : (content || '');
+    const docName = targetDoc ? targetDoc.original_filename : (filename || 'Video Demonstration');
+    const result = await GeminiService.analyzeMedia(docName, 'video', textToAnalyze);
+    res.json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// POST /api/v1/ai/analyze/multimodal (Section 12 & 15.6 Cross-Modal Synthesis)
+router.post('/analyze/multimodal', async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user!.id;
+    const validated = CompareRequestSchema.parse(req.body);
+
+    const sources: Array<{ id: string; name: string; modality: string; content: string }> = [];
+
+    for (const docId of validated.documentIds) {
+      const doc = inMemoryDb.documents.get(docId);
+      if (!doc || doc.user_id !== userId || doc.deleted_at) {
+        res.status(403).json({
+          success: false,
+          error: { code: 'FORBIDDEN', message: `Unauthorized or missing document ID: ${docId}` },
+        });
+        return;
+      }
+      sources.push({
+        id: doc.id,
+        name: doc.original_filename,
+        modality: doc.modality,
+        content: doc.extracted_text || doc.summary || `[${doc.modality} metadata]`,
+      });
+    }
+
+    const comparison = await GeminiService.compareSources(sources, validated.objective);
+
+    res.json({
+      success: true,
+      data: comparison,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 // POST /api/v1/ai/generate (Content & Artifact Generation)
 router.post('/generate', async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {

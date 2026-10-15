@@ -102,15 +102,15 @@ export const DashboardPage: React.FC = () => {
   return (
     <div className="space-y-6 max-w-7xl mx-auto text-text-primary">
       {/* Personalized Welcome Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-border-default">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#4F8CFF]/20">
         <div>
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-brand-600 animate-pulse" />
-            <h1 className="text-xl sm:text-2xl font-semibold text-text-primary tracking-tight">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#42E8F5] shadow-[0_0_10px_#42E8F5] animate-pulse" />
+            <h1 className="text-xl sm:text-2xl font-semibold text-[#F4F7FF] tracking-tight">
               {getGreeting()}, {user?.displayName || 'Researcher'}
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-text-secondary mt-0.5">
+          <p className="text-xs sm:text-sm text-[#9AA8C7] mt-0.5">
             {activeWorkspace
               ? `Workspace: ${activeWorkspace.name} (${activeWorkspace.category})`
               : 'All user multimodal collections'}
@@ -138,16 +138,16 @@ export const DashboardPage: React.FC = () => {
 
       {/* Onboarding Guidance for New Users */}
       {isNewUser && !loading && (
-        <Card className="p-5 sm:p-6 bg-brand-50/50 border border-brand-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <Card className="p-5 sm:p-6 bg-[#0D1428]/80 border border-[#4F8CFF]/30 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
-            <div className="flex items-center gap-2 text-brand-700 font-semibold text-xs uppercase tracking-wider">
+            <div className="flex items-center gap-2 text-[#42E8F5] font-semibold text-xs uppercase tracking-wider">
               <Compass className="w-4 h-4" />
               <span>Workspace Setup Recommendation</span>
             </div>
-            <h3 className="text-sm font-semibold text-text-primary">
+            <h3 className="text-sm font-semibold text-[#F4F7FF]">
               Welcome to your connected multimodal intelligence workspace
             </h3>
-            <p className="text-xs text-text-secondary max-w-xl leading-relaxed">
+            <p className="text-xs text-[#9AA8C7] max-w-xl leading-relaxed">
               Upload your first PDF, image diagram, audio lecture, or video to begin semantic chunking and grounded cross-source reasoning.
             </p>
           </div>
@@ -158,16 +158,16 @@ export const DashboardPage: React.FC = () => {
       )}
 
       {/* Smart Command Interface: Unified Natural-Language Input Box */}
-      <Card className="p-4 sm:p-5 shadow-xs space-y-3">
+      <Card className="p-4 sm:p-5 shadow-lg space-y-3">
         <form onSubmit={handleSmartCommandSubmit} className="flex gap-2.5">
           <div className="relative flex-1">
-            <Sparkles className="w-4 h-4 text-brand-600 absolute left-3.5 top-3.5 pointer-events-none" />
+            <Sparkles className="w-4 h-4 text-[#42E8F5] absolute left-3.5 top-3.5 pointer-events-none" />
             <input
               type="text"
               placeholder="Ask OmniMind AI or run a command (e.g., 'Summarize this PDF', 'Compare documents', 'Search web')..."
               value={smartPrompt}
               onChange={(e) => setSmartPrompt(e.target.value)}
-              className="w-full bg-surface-secondary border border-border-default rounded-lg pl-10 pr-4 py-2.5 text-xs sm:text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-colors"
+              className="w-full bg-[#070B17]/80 border border-[#4F8CFF]/25 rounded-lg pl-10 pr-4 py-2.5 text-xs sm:text-sm text-[#F4F7FF] placeholder:text-[#9AA8C7]/60 focus:outline-none focus:ring-2 focus:ring-[#42E8F5]/25 focus:border-[#42E8F5] transition-colors"
             />
           </div>
           <Button type="submit" size="md" icon={<Send className="w-4 h-4" />}>
@@ -177,27 +177,27 @@ export const DashboardPage: React.FC = () => {
 
         {/* Dynamic Next-Step Suggestions */}
         <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
-          <span className="text-text-muted text-[11px] font-medium flex items-center gap-1">
-            <Zap className="w-3 h-3 text-brand-600" /> Suggested workflows:
+          <span className="text-[#9AA8C7] text-[11px] font-medium flex items-center gap-1">
+            <Zap className="w-3 h-3 text-[#42E8F5]" /> Suggested workflows:
           </span>
           <button
             type="button"
             onClick={() => setSmartPrompt('Summarize key findings across uploaded files')}
-            className="px-2.5 py-1 rounded-md bg-surface-secondary hover:bg-brand-50 border border-border-default text-text-secondary hover:text-brand-600 transition-colors text-[11px]"
+            className="px-2.5 py-1 rounded-md bg-[#070B17]/70 hover:bg-[#4F8CFF]/15 border border-[#4F8CFF]/20 text-[#9AA8C7] hover:text-[#42E8F5] transition-colors text-[11px]"
           >
             "Summarize uploaded files"
           </button>
           <button
             type="button"
             onClick={() => setSmartPrompt('Compare system architecture diagrams with specifications')}
-            className="px-2.5 py-1 rounded-md bg-surface-secondary hover:bg-brand-50 border border-border-default text-text-secondary hover:text-brand-600 transition-colors text-[11px]"
+            className="px-2.5 py-1 rounded-md bg-[#070B17]/70 hover:bg-[#4F8CFF]/15 border border-[#4F8CFF]/20 text-[#9AA8C7] hover:text-[#42E8F5] transition-colors text-[11px]"
           >
             "Compare specs with diagrams"
           </button>
           <button
             type="button"
             onClick={() => navigate('/app/search')}
-            className="px-2.5 py-1 rounded-md bg-surface-secondary hover:bg-brand-50 border border-border-default text-text-secondary hover:text-brand-600 transition-colors text-[11px]"
+            className="px-2.5 py-1 rounded-md bg-[#070B17]/70 hover:bg-[#4F8CFF]/15 border border-[#4F8CFF]/20 text-[#9AA8C7] hover:text-[#42E8F5] transition-colors text-[11px]"
           >
             "Search 768-dim embeddings"
           </button>
@@ -206,42 +206,42 @@ export const DashboardPage: React.FC = () => {
 
       {/* Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="flex items-center justify-between p-4 shadow-xs">
+        <Card className="flex items-center justify-between p-4 shadow-lg">
           <div className="space-y-1">
-            <p className="text-xs text-text-secondary font-medium">Total Documents</p>
-            <p className="text-2xl font-bold text-text-primary">{totalDocs}</p>
+            <p className="text-xs text-[#9AA8C7] font-medium">Total Documents</p>
+            <p className="text-2xl font-bold text-[#F4F7FF]">{totalDocs}</p>
           </div>
-          <div className="w-9 h-9 rounded-lg bg-brand-50 border border-brand-100 text-brand-600 flex items-center justify-center">
+          <div className="w-9 h-9 rounded-lg bg-[#4F8CFF]/15 border border-[#4F8CFF]/30 text-[#4F8CFF] flex items-center justify-center shadow-[0_0_12px_rgba(79,140,255,0.3)]">
             <FileText className="w-4 h-4" />
           </div>
         </Card>
 
-        <Card className="flex items-center justify-between p-4 shadow-xs">
+        <Card className="flex items-center justify-between p-4 shadow-lg">
           <div className="space-y-1">
-            <p className="text-xs text-text-secondary font-medium">Ready & Indexed</p>
-            <p className="text-2xl font-bold text-emerald-600">{readyDocs}</p>
+            <p className="text-xs text-[#9AA8C7] font-medium">Ready & Indexed</p>
+            <p className="text-2xl font-bold text-emerald-400">{readyDocs}</p>
           </div>
-          <div className="w-9 h-9 rounded-lg bg-emerald-50 border border-emerald-100 text-emerald-600 flex items-center justify-center">
+          <div className="w-9 h-9 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center shadow-[0_0_12px_rgba(18,183,106,0.3)]">
             <CheckCircle2 className="w-4 h-4" />
           </div>
         </Card>
 
-        <Card className="flex items-center justify-between p-4 shadow-xs">
+        <Card className="flex items-center justify-between p-4 shadow-lg">
           <div className="space-y-1">
-            <p className="text-xs text-text-secondary font-medium">Processing Queue</p>
-            <p className="text-2xl font-bold text-brand-600">{processingDocs}</p>
+            <p className="text-xs text-[#9AA8C7] font-medium">Processing Queue</p>
+            <p className="text-2xl font-bold text-[#42E8F5]">{processingDocs}</p>
           </div>
-          <div className="w-9 h-9 rounded-lg bg-brand-50 border border-brand-100 text-brand-600 flex items-center justify-center">
+          <div className="w-9 h-9 rounded-lg bg-[#42E8F5]/15 border border-[#42E8F5]/30 text-[#42E8F5] flex items-center justify-center shadow-[0_0_12px_rgba(66,232,245,0.3)]">
             <Clock className="w-4 h-4" />
           </div>
         </Card>
 
-        <Card className="flex items-center justify-between p-4 shadow-xs">
+        <Card className="flex items-center justify-between p-4 shadow-lg">
           <div className="space-y-1">
-            <p className="text-xs text-text-secondary font-medium">Generated Artifacts</p>
-            <p className="text-2xl font-bold text-text-primary">{artifacts.length}</p>
+            <p className="text-xs text-[#9AA8C7] font-medium">Generated Artifacts</p>
+            <p className="text-2xl font-bold text-[#F4F7FF]">{artifacts.length}</p>
           </div>
-          <div className="w-9 h-9 rounded-lg bg-surface-secondary border border-border-default text-text-secondary flex items-center justify-center">
+          <div className="w-9 h-9 rounded-lg bg-[#070B17]/80 border border-[#4F8CFF]/25 text-[#9AA8C7] flex items-center justify-center">
             <FileCheck className="w-4 h-4" />
           </div>
         </Card>
@@ -258,23 +258,23 @@ export const DashboardPage: React.FC = () => {
         {/* Left Column: Recent Ingested Files (2 cols) */}
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-text-primary flex items-center gap-2">
-              <FileText className="w-4 h-4 text-brand-600" />
+            <h3 className="text-sm font-semibold text-[#F4F7FF] flex items-center gap-2">
+              <FileText className="w-4 h-4 text-[#42E8F5]" />
               Recent Workspace Ingestions
             </h3>
             <Link
               to="/app/library"
-              className="text-xs text-brand-600 hover:text-brand-700 flex items-center gap-1 font-medium transition-colors"
+              className="text-xs text-[#42E8F5] hover:text-[#4F8CFF] flex items-center gap-1 font-medium transition-colors"
             >
               View all <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
           {documents.length === 0 ? (
-            <Card className="p-8 text-center space-y-3">
-              <UploadCloud className="w-9 h-9 text-text-muted mx-auto" />
-              <h4 className="text-sm font-medium text-text-primary">No documents in this workspace yet</h4>
-              <p className="text-xs text-text-secondary max-w-sm mx-auto">
+            <Card className="p-8 text-center space-y-3 bg-[#0D1428]/70 border border-[#4F8CFF]/20">
+              <UploadCloud className="w-9 h-9 text-[#9AA8C7] mx-auto" />
+              <h4 className="text-sm font-medium text-[#F4F7FF]">No documents in this workspace yet</h4>
+              <p className="text-xs text-[#9AA8C7] max-w-sm mx-auto">
                 Upload your PDFs, image screenshots, audio interviews, or videos to start building connected intelligence.
               </p>
               <Button size="sm" onClick={() => navigate('/app/upload')}>
@@ -289,7 +289,7 @@ export const DashboardPage: React.FC = () => {
                   <div
                     key={doc.id}
                     onClick={() => navigate(`/app/documents/${doc.id}`)}
-                    className="p-3.5 rounded-xl bg-surface-primary hover:bg-surface-secondary/70 border border-border-default hover:border-brand-200 shadow-xs transition-all cursor-pointer flex items-center justify-between gap-3 group"
+                    className="p-3.5 rounded-xl bg-[#0D1428]/75 hover:bg-[#4F8CFF]/10 border border-[#4F8CFF]/20 hover:border-[#42E8F5]/40 shadow-lg transition-all cursor-pointer flex items-center justify-between gap-3 group"
                   >
                     <div className="flex items-center gap-3 truncate">
                       <div
@@ -300,10 +300,10 @@ export const DashboardPage: React.FC = () => {
                         {doc.modality.slice(0, 3)}
                       </div>
                       <div className="min-w-0">
-                        <p className="text-xs font-semibold text-text-primary group-hover:text-brand-600 transition-colors truncate">
+                        <p className="text-xs font-semibold text-[#F4F7FF] group-hover:text-[#42E8F5] transition-colors truncate">
                           {doc.original_filename}
                         </p>
-                        <p className="text-[11px] text-text-secondary truncate mt-0.5">
+                        <p className="text-[11px] text-[#9AA8C7] truncate mt-0.5">
                           {formatBytes(doc.file_size_bytes)} • {formatDate(doc.created_at)}
                         </p>
                       </div>
@@ -323,14 +323,14 @@ export const DashboardPage: React.FC = () => {
 
         {/* Right Column: AI Assistant Teaser & Recent Conversations */}
         <div className="space-y-4">
-          <Card className="p-5 shadow-xs space-y-3">
+          <Card className="p-5 shadow-lg space-y-3 bg-[#0D1428]/80 border border-[#4F8CFF]/25">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600">
+              <div className="w-7 h-7 rounded-lg bg-[#4F8CFF]/15 border border-[#4F8CFF]/30 flex items-center justify-center text-[#42E8F5]">
                 <Sparkles className="w-4 h-4" />
               </div>
-              <h4 className="text-sm font-semibold text-text-primary">Cross-Modal Assistant</h4>
+              <h4 className="text-sm font-semibold text-[#F4F7FF]">Cross-Modal Assistant</h4>
             </div>
-            <p className="text-xs text-text-secondary leading-relaxed">
+            <p className="text-xs text-[#9AA8C7] leading-relaxed">
               Ask questions that connect facts across your documents, images, audio transcripts, and video segments.
             </p>
             <Button
@@ -346,26 +346,26 @@ export const DashboardPage: React.FC = () => {
           {/* Recent Conversations */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h4 className="text-xs font-semibold text-text-secondary uppercase tracking-wider">
+              <h4 className="text-xs font-semibold text-[#9AA8C7] uppercase tracking-wider">
                 Recent Chats
               </h4>
-              <Link to="/app/chat" className="text-xs text-brand-600 hover:text-brand-700 font-medium transition-colors">
+              <Link to="/app/chat" className="text-xs text-[#42E8F5] hover:text-[#4F8CFF] font-medium transition-colors">
                 New
               </Link>
             </div>
 
             {conversations.length === 0 ? (
-              <p className="text-xs text-text-muted py-2">No conversations yet.</p>
+              <p className="text-xs text-[#9AA8C7] py-2">No conversations yet.</p>
             ) : (
               <div className="space-y-1.5">
                 {conversations.slice(0, 4).map((c) => (
                   <div
                     key={c.id}
                     onClick={() => navigate(`/app/chat?c=${c.id}`)}
-                    className="p-3 rounded-lg bg-surface-primary hover:bg-surface-secondary/70 text-xs text-text-primary hover:border-brand-200 cursor-pointer truncate border border-border-default shadow-xs transition-colors"
+                    className="p-3 rounded-xl bg-[#0D1428]/75 hover:bg-[#4F8CFF]/15 text-xs text-[#F4F7FF] hover:border-[#42E8F5]/40 cursor-pointer truncate border border-[#4F8CFF]/20 shadow-md transition-colors"
                   >
                     <p className="font-medium truncate">{c.title}</p>
-                    <p className="text-[10px] text-text-muted mt-0.5">{formatDate(c.updated_at)}</p>
+                    <p className="text-[10px] text-[#9AA8C7] mt-0.5">{formatDate(c.updated_at)}</p>
                   </div>
                 ))}
               </div>

@@ -24,21 +24,21 @@ export const Input: React.FC<InputProps> = ({
   return (
     <div className="w-full space-y-1.5">
       {label && (
-        <label htmlFor={inputId} className="block text-xs font-medium text-[#202938]">
+        <label htmlFor={inputId} className="block text-xs font-medium text-[#F4F7FF]">
           {label}
         </label>
       )}
       <div className="relative flex items-center">
         {icon && (
-          <div className="absolute left-3 text-[#98A2B3] pointer-events-none flex items-center">
+          <div className="absolute left-3 text-[#9AA8C7] pointer-events-none flex items-center">
             {icon}
           </div>
         )}
         <input
           id={inputId}
           className={cn(
-            'w-full bg-white border border-[#E5EAF1] rounded-md px-3.5 py-2 text-sm text-[#202938] placeholder:text-[#98A2B3]',
-            'transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-[#356AE6]/20 focus:border-[#356AE6]',
+            'w-full bg-[#070B17]/80 border border-[#4F8CFF]/25 rounded-lg px-3.5 py-2 text-sm text-[#F4F7FF] placeholder:text-[#9AA8C7]/60',
+            'transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-[#42E8F5]/25 focus:border-[#42E8F5]',
             icon && 'pl-10',
             rightElement && 'pr-10',
             error && 'border-[#F04438] focus:border-[#F04438] focus:ring-[#F04438]/20',

@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
+import crypto from 'crypto';
 import { env } from '../config/env.js';
 
 export function errorHandler(
@@ -13,6 +14,8 @@ export function errorHandler(
     return next(err);
   }
 
+  const requestId = (req.headers['x-request-id'] as string) || crypto.randomUUID();
+
   // Handle Zod Validation Errors
   if (err instanceof ZodError) {
     res.status(400).json({
@@ -20,6 +23,8 @@ export function errorHandler(
       error: {
         code: 'VALIDATION_ERROR',
         message: 'The request contains invalid fields.',
+        requestId,
+        retryable: false,
         details: err.errors.map((e) => ({
           field: e.path.join('.'),
           message: e.message,
@@ -44,6 +49,8 @@ export function errorHandler(
       error: {
         code: 'UPLOAD_ERROR',
         message,
+        requestId,
+        retryable: false,
         details: [{ code: err.code, field: err.field }],
       },
     });
@@ -53,6 +60,7 @@ export function errorHandler(
   // Custom application errors with status code
   const status = typeof err.status === 'number' ? err.status : 500;
   const code = err.code || (status === 500 ? 'INTERNAL_SERVER_ERROR' : 'REQUEST_ERROR');
+  const retryable = [429, 502, 503, 504].includes(status) || err.retryable === true;
   const message =
     status === 500 && env.NODE_ENV === 'production'
       ? 'An unexpected error occurred while processing your request.'
@@ -67,6 +75,8 @@ export function errorHandler(
     error: {
       code,
       message,
+      requestId,
+      retryable,
       ...(env.NODE_ENV !== 'production' && err.stack ? { stack: err.stack } : {}),
     },
   });

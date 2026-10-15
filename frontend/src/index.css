@@ -4,36 +4,39 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 220 27% 17%;
-    --card: 0 0% 100%;
-    --card-foreground: 220 27% 17%;
-    --border: 215 30% 92%;
-    --primary: 222 79% 56%;
+    --background: 222 55% 6%;
+    --foreground: 225 100% 98%;
+    --card: 224 50% 11%;
+    --card-foreground: 225 100% 98%;
+    --border: 220 100% 65%;
+    --primary: 220 100% 65%;
     --primary-foreground: 0 0% 100%;
   }
 
   body {
-    @apply bg-background text-[#202938] font-sans antialiased selection:bg-blue-100 selection:text-blue-900;
+    @apply bg-background text-[#F4F7FF] font-sans antialiased selection:bg-[#4F8CFF]/30 selection:text-[#42E8F5];
+    background-color: #070B17;
+    background-image: radial-gradient(circle at 50% 0%, rgba(79, 140, 255, 0.08) 0%, rgba(7, 11, 23, 1) 75%);
     font-feature-settings: "rlig" 1, "calt" 1;
     overflow-x: hidden;
+    min-height: 100vh;
   }
 }
 
-/* Minimalist Clean Scrollbar */
+/* 3D Intelligence Glass Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #F7F9FC;
+  background: #070B17;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D0D7E2;
+  background: rgba(79, 140, 255, 0.25);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #98A2B3;
+  background: rgba(66, 232, 245, 0.5);
 }
 
 /* Minimalist Surface Utilities */
@@ -53,7 +56,36 @@
 
 /* Accessible focus ring utility */
 .focus-ring {
-  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-[#356AE6] focus-visible:ring-offset-2;
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4F8CFF] focus-visible:ring-offset-2;
+}
+
+/* 3D Intelligence — Immersive Glassmorphism Utilities */
+.glass-panel {
+  background: rgba(13, 20, 40, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(79, 140, 255, 0.2);
+  box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.45);
+}
+
+.glass-card {
+  background: rgba(13, 20, 40, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-card:hover {
+  border-color: rgba(66, 232, 245, 0.4);
+  box-shadow: 0 8px 28px -4px rgba(66, 232, 245, 0.15);
+}
+
+.cyan-edge-glow {
+  box-shadow: 0 0 20px -2px rgba(66, 232, 245, 0.25);
+}
+
+.blue-edge-glow {
+  box-shadow: 0 0 24px -2px rgba(79, 140, 255, 0.3);
 }
 
 /* Accessible reduced motion support */

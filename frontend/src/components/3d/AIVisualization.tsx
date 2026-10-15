@@ -51,17 +51,17 @@ export const AIVisualization: React.FC<AIVisualizationProps> = ({
 
     geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
-    // Nodes material
+    // Nodes material (Cyan neural nodes)
     const pointsMat = new THREE.PointsMaterial({
-      color: 0x356AE6,
+      color: 0x42E8F5,
       size: 0.08,
       transparent: true,
-      opacity: 0.9,
+      opacity: 0.95,
     });
     const points = new THREE.Points(geometry, pointsMat);
     scene.add(points);
 
-    // Connecting lines between nearby nodes
+    // Connecting lines between nearby nodes (Electric Blue lattice lines)
     const lineIndices: number[] = [];
     for (let i = 0; i < nodesCount; i++) {
       for (let j = i + 1; j < nodesCount; j++) {
@@ -76,9 +76,9 @@ export const AIVisualization: React.FC<AIVisualizationProps> = ({
     linesGeometry.setIndex(lineIndices);
 
     const linesMat = new THREE.LineBasicMaterial({
-      color: 0x356AE6,
+      color: 0x4F8CFF,
       transparent: true,
-      opacity: 0.28,
+      opacity: 0.35,
     });
     const lines = new THREE.LineSegments(linesGeometry, linesMat);
     scene.add(lines);

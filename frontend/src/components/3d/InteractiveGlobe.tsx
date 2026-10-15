@@ -157,14 +157,14 @@ export const InteractiveGlobe = React.forwardRef<
     const segments = 48;
     const sphereGeometry = new THREE.SphereGeometry(sphereRadius, segments, segments);
     
-    // Core translucent material with subtle blue sheen
+    // Core translucent material with deep midnight blue sheen
     const sphereMaterial = new THREE.MeshPhongMaterial({
-      color: 0xEEF4FF,
-      emissive: 0x356AE6,
-      emissiveIntensity: 0.15,
+      color: 0x070B17,
+      emissive: 0x4F8CFF,
+      emissiveIntensity: 0.2,
       transparent: true,
-      opacity: 0.85,
-      shininess: 40,
+      opacity: 0.9,
+      shininess: 60,
     });
     const coreSphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     globeGroup.add(coreSphere);
@@ -175,9 +175,9 @@ export const InteractiveGlobe = React.forwardRef<
     const positions = new Float32Array(pointsCount * 3);
     const colors = new Float32Array(pointsCount * 3);
 
-    const colorBrand = new THREE.Color(0x356AE6);
-    const colorCyan = new THREE.Color(0x2856C5);
-    const colorEmerald = new THREE.Color(0x12B76A);
+    const colorElectric = new THREE.Color(0x4F8CFF);
+    const colorCyan = new THREE.Color(0x42E8F5);
+    const colorWhite = new THREE.Color(0xF4F7FF);
 
     for (let i = 0; i < pointsCount; i++) {
       const phi = Math.acos(-1 + (2 * i) / pointsCount);
@@ -192,9 +192,9 @@ export const InteractiveGlobe = React.forwardRef<
       positions[i * 3 + 1] = y;
       positions[i * 3 + 2] = z;
 
-      // Color variation across nodes
+      // Color variation across nodes (Electric Blue, Cyan, Near-White)
       const rand = Math.random();
-      const nodeColor = rand > 0.8 ? colorEmerald : rand > 0.4 ? colorCyan : colorBrand;
+      const nodeColor = rand > 0.7 ? colorWhite : rand > 0.35 ? colorCyan : colorElectric;
       colors[i * 3] = nodeColor.r;
       colors[i * 3 + 1] = nodeColor.g;
       colors[i * 3 + 2] = nodeColor.b;
@@ -204,10 +204,10 @@ export const InteractiveGlobe = React.forwardRef<
     pointsGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
     const pointsMaterial = new THREE.PointsMaterial({
-      size: 0.038,
+      size: 0.042,
       vertexColors: true,
       transparent: true,
-      opacity: 0.9,
+      opacity: 0.95,
     });
     const globePoints = new THREE.Points(pointsGeometry, pointsMaterial);
     globeGroup.add(globePoints);
@@ -215,33 +215,33 @@ export const InteractiveGlobe = React.forwardRef<
     // 7. Atmospheric Glow Layer
     const atmosphereGeometry = new THREE.SphereGeometry(sphereRadius + 0.12, 32, 32);
     const atmosphereMaterial = new THREE.MeshBasicMaterial({
-      color: 0x356AE6,
+      color: 0x42E8F5,
       transparent: true,
-      opacity: 0.08,
+      opacity: 0.12,
       side: THREE.BackSide,
     });
     const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
     globeGroup.add(atmosphere);
 
-    // 8. Orbital Ring 1 (Equatorial tilt)
+    // 8. Orbital Ring 1 (Equatorial tilt - Electric Blue)
     const ringGeometry1 = new THREE.RingGeometry(2.1, 2.14, 64);
     const ringMaterial1 = new THREE.MeshBasicMaterial({
-      color: 0x356AE6,
+      color: 0x4F8CFF,
       side: THREE.DoubleSide,
       transparent: true,
-      opacity: 0.45,
+      opacity: 0.65,
     });
     const ring1 = new THREE.Mesh(ringGeometry1, ringMaterial1);
     ring1.rotation.x = Math.PI / 2.5;
     globeGroup.add(ring1);
 
-    // 9. Orbital Ring 2 (Polar tilt)
+    // 9. Orbital Ring 2 (Polar tilt - Cyan)
     const ringGeometry2 = new THREE.RingGeometry(2.35, 2.38, 64);
     const ringMaterial2 = new THREE.MeshBasicMaterial({
-      color: 0x12B76A,
+      color: 0x42E8F5,
       side: THREE.DoubleSide,
       transparent: true,
-      opacity: 0.3,
+      opacity: 0.5,
     });
     const ring2 = new THREE.Mesh(ringGeometry2, ringMaterial2);
     ring2.rotation.y = Math.PI / 3;
