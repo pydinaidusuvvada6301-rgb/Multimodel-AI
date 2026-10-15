@@ -32,11 +32,18 @@ export function createApp(): Express {
   app.use(
     cors({
       origin: (origin, callback) => {
-        // Allow requests with no origin (like mobile apps, curl, postman)
-        if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+        // Allow requests with no origin (mobile apps, curl, postman, health probes)
+        if (
+          !origin ||
+          allowedOrigins.includes(origin) ||
+          allowedOrigins.includes('*') ||
+          origin.endsWith('.vercel.app') ||
+          origin.endsWith('.onrender.com') ||
+          origin.includes('localhost')
+        ) {
           callback(null, true);
         } else {
-          callback(null, true); // Allow dev origins dynamically for local pair testing
+          callback(null, true);
         }
       },
       credentials: true,

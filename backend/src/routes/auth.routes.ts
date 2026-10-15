@@ -33,13 +33,16 @@ router.post('/register', authLimiter, async (req: Request, res: Response, next: 
     const validated = RegisterSchema.parse(req.body);
     const tokens = await AuthService.register(validated);
 
-    // Set secure HTTP-only cookie for refresh token
-    res.cookie('refreshToken', tokens.refreshToken, {
+    // Helper for cross-origin cookies across Render & Vercel
+    const cookieOptions = {
       httpOnly: true,
       secure: env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: (env.NODE_ENV === 'production' ? 'none' : 'lax') as 'none' | 'lax',
       maxAge: env.REFRESH_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000,
-    });
+    };
+
+    // Set secure HTTP-only cookie for refresh token
+    res.cookie('refreshToken', tokens.refreshToken, cookieOptions);
 
     res.status(201).json({
       success: true,
@@ -60,12 +63,14 @@ router.post('/login', authLimiter, async (req: Request, res: Response, next: Nex
     const validated = LoginSchema.parse(req.body);
     const tokens = await AuthService.login(validated.email, validated.password);
 
-    res.cookie('refreshToken', tokens.refreshToken, {
+    const cookieOptions = {
       httpOnly: true,
       secure: env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: (env.NODE_ENV === 'production' ? 'none' : 'lax') as 'none' | 'lax',
       maxAge: env.REFRESH_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000,
-    });
+    };
+
+    res.cookie('refreshToken', tokens.refreshToken, cookieOptions);
 
     res.json({
       success: true,
@@ -97,12 +102,14 @@ router.post('/refresh', async (req: Request, res: Response, next: NextFunction) 
 
     const tokens = await AuthService.refreshToken(rawRefreshToken);
 
-    res.cookie('refreshToken', tokens.refreshToken, {
+    const cookieOptions = {
       httpOnly: true,
       secure: env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: (env.NODE_ENV === 'production' ? 'none' : 'lax') as 'none' | 'lax',
       maxAge: env.REFRESH_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000,
-    });
+    };
+
+    res.cookie('refreshToken', tokens.refreshToken, cookieOptions);
 
     res.json({
       success: true,
@@ -121,7 +128,13 @@ router.post('/logout', async (req: Request, res: Response, next: NextFunction) =
   try {
     const rawRefreshToken = req.cookies?.refreshToken || req.body?.refreshToken;
     await AuthService.logout(rawRefreshToken);
-    res.clearCookie('refreshToken');
+
+    const cookieOptions = {
+      httpOnly: true,
+      secure: env.NODE_ENV === 'production',
+      sameSite: (env.NODE_ENV === 'production' ? 'none' : 'lax') as 'none' | 'lax',
+    };
+    res.clearCookie('refreshToken', cookieOptions);
 
     res.json({
       success: true,

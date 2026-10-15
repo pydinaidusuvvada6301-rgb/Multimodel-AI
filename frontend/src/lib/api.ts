@@ -1,7 +1,13 @@
 import axios from 'axios';
 
-// Get base URL from environment or default to local API proxy
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1';
+// Get base URL from environment or default to local API proxy, normalizing trailing slashes and version path
+function resolveApiBaseUrl(): string {
+  const envUrl = (import.meta.env.VITE_API_BASE_URL || '/api/v1').trim();
+  const cleanUrl = envUrl.endsWith('/') ? envUrl.slice(0, -1) : envUrl;
+  return cleanUrl.endsWith('/api/v1') ? cleanUrl : `${cleanUrl}/api/v1`;
+}
+
+export const API_BASE_URL = resolveApiBaseUrl();
 
 export const api = axios.create({
   baseURL: API_BASE_URL,

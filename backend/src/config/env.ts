@@ -27,7 +27,7 @@ const envSchema = z.object({
 
   // Google Gemini AI
   GEMINI_API_KEY: z.string().optional().default(''),
-  GEMINI_MODEL: z.string().default('gemini-2.5-flash'),
+  GEMINI_MODEL: z.string().default('gemini-3.8-flash'),
   GEMINI_EMBEDDING_MODEL: z.string().default('text-embedding-004'),
 
   // Storage & Limits

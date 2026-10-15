@@ -11,7 +11,7 @@ async function bootstrap() {
   const app = createApp();
   const port = env.PORT;
 
-  const server = app.listen(port, () => {
+  const server = app.listen(port, '0.0.0.0', () => {
     console.log(`\n======================================================`);
     console.log(`🌟 OmniMind AI Backend running on: http://localhost:${port}`);
     console.log(`🔗 API Base URL: http://localhost:${port}${env.API_BASE_URL}`);

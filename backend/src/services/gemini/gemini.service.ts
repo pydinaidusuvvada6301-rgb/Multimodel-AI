@@ -171,17 +171,25 @@ export class GeminiService {
           err.message?.includes('RESOURCE_EXHAUSTED') ||
           err.message?.includes('quota');
 
-        if (isRateLimit) {
+        const isTransient503 =
+          err.status === 503 ||
+          err.message?.includes('503') ||
+          err.message?.includes('UNAVAILABLE') ||
+          err.message?.includes('high demand');
+
+        if (isRateLimit || isTransient503) {
           if (attempt > maxRetries) {
             const error: any = new Error(
-              'Gemini API quota or rate limit reached. Please wait a minute or verify your Gemini API key quota.'
+              isRateLimit
+                ? 'Gemini API quota or rate limit reached. Please wait a minute or verify your Gemini API key quota.'
+                : 'Gemini model is currently experiencing temporary high demand spikes. Please retry in a moment.'
             );
-            error.status = 429;
-            error.code = 'GEMINI_RATE_LIMIT';
+            error.status = isRateLimit ? 429 : 503;
+            error.code = isRateLimit ? 'GEMINI_RATE_LIMIT' : 'GEMINI_UNAVAILABLE';
             throw error;
           }
           const backoffMs = Math.min(1000 * Math.pow(2, attempt) + Math.random() * 500, 10000);
-          console.warn(`⏳ Gemini rate limit encountered, retrying in ${Math.round(backoffMs)}ms (attempt ${attempt}/${maxRetries})...`);
+          console.warn(`⏳ Gemini transient ${isRateLimit ? 'rate limit' : '503 spike'} encountered, retrying in ${Math.round(backoffMs)}ms (attempt ${attempt}/${maxRetries})...`);
           await new Promise((resolve) => setTimeout(resolve, backoffMs));
           continue;
         }
@@ -210,21 +218,24 @@ export class GeminiService {
       };
     }
 
+    const isCompare = trimmed.includes('compare') || trimmed.includes('difference') || trimmed.includes('versus') || trimmed.includes('vs');
+    const isSummarize = trimmed.includes('summarize') || trimmed.includes('summary') || trimmed.includes('overview');
+    const isExtract = trimmed.includes('extract') || trimmed.includes('find') || trimmed.includes('tables');
+
     if (!this.isConfigured()) {
-      const isCompare = trimmed.includes('compare') || trimmed.includes('difference');
-      const isSummarize = trimmed.includes('summarize') || trimmed.includes('summary');
       return {
-        intent: isCompare ? 'compare' : isSummarize ? 'summarize' : 'search',
+        intent: isCompare ? 'compare' : isSummarize ? 'summarize' : isExtract ? 'extract' : 'search',
         requires_retrieval: true,
-        requires_media_context: false,
+        requires_media_context: isCompare,
         suggested_modalities: ['document', 'text'],
         reason: 'Classification rule fallback (API key not configured).',
       };
     }
 
-    return await this.executeWithRetry(async () => {
-      const client = this.getClient();
-      const prompt = `Classify the user intent for the following query:
+    try {
+      return await this.executeWithRetry(async () => {
+        const client = this.getClient();
+        const prompt = `Classify the user intent for the following query:
 Query: "${queryText}"
 
 Respond ONLY with valid JSON conforming to this schema:
@@ -236,19 +247,29 @@ Respond ONLY with valid JSON conforming to this schema:
   "reason": "Brief explanation of classification"
 }`;
 
-      const response = await client.models.generateContent({
-        model: env.GEMINI_MODEL,
-        contents: prompt,
-        config: {
-          systemInstruction: OMNIMIND_SYSTEM_PROMPT,
-          responseMimeType: 'application/json',
-        },
-      });
+        const response = await client.models.generateContent({
+          model: env.GEMINI_MODEL,
+          contents: prompt,
+          config: {
+            systemInstruction: OMNIMIND_SYSTEM_PROMPT,
+            responseMimeType: 'application/json',
+          },
+        });
 
-      const text = response.text || '{}';
-      const parsed = JSON.parse(text);
-      return QueryClassificationSchema.parse(parsed);
-    });
+        const text = response.text || '{}';
+        const parsed = JSON.parse(text);
+        return QueryClassificationSchema.parse(parsed);
+      });
+    } catch (err: any) {
+      console.warn('⚠️ Gemini live classification warning, using resilient fallback:', err.message);
+      return {
+        intent: isCompare ? 'compare' : isSummarize ? 'summarize' : isExtract ? 'extract' : 'search',
+        requires_retrieval: true,
+        requires_media_context: isCompare,
+        suggested_modalities: ['document', 'text'],
+        reason: `Resilient heuristic classification fallback (${err.message}).`,
+      };
+    }
   }
 
   /**

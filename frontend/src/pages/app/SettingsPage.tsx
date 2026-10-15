@@ -176,7 +176,7 @@ export const SettingsPage: React.FC = () => {
               <span className="text-slate-400 text-[10px] uppercase font-semibold">Gemini AI Model</span>
               <p className="text-slate-200 font-medium mt-1 flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                gemini-2.5-flash
+                gemini-3.8-flash
               </p>
             </div>
 

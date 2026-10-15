@@ -131,6 +131,6 @@ describe('OmniMind AI — Backend Verification Test Suite', () => {
       const classification = await GeminiService.classifyIntent('compare these two diagrams');
       expect(classification.intent).toBe('compare');
       expect(classification.requires_retrieval).toBe(true);
-    });
+    }, 15000);
   });
 });
