@@ -21,6 +21,7 @@ import { Button } from '../../components/ui/Button.js';
 import { Card } from '../../components/ui/Card.js';
 import { Badge } from '../../components/ui/Badge.js';
 import { useAuth } from '../../context/AuthContext.js';
+import { Floating3DObjects } from '../../components/3d/Floating3DObjects.js';
 
 export const LandingPage: React.FC = () => {
   const { demoLogin } = useAuth();
@@ -135,6 +136,54 @@ export const LandingPage: React.FC = () => {
               <CheckCircle className="w-4 h-4 text-[#12B76A]" />
               Google Gemini 2.5 Flash SDK
             </span>
+          </div>
+        </div>
+      </section>
+
+      {/* 3D Interactive Multimodal Architecture Showcase */}
+      <section className="py-6 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full">
+        <div className="relative rounded-2xl bg-gradient-to-b from-brand-50/40 via-surface-primary to-surface-secondary/40 border border-brand-200/50 p-6 sm:p-8 shadow-xs overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-brand-400/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="flex flex-col lg:flex-row items-center gap-8 justify-between relative z-10">
+            <div className="space-y-3 max-w-lg text-left">
+              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-brand-100/70 text-brand-700 text-[11px] font-semibold tracking-wider uppercase">
+                <Sparkles className="w-3.5 h-3.5" />
+                Real-Time 3D Multimodal Topology
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold text-text-primary tracking-tight">
+                Harmonic Cross-Modal Neural Synthesis
+              </h2>
+              <p className="text-xs sm:text-sm text-text-secondary leading-relaxed">
+                Interact with the live representation of your ingested assets. Documents, visual diagrams, audio wave streams, and video frames are projected into a unified vector coordinate system for zero-hallucination factual grounding.
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
+                <div className="p-2 rounded-lg bg-surface-primary border border-border-default text-center">
+                  <span className="block text-[10px] font-mono text-brand-600 font-bold">DOC CUBE</span>
+                  <span className="text-[11px] text-text-secondary font-medium">PDF & Text</span>
+                </div>
+                <div className="p-2 rounded-lg bg-surface-primary border border-border-default text-center">
+                  <span className="block text-[10px] font-mono text-sky-600 font-bold">OCTAHEDRON</span>
+                  <span className="text-[11px] text-text-secondary font-medium">Vision</span>
+                </div>
+                <div className="p-2 rounded-lg bg-surface-primary border border-border-default text-center">
+                  <span className="block text-[10px] font-mono text-emerald-600 font-bold">TORUS RING</span>
+                  <span className="text-[11px] text-text-secondary font-medium">Audio</span>
+                </div>
+                <div className="p-2 rounded-lg bg-surface-primary border border-border-default text-center">
+                  <span className="block text-[10px] font-mono text-purple-600 font-bold">ICOSAHEDRON</span>
+                  <span className="text-[11px] text-text-secondary font-medium">Video</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="w-full lg:w-96 h-56 rounded-xl bg-surface-primary/80 border border-brand-200/60 shadow-xs relative overflow-hidden flex items-center justify-center">
+              <Floating3DObjects className="w-full h-full" />
+              <div className="absolute bottom-2 right-3 pointer-events-none">
+                <span className="text-[10px] font-mono text-text-muted bg-surface-primary/90 px-2 py-0.5 rounded border border-border-default">
+                  Three.js WebGL Engine
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </section>

@@ -14,6 +14,7 @@ import { ChatMessage as ChatMessageType, Conversation, DocumentItem } from '../.
 import { ChatMessage } from '../../components/chat/ChatMessage.js';
 import { SourceSelectorModal } from '../../components/chat/SourceSelectorModal.js';
 import { Button } from '../../components/ui/Button.js';
+import { AIVisualization } from '../../components/3d/AIVisualization.js';
 import { cn } from '../../lib/utils.js';
 
 export const ChatPage: React.FC = () => {
@@ -282,8 +283,8 @@ export const ChatPage: React.FC = () => {
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
           {messages.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center max-w-lg mx-auto text-center space-y-4 py-8">
-              <div className="w-12 h-12 rounded-xl bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600 shadow-xs">
-                <Sparkles className="w-6 h-6" />
+              <div className="w-20 h-20 rounded-2xl bg-brand-50/70 border border-brand-200/80 flex items-center justify-center text-brand-600 shadow-xs relative overflow-hidden">
+                <AIVisualization isThinking={false} className="w-full h-full" />
               </div>
               <div className="space-y-1">
                 <h3 className="text-base font-semibold text-text-primary">
@@ -315,11 +316,21 @@ export const ChatPage: React.FC = () => {
           )}
 
           {loading && (
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-surface-primary border border-border-default mr-12 shadow-xs">
-              <Loader2 className="w-4 h-4 text-brand-600 animate-spin" />
-              <span className="text-xs text-text-secondary font-mono">
-                Searching authorized evidence & synthesizing grounded answer...
-              </span>
+            <div className="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-xl bg-surface-primary border border-brand-200/60 mr-12 shadow-xs">
+              <div className="w-16 h-16 rounded-lg overflow-hidden bg-brand-50/60 border border-brand-100 shrink-0">
+                <AIVisualization isThinking={true} className="w-full h-full" />
+              </div>
+              <div className="space-y-1 text-left w-full">
+                <div className="flex items-center gap-2">
+                  <Loader2 className="w-3.5 h-3.5 text-brand-600 animate-spin" />
+                  <span className="text-xs font-semibold text-text-primary">
+                    Cross-Modal Neural Synthesis Active
+                  </span>
+                </div>
+                <p className="text-[11px] text-text-secondary font-mono">
+                  Searching authorized evidence lattice & verifying factual citations...
+                </p>
+              </div>
             </div>
           )}
           <div ref={messagesEndRef} />

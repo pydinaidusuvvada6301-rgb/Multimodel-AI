@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext.js';
 import { Sidebar } from './Sidebar.js';
 import { TopNavigation } from './TopNavigation.js';
 import { OmniMindGuide } from '../guide/OmniMindGuide.js';
+import { CommandPalette } from '../navigation/CommandPalette.js';
 import { Loader2 } from 'lucide-react';
 
 export const AppLayout: React.FC = () => {
@@ -25,6 +26,9 @@ export const AppLayout: React.FC = () => {
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-[#F7F9FC]">
+      {/* Global Command Palette (Ctrl+K / Cmd+K) */}
+      <CommandPalette />
+
       {/* Desktop Sidebar */}
       <div className="hidden lg:block shrink-0">
         <Sidebar />
@@ -57,3 +61,4 @@ export const AppLayout: React.FC = () => {
     </div>
   );
 };
+
