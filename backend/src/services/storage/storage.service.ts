@@ -36,7 +36,7 @@ export class StorageService {
     const sha256 = crypto.createHash('sha256').update(buffer).digest('hex');
 
     // 1. Try Supabase Storage if configured
-    if (supabase && env.SUPABASE_URL && env.SUPABASE_SERVICE_ROLE_KEY) {
+    if (supabase && env.SUPABASE_URL && (env.SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_ANON_KEY)) {
       try {
         const { error } = await supabase.storage
           .from(env.STORAGE_BUCKET)

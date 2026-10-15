@@ -12,8 +12,9 @@ const envSchema = z.object({
   FRONTEND_URL: z.string().default('http://localhost:5173'),
   CORS_ORIGINS: z.string().default('http://localhost:5173'),
 
-  // Supabase & Postgres
+  // Supabase Configuration
   SUPABASE_URL: z.string().optional().default(''),
+  SUPABASE_ANON_KEY: z.string().optional().default(''),
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional().default(''),
   SUPABASE_DB_URL: z.string().optional().default(''),
 

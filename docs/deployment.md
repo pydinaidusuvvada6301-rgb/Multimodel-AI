@@ -15,9 +15,7 @@ This guide outlines the exact steps to deploy OmniMind AI across Supabase, Rende
    - Toggle **Public bucket** to `OFF` (Private).
 6. In **Project Settings** -> **API**:
    - Note the **Project URL** (`SUPABASE_URL`).
-   - Note the **service_role secret key** (`SUPABASE_SERVICE_ROLE_KEY`).
-7. In **Project Settings** -> **Database**:
-   - Copy the PostgreSQL **Connection string (URI)** (`SUPABASE_DB_URL`).
+   - Note the **anon public key** (`SUPABASE_ANON_KEY`) or **service_role secret key** (`SUPABASE_SERVICE_ROLE_KEY`).
 
 ---
 
@@ -31,7 +29,7 @@ This guide outlines the exact steps to deploy OmniMind AI across Supabase, Rende
    - **Environment:** `Node`
    - **Build Command:** `npm install && npm run build`
    - **Start Command:** `npm start`
-4. In the **Environment Variables** section, add:
+4. In the **Environment Variables** section (configured for backend):
    ```env
    NODE_ENV=production
    PORT=5000
@@ -40,8 +38,8 @@ This guide outlines the exact steps to deploy OmniMind AI across Supabase, Rende
    CORS_ORIGINS=https://your-omnimind-frontend.vercel.app
 
    SUPABASE_URL=https://your-project.supabase.co
+   SUPABASE_ANON_KEY=your_supabase_anon_key
    SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-   SUPABASE_DB_URL=postgresql://postgres:password@db.your-project.supabase.co:5432/postgres
 
    JWT_ACCESS_SECRET=your_super_secret_64_character_random_key_min
    JWT_ACCESS_TTL=15m

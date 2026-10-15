@@ -93,12 +93,12 @@ npm install
 ### 2. Configure Environment
 Copy `.env.example` to root or configure `backend/.env`:
 ```bash
-cp .env.example backend/.env
+cp backend/.env.example backend/.env
 ```
-Key variables:
+Key variables (configured in `backend/.env`):
 - `GEMINI_API_KEY`: Your Google Gemini API Key from Google AI Studio.
 - `JWT_ACCESS_SECRET`: Minimum 32-character secure secret string.
-- `SUPABASE_DB_URL` (optional): PostgreSQL connection string. If omitted, OmniMind AI automatically uses an in-memory database store so you can explore immediately without external database dependencies.
+- `SUPABASE_URL` & `SUPABASE_ANON_KEY` / `SUPABASE_SERVICE_ROLE_KEY` (optional): If omitted or left as placeholders, OmniMind AI automatically uses its built-in in-memory store so you can explore immediately without external dependencies.
 
 ### 3. Run Locally
 Run both backend and frontend concurrently:

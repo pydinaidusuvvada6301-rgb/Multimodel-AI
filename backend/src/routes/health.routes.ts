@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { isPostgresConnected } from '../config/database.js';
+import { isPostgresConnected, isSupabaseConnected } from '../config/database.js';
 import { GeminiService } from '../services/gemini/gemini.service.js';
 
 const router = Router();
@@ -21,7 +21,7 @@ router.get('/ready', (req: Request, res: Response) => {
     status: 'ready',
     timestamp: new Date().toISOString(),
     checks: {
-      database: isPostgresConnected ? 'connected' : 'in-memory-fallback',
+      database: isSupabaseConnected || isPostgresConnected ? 'connected' : 'in-memory-fallback',
       aiEngine: isAiReady ? 'configured' : 'offline-rule-fallback',
       storage: 'operational',
     },

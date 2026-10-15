@@ -99,7 +99,7 @@ All files in `backend/` execute strictly in the Node.js server environment and n
 - [`src/types/index.ts`](file:///c:/Users/pydin/OneDrive/Desktop/Multimodel%20AI/backend/src/types/index.ts): Database record types and augmented `AuthenticatedRequest` (`req.user`).
 
 ### Configuration (`backend/src/config/`)
-- [`config/env.ts`](file:///c:/Users/pydin/OneDrive/Desktop/Multimodel%20AI/backend/src/config/env.ts): Zod schema for environment variables (`GEMINI_API_KEY`, `SUPABASE_DB_URL`, `JWT_ACCESS_SECRET`, etc.).
+- [`config/env.ts`](file:///c:/Users/pydin/OneDrive/Desktop/Multimodel%20AI/backend/src/config/env.ts): Zod schema for environment variables (`GEMINI_API_KEY`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `JWT_ACCESS_SECRET`, etc.).
 - [`config/database.ts`](file:///c:/Users/pydin/OneDrive/Desktop/Multimodel%20AI/backend/src/config/database.ts): PostgreSQL connection pool via `pg.Pool`, Supabase client initialization, and an in-memory fallback store ensuring zero-crash local development.
 
 ### Middleware (`backend/src/middleware/`)
