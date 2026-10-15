@@ -99,6 +99,16 @@ router.post('/chat', async (req: AuthenticatedRequest, res: Response, next: Next
       inMemoryDb.conversations.set(conversationId, conversation);
     }
 
+    // Retrieve prior conversation messages before appending current message to maintain context
+    const previousMessages = Array.from(inMemoryDb.messages.values())
+      .filter((m) => m.conversation_id === conversationId)
+      .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+      .slice(-10)
+      .map((m) => ({
+        role: m.role as 'user' | 'assistant',
+        content: m.content,
+      }));
+
     // Record user message
     const userMessageId = crypto.randomUUID();
     const userMessage: MessageRecord = {
@@ -117,48 +127,46 @@ router.post('/chat', async (req: AuthenticatedRequest, res: Response, next: Next
     // 2. Classify Query Intent
     const classification = await GeminiService.classifyIntent(validated.question);
 
-    let answerText = '';
-    let citations: any[] = [];
-    let confidence: 'high' | 'medium' | 'low' = 'high';
-    let keyFindings: string[] = [];
-
-    // 3. Routing based on Intent
-    if (classification.intent === 'conversation') {
-      // Natural conversational greeting
-      answerText = `Hello ${req.user!.displayName}! I am **OmniMind AI**, your connected multimodal intelligence workspace. I can help you search, summarize, compare, and reason across your documents, images, audio recordings, and videos. How can I assist your research today?`;
-      confidence = 'high';
-    } else {
-      // 4. Retrieve Grounded Evidence from Authorized Documents
-      const retrievedEvidence = await RetrievalService.searchChunks({
+    // 3. Retrieve Grounded Evidence from Authorized Documents
+    let retrievedEvidence: any[] = [];
+    if (classification.requires_retrieval || validated.documentIds?.length || classification.intent !== 'conversation') {
+      retrievedEvidence = await RetrievalService.searchChunks({
         userId,
         workspaceId: validated.workspaceId,
         documentIds: validated.documentIds,
         queryText: validated.question,
         limit: env.MAX_RETRIEVAL_CHUNKS,
       });
-
-      // 5. Generate Grounded AI Response
-      const groundedResponse = await GeminiService.answerWithGrounding(
-        validated.question,
-        retrievedEvidence.map((e) => ({
-          id: e.id,
-          document_id: e.document_id,
-          document_name: e.document_name,
-          modality: e.modality,
-          content: e.content,
-          page_number: e.page_number,
-          start_seconds: e.start_seconds,
-        })),
-        validated.detailLevel
-      );
-
-      answerText = groundedResponse.answer;
-      confidence = groundedResponse.confidence;
-      keyFindings = groundedResponse.key_findings;
-
-      // 6. Strictly validate citations to prevent hallucinations
-      citations = RetrievalService.validateCitations(groundedResponse.citations, retrievedEvidence);
     }
+
+    const userDocsCount = Array.from(inMemoryDb.documents.values()).filter(
+      (d) => d.user_id === userId && (validated.workspaceId ? d.workspace_id === validated.workspaceId : true)
+    ).length;
+
+    // 4. Generate Grounded & Contextual AI Response
+    const groundedResponse = await GeminiService.generateChatResponse({
+      question: validated.question,
+      conversationHistory: previousMessages,
+      evidenceItems: retrievedEvidence.map((e) => ({
+        id: e.id,
+        document_id: e.document_id,
+        document_name: e.document_name,
+        modality: e.modality,
+        content: e.content,
+        page_number: e.page_number,
+        start_seconds: e.start_seconds,
+      })),
+      detailLevel: validated.detailLevel,
+      userName: req.user!.displayName,
+      workspaceDocumentsCount: userDocsCount,
+    });
+
+    const answerText = groundedResponse.answer;
+    const confidence = groundedResponse.confidence;
+    const keyFindings = groundedResponse.key_findings;
+
+    // 5. Strictly validate citations to prevent hallucinations
+    const citations = RetrievalService.validateCitations(groundedResponse.citations, retrievedEvidence);
 
     // 7. Persist Assistant Response
     const assistantMessageId = crypto.randomUUID();
