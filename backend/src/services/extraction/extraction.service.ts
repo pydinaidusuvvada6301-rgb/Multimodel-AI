@@ -59,12 +59,27 @@ export class ExtractionService {
       // 1. PDF Documents
       if (mimeType.includes('pdf') || ext === 'pdf') {
         const pdfData = await pdfParse(buffer);
+        let extractedText = pdfData.text ? pdfData.text.trim() : '';
+
+        // If PDF has no digital text layer (< 50 chars), trigger Gemini Vision OCR for scanned PDF
+        if (extractedText.length < 50 && GeminiService.isConfigured()) {
+          try {
+            const ocr = await GeminiService.extractVisionContent(buffer, 'application/pdf', filename);
+            if (ocr.text && ocr.text.length > extractedText.length) {
+              extractedText = ocr.text;
+            }
+          } catch (ocrErr: any) {
+            console.warn(`⚠️ Scanned PDF OCR notice for ${filename}:`, ocrErr.message);
+          }
+        }
+
         return {
-          text: pdfData.text.trim(),
+          text: extractedText || `[PDF Document: ${filename}]`,
           pageCount: pdfData.numpages || 1,
           metadata: {
             info: pdfData.info || {},
             pageCount: pdfData.numpages,
+            isScannedPdf: (pdfData.text ? pdfData.text.trim().length : 0) < 50,
           },
         };
       }
