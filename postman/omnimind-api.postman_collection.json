@@ -1,0 +1,202 @@
+{
+  "info": {
+    "name": "OmniMind AI API",
+    "description": "Production REST API for OmniMind AI Multimodal Intelligence Platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "workspaceId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "documentId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Liveness Probe",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/health", "host": ["{{baseUrl}}"], "path": ["health"] }
+          }
+        },
+        {
+          "name": "Readiness Probe",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/ready", "host": ["{{baseUrl}}"], "path": ["ready"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"alex.vance@omnimind.ai\",\n  \"password\": \"Password123!\",\n  \"displayName\": \"Dr. Alex Vance\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "register"] }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"demo@omnimind.ai\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{baseUrl}}/api/v1/auth/refresh", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "refresh"] }
+          }
+        },
+        {
+          "name": "Get Current User Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/v1/auth/me", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "me"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Workspaces",
+      "item": [
+        {
+          "name": "List Workspaces",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/v1/workspaces", "host": ["{{baseUrl}}"], "path": ["api", "v1", "workspaces"] }
+          }
+        },
+        {
+          "name": "Create Workspace",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Multimodal AI Research\",\n  \"description\": \"Core intelligence workspace\",\n  \"category\": \"Research\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/workspaces", "host": ["{{baseUrl}}"], "path": ["api", "v1", "workspaces"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "AI Orchestration",
+      "item": [
+        {
+          "name": "Get AI Capabilities",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/v1/ai/capabilities", "host": ["{{baseUrl}}"], "path": ["api", "v1", "ai", "capabilities"] }
+          }
+        },
+        {
+          "name": "Grounded AI Chat",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"Summarize the deployment architecture in my uploaded sources and show citations.\",\n  \"detailLevel\": \"balanced\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/ai/chat", "host": ["{{baseUrl}}"], "path": ["api", "v1", "ai", "chat"] }
+          }
+        },
+        {
+          "name": "Cross-Modal Compare",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"documentIds\": [\"{{documentId}}\"],\n  \"objective\": \"Compare specification against diagram\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/ai/compare", "host": ["{{baseUrl}}"], "path": ["api", "v1", "ai", "compare"] }
+          }
+        },
+        {
+          "name": "Generate Content Artifact",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"artifactType\": \"study_guide\",\n  \"title\": \"Multimodal AI Systems Study Guide\",\n  \"prompt\": \"Focus on vector search and evidence grounding\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/ai/generate", "host": ["{{baseUrl}}"], "path": ["api", "v1", "ai", "generate"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Search",
+      "item": [
+        {
+          "name": "Hybrid Search",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"vector embedding dimensions and citations\",\n  \"limit\": 10\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/search/hybrid", "host": ["{{baseUrl}}"], "path": ["api", "v1", "search", "hybrid"] }
+          }
+        }
+      ]
+    }
+  ]
+}

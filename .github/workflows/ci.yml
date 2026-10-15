@@ -1,0 +1,33 @@
+name: OmniMind AI CI Pipeline
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Backend Vitest Suite
+        run: npm --prefix apps/api test
+
+      - name: Compile Backend TypeScript
+        run: npm --prefix apps/api run build
+
+      - name: Build Frontend Vite Application
+        run: npm --prefix apps/web run build
