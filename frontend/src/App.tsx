@@ -9,6 +9,9 @@ import { LandingPage } from './pages/public/LandingPage.js';
 import { LoginPage } from './pages/public/LoginPage.js';
 import { RegisterPage } from './pages/public/RegisterPage.js';
 import { ForgotPasswordPage } from './pages/public/ForgotPasswordPage.js';
+import { VerifyEmailPage } from './pages/public/VerifyEmailPage.js';
+import { ResetPasswordPage } from './pages/public/ResetPasswordPage.js';
+import { AuthCallbackPage } from './pages/public/AuthCallbackPage.js';
 
 // Protected App Pages
 import { DashboardPage } from './pages/app/DashboardPage.js';
@@ -33,6 +36,10 @@ export const App: React.FC = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/verify-email" element={<VerifyEmailPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/auth/callback" element={<AuthCallbackPage />} />
+            <Route path="/settings/security" element={<Navigate to="/app/settings" replace />} />
 
             {/* Protected Routes */}
             <Route path="/app" element={<AppLayout />}>
@@ -46,6 +53,7 @@ export const App: React.FC = () => {
               <Route path="documents/:documentId" element={<DocumentDetailPage />} />
               <Route path="reports" element={<ReportsPage />} />
               <Route path="settings" element={<SettingsPage />} />
+              <Route path="settings/security" element={<SettingsPage />} />
             </Route>
 
             {/* Fallback route */}

@@ -3,6 +3,7 @@ import { Outlet, Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.js';
 import { Sidebar } from './Sidebar.js';
 import { TopNavigation } from './TopNavigation.js';
+import { OmniMindGuide } from '../guide/OmniMindGuide.js';
 import { Loader2 } from 'lucide-react';
 
 export const AppLayout: React.FC = () => {
@@ -49,6 +50,9 @@ export const AppLayout: React.FC = () => {
           <Outlet />
         </main>
       </div>
+
+      {/* OmniMind Guide Contextual Assistant */}
+      <OmniMindGuide />
     </div>
   );
 };

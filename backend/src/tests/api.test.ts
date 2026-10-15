@@ -118,6 +118,7 @@ describe('OmniMind AI — Backend Verification Test Suite', () => {
     });
 
     it('should authenticate user with valid credentials', async () => {
+      await AuthService.confirmUserEmail(testEmail);
       const loginResult = await AuthService.login(testEmail, 'Password123!');
       expect(loginResult.accessToken).toBeDefined();
       expect(loginResult.user.email).toBe(testEmail);

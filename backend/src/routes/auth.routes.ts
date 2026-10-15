@@ -4,6 +4,7 @@ import { AuthService } from '../services/auth/auth.service.js';
 import { authenticate } from '../middleware/auth.middleware.js';
 import { authLimiter } from '../middleware/rateLimit.middleware.js';
 import { AuthenticatedRequest } from '../types/index.js';
+import { inMemoryDb } from '../config/database.js';
 import { env } from '../config/env.js';
 
 const router = Router();
@@ -31,7 +32,7 @@ const ChangePasswordSchema = z.object({
 router.post('/register', authLimiter, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const validated = RegisterSchema.parse(req.body);
-    const tokens = await AuthService.register(validated);
+    const result = await AuthService.register(validated);
 
     // Helper for cross-origin cookies across Render & Vercel
     const cookieOptions = {
@@ -41,16 +42,22 @@ router.post('/register', authLimiter, async (req: Request, res: Response, next: 
       maxAge: env.REFRESH_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000,
     };
 
-    // Set secure HTTP-only cookie for refresh token
-    res.cookie('refreshToken', tokens.refreshToken, cookieOptions);
+    if (result.refreshToken) {
+      res.cookie('refreshToken', result.refreshToken, cookieOptions);
+    }
 
     res.status(201).json({
       success: true,
       data: {
-        user: tokens.user,
-        accessToken: tokens.accessToken,
+        user: result.user,
+        accessToken: result.accessToken,
+        needsVerification: result.needsVerification || false,
       },
-      meta: { message: 'Account registered successfully.' },
+      meta: {
+        message: result.needsVerification
+          ? 'Registration successful. Please verify your email to unlock all features.'
+          : 'Account registered successfully.',
+      },
     });
   } catch (err) {
     next(err);
@@ -79,6 +86,75 @@ router.post('/login', authLimiter, async (req: Request, res: Response, next: Nex
         accessToken: tokens.accessToken,
       },
       meta: { message: 'Logged in successfully.' },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// POST /api/v1/auth/resend-verification
+router.post('/resend-verification', authLimiter, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email } = req.body;
+    if (!email || typeof email !== 'string') {
+      res.status(400).json({
+        success: false,
+        error: { code: 'INVALID_INPUT', message: 'Email address is required.' },
+      });
+      return;
+    }
+
+    const result = await AuthService.resendVerification(email);
+    res.json({
+      success: true,
+      data: result,
+      meta: { message: result.message },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// POST /api/v1/auth/forgot-password
+router.post('/forgot-password', authLimiter, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email } = req.body;
+    if (!email || typeof email !== 'string') {
+      res.status(400).json({
+        success: false,
+        error: { code: 'INVALID_INPUT', message: 'Email address is required.' },
+      });
+      return;
+    }
+
+    const result = await AuthService.requestPasswordReset(email);
+    res.json({
+      success: true,
+      data: result,
+      meta: { message: result.message },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// POST /api/v1/auth/reset-password
+router.post('/reset-password', authLimiter, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email, newPassword } = req.body;
+    if (!email || !newPassword || typeof newPassword !== 'string' || newPassword.length < 8) {
+      res.status(400).json({
+        success: false,
+        error: { code: 'INVALID_INPUT', message: 'Valid email and new password (min 8 characters) required.' },
+      });
+      return;
+    }
+
+    const result = await AuthService.resetPassword(email, newPassword);
+    res.json({
+      success: true,
+      data: result,
+      meta: { message: result.message },
     });
   } catch (err) {
     next(err);
@@ -148,9 +224,26 @@ router.post('/logout', async (req: Request, res: Response, next: NextFunction) =
 
 // GET /api/v1/auth/me
 router.get('/me', authenticate, async (req: AuthenticatedRequest, res: Response) => {
+  const userId = req.user!.id;
+  let workspaceCount = 0;
+  let documentCount = 0;
+
+  for (const w of inMemoryDb.workspaces.values()) {
+    if (w.user_id === userId) workspaceCount++;
+  }
+  for (const d of inMemoryDb.documents.values()) {
+    if (d.user_id === userId && !d.deleted_at) documentCount++;
+  }
+
   res.json({
     success: true,
-    data: { user: req.user },
+    data: {
+      user: req.user,
+      stats: {
+        workspaceCount,
+        documentCount,
+      },
+    },
   });
 });
 
@@ -170,16 +263,39 @@ router.post('/change-password', authenticate, async (req: AuthenticatedRequest, 
   }
 });
 
-// POST /api/v1/auth/forgot-password
-router.post('/forgot-password', authLimiter, async (req: Request, res: Response) => {
-  // Safe message that avoids account enumeration
-  res.json({
-    success: true,
-    data: { sent: true },
-    meta: {
-      message: 'If an account exists for this email, password reset instructions have been dispatched.',
-    },
-  });
+// POST /api/v1/auth/delete-account (Section 2.E: Explicit confirmation required)
+router.post('/delete-account', authenticate, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { confirmation } = req.body;
+    if (confirmation !== 'DELETE') {
+      res.status(400).json({
+        success: false,
+        error: {
+          code: 'CONFIRMATION_REQUIRED',
+          message: 'Please type DELETE to confirm account and resource deletion.',
+        },
+      });
+      return;
+    }
+
+    const userId = req.user!.id;
+    await AuthService.deleteAccount(userId);
+
+    const cookieOptions = {
+      httpOnly: true,
+      secure: env.NODE_ENV === 'production',
+      sameSite: (env.NODE_ENV === 'production' ? 'none' : 'lax') as 'none' | 'lax',
+    };
+    res.clearCookie('refreshToken', cookieOptions);
+
+    res.json({
+      success: true,
+      data: { deleted: true },
+      meta: { message: 'Account and associated resources successfully deleted.' },
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 export default router;

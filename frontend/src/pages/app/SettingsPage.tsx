@@ -167,8 +167,8 @@ export const SettingsPage: React.FC = () => {
               <p className="text-slate-200 font-medium mt-1 flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                 {systemReadiness?.checks?.database === 'connected'
-                  ? 'Supabase PostgreSQL'
-                  : 'Resilient Local PostgreSQL'}
+                  ? 'Supabase PostgreSQL (RLS)'
+                  : 'Resilient PostgreSQL'}
               </p>
             </div>
 
@@ -189,6 +189,104 @@ export const SettingsPage: React.FC = () => {
             </div>
           </div>
         </Card>
+
+        {/* Danger Zone: Account Deletion */}
+        <Card className="p-6 space-y-4 bg-surface-200/90 border-rose-900/40">
+          <div className="flex items-center gap-2 text-sm font-semibold text-rose-400">
+            <AlertCircle className="w-4 h-4 text-rose-400" />
+            <span>Danger Zone: Account Deletion</span>
+          </div>
+
+          <p className="text-xs text-slate-400 leading-relaxed">
+            Permanently delete your OmniMind AI account, workspaces, uploaded multimodal sources, and conversation history.
+            This action cannot be undone. To prevent accidental deletion, you must explicitly confirm.
+          </p>
+
+          <DeleteAccountSection />
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+const DeleteAccountSection: React.FC = () => {
+  const { deleteAccount } = useAuth();
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [confirmText, setConfirmText] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleDelete = async () => {
+    if (confirmText !== 'DELETE') {
+      setError('You must type DELETE exactly to proceed.');
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    try {
+      await deleteAccount(confirmText);
+    } catch (err: any) {
+      setError(err.response?.data?.error?.message || 'Failed to delete account. Please try again.');
+      setLoading(false);
+    }
+  };
+
+  if (!showConfirm) {
+    return (
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        className="border-rose-800/60 text-rose-400 hover:bg-rose-950/40 hover:text-rose-300"
+        onClick={() => setShowConfirm(true)}
+      >
+        Delete Account & All Data
+      </Button>
+    );
+  }
+
+  return (
+    <div className="p-4 rounded-xl bg-rose-950/20 border border-rose-900/50 space-y-3 max-w-lg">
+      <p className="text-xs font-semibold text-rose-300">
+        Please confirm: Type <span className="font-mono bg-rose-950 px-1.5 py-0.5 rounded text-rose-200">DELETE</span> below:
+      </p>
+
+      {error && (
+        <div className="p-2 rounded bg-rose-900/40 border border-rose-800 text-rose-200 text-xs">
+          {error}
+        </div>
+      )}
+
+      <Input
+        value={confirmText}
+        onChange={(e) => setConfirmText(e.target.value)}
+        placeholder="Type DELETE to confirm"
+        className="font-mono"
+      />
+
+      <div className="flex items-center gap-3 pt-1">
+        <Button
+          type="button"
+          size="sm"
+          className="bg-rose-600 hover:bg-rose-500 text-white"
+          disabled={confirmText !== 'DELETE' || loading}
+          loading={loading}
+          onClick={handleDelete}
+        >
+          Permanently Delete Account
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            setShowConfirm(false);
+            setConfirmText('');
+            setError(null);
+          }}
+        >
+          Cancel
+        </Button>
       </div>
     </div>
   );

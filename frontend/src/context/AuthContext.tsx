@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { api, setAccessToken } from '../lib/api.js';
+import { supabaseClient } from '../lib/supabase.js';
 import { User, Workspace } from '../types/index.js';
 
 interface AuthContextType {
@@ -10,8 +11,12 @@ interface AuthContextType {
   setActiveWorkspace: (workspace: Workspace | null) => void;
   login: (email: string, password: string) => Promise<void>;
   demoLogin: () => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  register: (name: string, email: string, password: string) => Promise<{ needsVerification?: boolean }>;
+  resendVerification: (email: string) => Promise<{ message: string }>;
+  requestPasswordReset: (email: string) => Promise<{ message: string }>;
+  resetPassword: (email: string, newPassword: string) => Promise<{ message: string }>;
   logout: () => Promise<void>;
+  deleteAccount: (confirmation: string) => Promise<void>;
   refreshWorkspaces: () => Promise<void>;
 }
 
@@ -38,11 +43,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Initial Session Restoration
+  // Initial Session Restoration (both backend refresh and Supabase client detection)
   useEffect(() => {
     const initAuth = async () => {
-      // Check if session was active
-      const hasSession = sessionStorage.getItem('omnimind_has_session');
       try {
         const { data } = await api.post('/auth/refresh');
         if (data.success && data.data) {
@@ -50,9 +53,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setUser(data.data.user);
         }
       } catch {
-        // If refresh fails and we had demo state or no session
-        setAccessToken(null);
-        setUser(null);
+        // Fallback to client-side Supabase session check if present
+        if (supabaseClient) {
+          const { data: sessionData } = await supabaseClient.auth.getSession();
+          if (sessionData?.session?.user) {
+            setUser({
+              id: sessionData.session.user.id,
+              email: sessionData.session.user.email || '',
+              displayName: sessionData.session.user.user_metadata?.display_name || 'Researcher',
+            });
+          } else {
+            setAccessToken(null);
+            setUser(null);
+          }
+        } else {
+          setAccessToken(null);
+          setUser(null);
+        }
       } finally {
         setLoading(false);
       }
@@ -83,21 +100,43 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await login('demo@omnimind.ai', 'Password123!');
   };
 
-  const register = async (name: string, email: string, password: string) => {
+  const register = async (name: string, email: string, password: string): Promise<{ needsVerification?: boolean }> => {
     const { data } = await api.post('/auth/register', {
       displayName: name,
       email,
       password,
     });
     if (data.success && data.data) {
-      setAccessToken(data.data.accessToken);
-      setUser(data.data.user);
+      if (!data.data.needsVerification && data.data.accessToken) {
+        setAccessToken(data.data.accessToken);
+        setUser(data.data.user);
+      }
+      return { needsVerification: data.data.needsVerification };
     }
+    return {};
+  };
+
+  const resendVerification = async (email: string): Promise<{ message: string }> => {
+    const { data } = await api.post('/auth/resend-verification', { email });
+    return { message: data.meta?.message || data.data?.message || 'Verification email resent.' };
+  };
+
+  const requestPasswordReset = async (email: string): Promise<{ message: string }> => {
+    const { data } = await api.post('/auth/forgot-password', { email });
+    return { message: data.meta?.message || 'Password reset email sent.' };
+  };
+
+  const resetPassword = async (email: string, newPassword: string): Promise<{ message: string }> => {
+    const { data } = await api.post('/auth/reset-password', { email, newPassword });
+    return { message: data.meta?.message || 'Password reset successfully.' };
   };
 
   const logout = async () => {
     try {
       await api.post('/auth/logout');
+      if (supabaseClient) {
+        await supabaseClient.auth.signOut();
+      }
     } catch {
       // Ignore
     } finally {
@@ -106,6 +145,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setActiveWorkspace(null);
       setWorkspaces([]);
     }
+  };
+
+  const deleteAccount = async (confirmation: string) => {
+    await api.post('/auth/delete-account', { confirmation });
+    await logout();
   };
 
   return (
@@ -119,7 +163,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         login,
         demoLogin,
         register,
+        resendVerification,
+        requestPasswordReset,
+        resetPassword,
         logout,
+        deleteAccount,
         refreshWorkspaces,
       }}
     >

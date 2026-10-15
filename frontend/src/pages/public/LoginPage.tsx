@@ -16,17 +16,27 @@ export const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isUnverified, setIsUnverified] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setIsUnverified(false);
     setLoading(true);
 
     try {
       await login(email, password);
       navigate('/app');
     } catch (err: any) {
-      setError(err.response?.data?.error?.message || 'Login failed. Please check your credentials.');
+      const msg = err.response?.data?.error?.message || 'Login failed. Please check your credentials.';
+      setError(msg);
+      if (
+        msg.toLowerCase().includes('confirm') ||
+        msg.toLowerCase().includes('verif') ||
+        err.response?.data?.error?.code === 'EMAIL_NOT_VERIFIED'
+      ) {
+        setIsUnverified(true);
+      }
     } finally {
       setLoading(false);
     }
@@ -81,8 +91,19 @@ export const LoginPage: React.FC = () => {
             </div>
 
             {error && (
-              <div className="p-3 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs">
-                {error}
+              <div className="p-3.5 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs space-y-2">
+                <p>{error}</p>
+                {isUnverified && (
+                  <div className="pt-1">
+                    <Link
+                      to={`/verify-email?email=${encodeURIComponent(email)}`}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 text-xs font-semibold transition-colors"
+                    >
+                      <Mail className="w-3.5 h-3.5" />
+                      Verify or Resend Confirmation Link
+                    </Link>
+                  </div>
+                )}
               </div>
             )}
 

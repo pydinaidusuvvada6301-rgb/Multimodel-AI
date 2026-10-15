@@ -13,6 +13,7 @@ import workspacesRoutes from './routes/workspaces.routes.js';
 import documentsRoutes from './routes/documents.routes.js';
 import searchRoutes from './routes/search.routes.js';
 import aiRoutes from './routes/ai.routes.js';
+import assistantRoutes from './routes/assistant.routes.js';
 import conversationsRoutes from './routes/conversations.routes.js';
 import artifactsRoutes from './routes/artifacts.routes.js';
 import healthRoutes from './routes/health.routes.js';
@@ -75,6 +76,7 @@ export function createApp(): Express {
   apiV1.use('/jobs', jobsRoutes);
   apiV1.use('/search', searchRoutes);
   apiV1.use('/ai', aiRoutes);
+  apiV1.use('/assistant', assistantRoutes);
   // Alias /chat directly to ai routes
   apiV1.use('/chat', (req, res, next) => {
     req.url = '/chat';
@@ -88,6 +90,8 @@ export function createApp(): Express {
   if (env.API_BASE_URL !== '/api') {
     app.use('/api', apiV1);
   }
+  // Direct compatibility mount for /api/assistant/chat
+  app.use('/api/assistant', assistantRoutes);
 
   // 5. 404 Handler
   app.use((req: Request, res: Response) => {
