@@ -57,24 +57,29 @@ export const WorkspacesPage: React.FC = () => {
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-border-default">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[rgba(79,140,255,0.15)]">
         <div>
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600">
-              <Layers className="w-5 h-5" />
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#4F8CFF] to-[#42E8F5] flex items-center justify-center text-white shadow-lg shadow-[#4F8CFF]/20">
+              <Layers className="w-6 h-6" />
             </div>
             <div>
-              <h1 className="text-xl sm:text-2xl font-semibold text-text-primary tracking-tight">
+              <h1 className="text-xl sm:text-2xl font-bold font-display text-[#F4F7FF] tracking-tight">
                 Knowledge Workspaces
               </h1>
-              <p className="text-xs sm:text-sm text-text-secondary mt-0.5">
+              <p className="text-xs sm:text-sm text-[#9AA8C7] mt-0.5">
                 Isolate and organize multimodal knowledge collections for projects, research, or teams.
               </p>
             </div>
           </div>
         </div>
 
-        <Button size="sm" onClick={() => setIsModalOpen(true)} icon={<Plus className="w-4 h-4" />}>
+        <Button
+          size="sm"
+          onClick={() => setIsModalOpen(true)}
+          icon={<Plus className="w-4 h-4" />}
+          className="bg-gradient-to-r from-[#4F8CFF] to-[#42E8F5] text-[#070B17] font-semibold"
+        >
           New Workspace
         </Button>
       </div>
@@ -83,51 +88,52 @@ export const WorkspacesPage: React.FC = () => {
         {workspaces.map((ws) => {
           const isActive = activeWorkspace?.id === ws.id;
           return (
-            <Card
+            <div
               key={ws.id}
-              hover
               onClick={() => {
                 setActiveWorkspace(ws);
                 navigate(`/app/workspaces/${ws.id}`);
               }}
-              className={`space-y-3.5 relative transition-all ${
-                isActive ? 'border-brand-300 ring-2 ring-brand-500/10' : ''
+              className={`glass-card p-5 rounded-2xl border transition-all cursor-pointer relative shadow-lg ${
+                isActive
+                  ? 'border-[#42E8F5] bg-[#0D1428] ring-2 ring-[#42E8F5]/20 shadow-xl shadow-[#4F8CFF]/10'
+                  : 'border-[rgba(79,140,255,0.18)] bg-[#0D1428]/80 hover:bg-[#0D1428] hover:border-[#42E8F5]/40'
               }`}
             >
               {isActive && (
-                <span className="absolute top-4 right-4 text-[11px] bg-brand-50 text-brand-700 border border-brand-200 px-2 py-0.5 rounded-full font-semibold flex items-center gap-1">
+                <span className="absolute top-4 right-4 text-[11px] bg-[#4F8CFF]/20 text-[#42E8F5] border border-[#4F8CFF]/30 px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1">
                   <Check className="w-3 h-3" />
                   Active
                 </span>
               )}
 
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono uppercase bg-surface-secondary px-2 py-0.5 rounded text-text-secondary border border-border-default font-semibold">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-[10px] font-mono uppercase bg-[#070B17] px-2.5 py-0.5 rounded-md text-[#42E8F5] border border-[rgba(79,140,255,0.2)] font-semibold">
                   {ws.category}
                 </span>
               </div>
 
-              <h3 className="text-base font-semibold text-text-primary truncate pr-16">{ws.name}</h3>
+              <h3 className="text-base font-semibold font-display text-[#F4F7FF] truncate pr-16">{ws.name}</h3>
 
-              <p className="text-xs text-text-secondary line-clamp-2 min-h-[32px] leading-relaxed">
+              <p className="text-xs text-[#9AA8C7] line-clamp-2 min-h-[32px] leading-relaxed mt-1">
                 {ws.description || 'No description provided.'}
               </p>
 
-              <div className="pt-3 border-t border-border-default flex items-center justify-between text-xs text-text-secondary">
+              <div className="pt-3 mt-3 border-t border-[rgba(79,140,255,0.15)] flex items-center justify-between text-xs text-[#9AA8C7]">
                 <span>{ws.documentCount || 0} Documents</span>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={(e) => handleDelete(ws.id, e)}
-                    className="p-1 hover:text-rose-600 text-text-muted hover:bg-rose-50 rounded transition-colors"
+                    className="p-1.5 hover:text-red-400 text-[#9AA8C7] hover:bg-red-500/15 rounded-lg transition-colors"
                     title="Delete workspace"
                     aria-label="Delete workspace"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
-                  <ArrowRight className="w-4 h-4 text-brand-600" />
+                  <ArrowRight className="w-4 h-4 text-[#4F8CFF] group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </div>
-            </Card>
+            </div>
           );
         })}
       </div>

@@ -10,7 +10,7 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(5000),
   API_BASE_URL: z.string().default('/api/v1'),
   FRONTEND_URL: z.string().default('http://localhost:5173'),
-  CORS_ORIGINS: z.string().default('http://localhost:5173'),
+  CORS_ORIGINS: z.string().default('http://localhost:5173,http://localhost:5174,http://127.0.0.1:5173,http://127.0.0.1:5174,https://multimodel-ai-mu.vercel.app'),
 
   // Supabase Configuration
   SUPABASE_URL: z.string().optional().default(''),

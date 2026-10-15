@@ -108,17 +108,17 @@ export const ReportsPage: React.FC = () => {
   return (
     <div className="h-[calc(100vh-6.5rem)] flex flex-col gap-4 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-border-default shrink-0">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[rgba(79,140,255,0.15)] shrink-0">
         <div>
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600">
-              <FileText className="w-5 h-5" />
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#4F8CFF] to-[#42E8F5] flex items-center justify-center text-white shadow-lg shadow-[#4F8CFF]/20">
+              <FileText className="w-6 h-6" />
             </div>
             <div>
-              <h1 className="text-xl sm:text-2xl font-semibold text-text-primary tracking-tight">
+              <h1 className="text-xl sm:text-2xl font-bold font-display text-[#F4F7FF] tracking-tight">
                 Generated Intelligence Reports
               </h1>
-              <p className="text-xs sm:text-sm text-text-secondary mt-0.5">
+              <p className="text-xs sm:text-sm text-[#9AA8C7] mt-0.5">
                 Synthesized study guides, executive summaries, meeting minutes, flashcards, and action items.
               </p>
             </div>
@@ -129,6 +129,7 @@ export const ReportsPage: React.FC = () => {
           size="sm"
           onClick={() => setIsGenerateModalOpen(true)}
           icon={<Plus className="w-4 h-4" />}
+          className="bg-gradient-to-r from-[#4F8CFF] to-[#42E8F5] text-[#070B17] font-semibold"
         >
           Generate Report
         </Button>
@@ -136,27 +137,27 @@ export const ReportsPage: React.FC = () => {
 
       <div className="flex-1 flex gap-4 min-h-0">
         {/* Left: Artifacts List */}
-        <div className="w-72 bg-surface-primary rounded-xl border border-border-default p-3 shrink-0 flex flex-col shadow-xs">
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-text-muted px-2 mb-2">
+        <div className="w-72 glass-card rounded-2xl border border-[rgba(79,140,255,0.2)] bg-[#0D1428]/80 backdrop-blur-md p-3 shrink-0 flex flex-col shadow-xl">
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-[#42E8F5] px-2 mb-2">
             Saved Reports ({artifacts.length})
           </p>
 
-          <div className="flex-1 overflow-y-auto space-y-2 pr-1">
+          <div className="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
             {artifacts.length === 0 ? (
-              <p className="text-xs text-text-muted py-8 text-center">No reports generated yet.</p>
+              <p className="text-xs text-[#9AA8C7] py-8 text-center">No reports generated yet.</p>
             ) : (
               artifacts.map((art) => (
                 <div
                   key={art.id}
                   onClick={() => setSelectedArtifact(art)}
-                  className={`p-3 rounded-lg border text-xs cursor-pointer transition-all ${
+                  className={`p-3 rounded-xl border text-xs cursor-pointer transition-all ${
                     selectedArtifact?.id === art.id
-                      ? 'bg-brand-50/70 border-brand-200 text-text-primary shadow-xs'
-                      : 'bg-surface-secondary/40 border-border-default text-text-secondary hover:bg-surface-secondary'
+                      ? 'bg-[#4F8CFF]/15 border-[#4F8CFF]/40 text-[#F4F7FF] shadow-lg shadow-[#4F8CFF]/10'
+                      : 'bg-[#070B17]/60 border-[rgba(79,140,255,0.15)] text-[#9AA8C7] hover:bg-[#070B17]/90 hover:text-[#F4F7FF]'
                   }`}
                 >
                   <div className="flex items-center justify-between gap-1 mb-1">
-                    <span className="text-[10px] font-mono uppercase text-brand-600 font-semibold truncate">
+                    <span className="text-[10px] font-mono uppercase text-[#42E8F5] font-semibold truncate">
                       {art.artifact_type.replace('_', ' ')}
                     </span>
                     <button
@@ -164,14 +165,14 @@ export const ReportsPage: React.FC = () => {
                         e.stopPropagation();
                         handleDelete(art.id);
                       }}
-                      className="text-text-muted hover:text-rose-600 p-0.5 rounded transition-colors"
+                      className="text-[#9AA8C7] hover:text-red-400 p-0.5 rounded transition-colors"
                       title="Delete report"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
-                  <h4 className="font-semibold text-text-primary truncate">{art.title}</h4>
-                  <p className="text-[11px] text-text-muted mt-1">{formatDate(art.created_at)}</p>
+                  <h4 className="font-semibold text-[#F4F7FF] truncate">{art.title}</h4>
+                  <p className="text-[11px] text-[#9AA8C7]/70 mt-1">{formatDate(art.created_at)}</p>
                 </div>
               ))
             )}
@@ -179,30 +180,40 @@ export const ReportsPage: React.FC = () => {
         </div>
 
         {/* Right: Markdown Viewer & Export */}
-        <div className="flex-1 bg-surface-primary rounded-xl border border-border-default flex flex-col min-w-0 overflow-hidden shadow-xs">
+        <div className="flex-1 glass-card rounded-2xl border border-[rgba(79,140,255,0.2)] bg-[#0D1428]/80 backdrop-blur-md flex flex-col min-w-0 overflow-hidden shadow-xl">
           {selectedArtifact ? (
             <>
               {/* Header */}
-              <div className="p-4 border-b border-border-default bg-surface-secondary/30 flex items-center justify-between gap-3 shrink-0">
+              <div className="p-4 border-b border-[rgba(79,140,255,0.15)] bg-[#070B17]/60 flex items-center justify-between gap-3 shrink-0">
                 <div className="min-w-0">
-                  <h3 className="text-base font-semibold text-text-primary truncate">
+                  <h3 className="text-base font-semibold font-display text-[#F4F7FF] truncate">
                     {selectedArtifact.title}
                   </h3>
-                  <span className="text-[11px] font-mono text-brand-600 uppercase font-medium">
+                  <span className="text-[11px] font-mono text-[#42E8F5] uppercase font-medium">
                     {selectedArtifact.artifact_type.replace('_', ' ')}
                   </span>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <Button size="sm" variant="outline" onClick={handleCopy}>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={handleCopy}
+                    className="border-[rgba(79,140,255,0.25)] text-[#F4F7FF] hover:bg-[#4F8CFF]/15"
+                  >
                     {copied ? (
-                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
                     ) : (
                       <Copy className="w-3.5 h-3.5" />
                     )}
                     <span className="hidden sm:inline">Copy</span>
                   </Button>
-                  <Button size="sm" variant="outline" onClick={() => handleExport('markdown')}>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleExport('markdown')}
+                    className="border-[rgba(79,140,255,0.25)] text-[#F4F7FF] hover:bg-[#4F8CFF]/15"
+                  >
                     <Download className="w-3.5 h-3.5" />
                     <span>Export MD</span>
                   </Button>
@@ -210,15 +221,15 @@ export const ReportsPage: React.FC = () => {
               </div>
 
               {/* Markdown Content */}
-              <div className="flex-1 overflow-y-auto p-6 sm:p-8 prose prose-neutral max-w-none text-text-primary text-sm leading-relaxed prose-headings:font-semibold prose-headings:text-text-primary prose-h1:text-xl prose-h2:text-lg prose-h3:text-base prose-pre:bg-surface-secondary prose-pre:border prose-pre:border-border-default prose-table:border prose-table:border-border-default">
+              <div className="flex-1 overflow-y-auto p-6 sm:p-8 max-w-none text-[#F4F7FF] text-sm leading-relaxed prose prose-invert prose-headings:font-display prose-headings:text-[#F4F7FF] prose-p:text-[#F4F7FF]/90 prose-strong:text-[#F4F7FF] prose-li:text-[#F4F7FF]/90 prose-pre:bg-[#070B17] prose-pre:border prose-pre:border-[rgba(79,140,255,0.2)] prose-code:text-[#42E8F5] prose-table:border prose-table:border-[rgba(79,140,255,0.2)] custom-scrollbar">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {selectedArtifact.content_markdown}
                 </ReactMarkdown>
               </div>
             </>
           ) : (
-            <div className="h-full flex flex-col items-center justify-center p-8 text-center text-text-muted text-xs">
-              <FileText className="w-12 h-12 mb-3 text-border-default" />
+            <div className="h-full flex flex-col items-center justify-center p-8 text-center text-[#9AA8C7] text-xs">
+              <FileText className="w-14 h-14 mb-3 text-[rgba(79,140,255,0.2)]" />
               <p>Select a report to view or generate a new one from your workspace files.</p>
             </div>
           )}

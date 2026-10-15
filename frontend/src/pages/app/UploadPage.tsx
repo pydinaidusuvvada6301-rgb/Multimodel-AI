@@ -11,15 +11,15 @@ export const UploadPage: React.FC = () => {
     <div className="space-y-6 max-w-5xl mx-auto">
       {/* Header */}
       <div>
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600">
-            <UploadCloud className="w-5 h-5" />
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#4F8CFF] to-[#42E8F5] flex items-center justify-center text-white shadow-lg shadow-[#4F8CFF]/20">
+            <UploadCloud className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-semibold text-text-primary tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold font-display text-[#F4F7FF] tracking-tight">
               Multimodal Ingestion Center
             </h1>
-            <p className="text-xs sm:text-sm text-text-secondary mt-0.5">
+            <p className="text-xs sm:text-sm text-[#9AA8C7] mt-0.5">
               Upload documents, images, audio recordings, or videos for parsing, vector indexing, and AI synthesis.
             </p>
           </div>
@@ -27,12 +27,12 @@ export const UploadPage: React.FC = () => {
       </div>
 
       {/* Target Workspace Selector */}
-      <Card className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="glass-card p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-[rgba(79,140,255,0.2)] bg-[#0D1428]/80 backdrop-blur-md">
         <div>
-          <span className="text-xs font-semibold text-text-primary uppercase tracking-wider">
+          <span className="text-xs font-semibold text-[#42E8F5] uppercase tracking-wider">
             Target Workspace
           </span>
-          <p className="text-xs text-text-secondary mt-0.5">
+          <p className="text-xs text-[#9AA8C7] mt-0.5">
             All uploaded files will be securely indexed into this collection
           </p>
         </div>
@@ -43,7 +43,7 @@ export const UploadPage: React.FC = () => {
             const found = workspaces.find((w) => w.id === e.target.value);
             if (found) setActiveWorkspace(found);
           }}
-          className="bg-surface-secondary border border-border-default rounded-lg px-3 py-2 text-xs sm:text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 font-medium transition-colors"
+          className="bg-[#070B17] border border-[rgba(79,140,255,0.25)] rounded-xl px-3.5 py-2 text-xs sm:text-sm text-[#F4F7FF] focus:outline-none focus:ring-2 focus:ring-[#4F8CFF]/30 focus:border-[#4F8CFF] font-medium transition-colors"
         >
           {workspaces.map((ws) => (
             <option key={ws.id} value={ws.id}>
@@ -51,48 +51,48 @@ export const UploadPage: React.FC = () => {
             </option>
           ))}
         </select>
-      </Card>
+      </div>
 
       {/* Upload Dropzone */}
       {activeWorkspace ? (
         <FileDropzone workspaceId={activeWorkspace.id} />
       ) : (
-        <Card className="p-8 text-center text-text-muted text-xs">
+        <div className="glass-card p-8 text-center text-[#9AA8C7] text-xs rounded-xl border border-[rgba(79,140,255,0.2)] bg-[#0D1428]/80">
           Please select or create a workspace first.
-        </Card>
+        </div>
       )}
 
       {/* Ingestion Pipeline Explanation Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-        <Card className="p-4 space-y-2.5 text-xs">
-          <div className="flex items-center gap-2 text-brand-600 font-semibold">
+        <div className="glass-card p-4 space-y-2.5 text-xs rounded-xl border border-[rgba(79,140,255,0.18)] bg-[#0D1428]/80 backdrop-blur-md">
+          <div className="flex items-center gap-2 text-[#42E8F5] font-semibold">
             <CheckCircle2 className="w-4 h-4 shrink-0" />
-            <span className="text-text-primary">1. Parsing & Extraction</span>
+            <span className="text-[#F4F7FF]">1. Parsing & Extraction</span>
           </div>
-          <p className="text-text-secondary leading-relaxed">
+          <p className="text-[#9AA8C7] leading-relaxed">
             Extracts clean text from PDFs and DOCX, metadata from images, and transcripts from audio and video recordings.
           </p>
-        </Card>
+        </div>
 
-        <Card className="p-4 space-y-2.5 text-xs">
-          <div className="flex items-center gap-2 text-brand-600 font-semibold">
+        <div className="glass-card p-4 space-y-2.5 text-xs rounded-xl border border-[rgba(79,140,255,0.18)] bg-[#0D1428]/80 backdrop-blur-md">
+          <div className="flex items-center gap-2 text-[#4F8CFF] font-semibold">
             <Cpu className="w-4 h-4 shrink-0" />
-            <span className="text-text-primary">2. Chunking & Embeddings</span>
+            <span className="text-[#F4F7FF]">2. Chunking & Embeddings</span>
           </div>
-          <p className="text-text-secondary leading-relaxed">
+          <p className="text-[#9AA8C7] leading-relaxed">
             Splits content into bounded chunks with overlap, generating 768-dim embeddings via Google Gemini text-embedding-004.
           </p>
-        </Card>
+        </div>
 
-        <Card className="p-4 space-y-2.5 text-xs">
-          <div className="flex items-center gap-2 text-emerald-600 font-semibold">
+        <div className="glass-card p-4 space-y-2.5 text-xs rounded-xl border border-[rgba(79,140,255,0.18)] bg-[#0D1428]/80 backdrop-blur-md">
+          <div className="flex items-center gap-2 text-emerald-400 font-semibold">
             <ShieldCheck className="w-4 h-4 shrink-0" />
-            <span className="text-text-primary">3. Grounded Retrieval</span>
+            <span className="text-[#F4F7FF]">3. Grounded Retrieval</span>
           </div>
-          <p className="text-text-secondary leading-relaxed">
+          <p className="text-[#9AA8C7] leading-relaxed">
             Ensures that every fact and quotation cited during cross-modal reasoning is anchored to user-authorized source evidence.
           </p>
-        </Card>
+        </div>
       </div>
     </div>
   );

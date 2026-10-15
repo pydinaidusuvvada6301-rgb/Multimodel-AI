@@ -75,24 +75,27 @@ export const AuthCallbackPage: React.FC = () => {
   }, [navigate, location]);
 
   return (
-    <div className="min-h-screen bg-[#F7F9FC] flex items-center justify-center p-4 text-[#202938]">
-      <div className="w-full max-w-md">
-        <Card className="p-8 text-center space-y-4 bg-white border border-[#E5EAF1] rounded-xl shadow-xs">
+    <div className="min-h-screen bg-background text-[#F4F7FF] flex items-center justify-center p-4 font-sans relative overflow-x-hidden">
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#4F8CFF]/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="w-full max-w-md relative z-10">
+        <div className="glass-card p-8 text-center space-y-4 rounded-2xl border border-[rgba(79,140,255,0.2)] bg-[#0D1428]/80 backdrop-blur-xl shadow-2xl">
           {status === 'verifying' && (
-            <div className="space-y-3 py-4">
-              <Loader2 className="w-9 h-9 text-[#356AE6] animate-spin mx-auto" />
-              <h2 className="text-base font-bold text-[#202938]">Verifying Security Credentials</h2>
-              <p className="text-xs text-[#667085]">
+            <div className="space-y-4 py-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#4F8CFF] to-[#42E8F5] flex items-center justify-center mx-auto text-white shadow-lg shadow-[#4F8CFF]/25">
+                <Loader2 className="w-6 h-6 animate-spin text-white" />
+              </div>
+              <h2 className="text-lg font-bold font-display text-[#F4F7FF]">Verifying Security Credentials</h2>
+              <p className="text-xs text-[#9AA8C7]">
                 Please wait while OmniMind AI authenticates your session...
               </p>
             </div>
           )}
 
           {status === 'success' && (
-            <div className="space-y-3 py-4">
-              <CheckCircle2 className="w-10 h-10 text-[#12B76A] mx-auto" />
-              <h2 className="text-base font-bold text-[#202938]">Account Verified!</h2>
-              <p className="text-xs text-[#667085]">
+            <div className="space-y-4 py-4">
+              <CheckCircle2 className="w-12 h-12 text-[#12B76A] mx-auto animate-bounce" />
+              <h2 className="text-lg font-bold font-display text-[#F4F7FF]">Account Verified!</h2>
+              <p className="text-xs text-[#9AA8C7]">
                 Your session is verified. Redirecting you to your multimodal workspace...
               </p>
             </div>
@@ -100,22 +103,31 @@ export const AuthCallbackPage: React.FC = () => {
 
           {status === 'error' && (
             <div className="space-y-4 py-2">
-              <AlertCircle className="w-10 h-10 text-[#F04438] mx-auto" />
-              <h2 className="text-base font-bold text-[#202938]">Verification Failed</h2>
-              <p className="text-xs text-[#B42318] bg-[#FEF3F2] border border-[#FECDCA] p-3 rounded-md leading-relaxed">
+              <AlertCircle className="w-12 h-12 text-[#F04438] mx-auto" />
+              <h2 className="text-lg font-bold font-display text-[#F4F7FF]">Verification Failed</h2>
+              <p className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 p-3 rounded-lg leading-relaxed">
                 {errorMessage || 'This verification link is invalid, has expired, or has already been used.'}
               </p>
               <div className="pt-2 flex flex-col gap-2">
-                <Button size="md" onClick={() => navigate('/login')}>
+                <Button
+                  size="md"
+                  className="bg-gradient-to-r from-[#4F8CFF] to-[#42E8F5] text-[#070B17] font-semibold"
+                  onClick={() => navigate('/login')}
+                >
                   Proceed to Login
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => navigate('/verify-email')}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-[rgba(79,140,255,0.3)] text-[#F4F7FF] hover:bg-[#4F8CFF]/15"
+                  onClick={() => navigate('/verify-email')}
+                >
                   Resend Verification Email
                 </Button>
               </div>
             </div>
           )}
-        </Card>
+        </div>
       </div>
     </div>
   );

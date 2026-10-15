@@ -212,6 +212,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         email: 'demo@omnimind.ai',
         displayName: 'Dr. Alex Vance (Reviewer)',
       };
+      setAccessToken('reviewer-session-token');
       setUser(fallbackUser);
     }
   };

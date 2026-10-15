@@ -72,32 +72,33 @@ export const ResetPasswordPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F9FC] flex flex-col text-[#202938]">
+    <div className="min-h-screen bg-background text-[#F4F7FF] flex flex-col font-sans relative overflow-x-hidden">
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#4F8CFF]/10 rounded-full blur-[120px] pointer-events-none" />
       <PublicNavbar />
 
-      <div className="flex-1 flex items-center justify-center p-4 sm:p-6">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 relative z-10">
         <div className="w-full max-w-md space-y-5">
           <div className="text-center space-y-2">
-            <div className="w-9 h-9 rounded-md bg-[#356AE6] flex items-center justify-center mx-auto text-white shadow-xs">
-              <Lock className="w-4 h-4" />
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#4F8CFF] to-[#42E8F5] flex items-center justify-center mx-auto text-white shadow-lg shadow-[#4F8CFF]/25">
+              <Lock className="w-6 h-6" />
             </div>
-            <h2 className="text-2xl font-bold text-[#202938]">Set New Password</h2>
-            <p className="text-xs text-[#667085]">
+            <h2 className="text-2xl font-bold font-display text-[#F4F7FF]">Set New Password</h2>
+            <p className="text-xs text-[#9AA8C7]">
               Create a strong password to protect your multimodal knowledge workspace
             </p>
           </div>
 
-          <Card className="p-6 sm:p-8 space-y-5 bg-white border border-[#E5EAF1] rounded-xl shadow-xs">
+          <div className="glass-card p-6 sm:p-8 space-y-5 rounded-2xl border border-[rgba(79,140,255,0.2)] bg-[#0D1428]/80 backdrop-blur-xl shadow-2xl">
             {success ? (
               <div className="text-center space-y-4 py-3">
-                <CheckCircle2 className="w-10 h-10 text-[#12B76A] mx-auto" />
-                <h3 className="text-sm font-semibold text-[#202938]">Password Updated Successfully</h3>
-                <p className="text-xs text-[#667085]">
+                <CheckCircle2 className="w-12 h-12 text-[#12B76A] mx-auto animate-bounce" />
+                <h3 className="text-base font-semibold text-[#F4F7FF]">Password Updated Successfully</h3>
+                <p className="text-xs text-[#9AA8C7]">
                   Your new credentials are now active. You can safely sign in with your updated password.
                 </p>
                 <Button
                   size="md"
-                  className="w-full mt-2"
+                  className="w-full mt-2 bg-gradient-to-r from-[#4F8CFF] to-[#42E8F5] text-[#070B17] font-semibold"
                   onClick={() => navigate('/login')}
                 >
                   Proceed to Sign In
@@ -106,7 +107,7 @@ export const ResetPasswordPage: React.FC = () => {
             ) : (
               <>
                 {error && (
-                  <div className="p-3 rounded-lg bg-[#FEF3F2] border border-[#FECDCA] text-[#B42318] text-xs flex items-center gap-2">
+                  <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-xs flex items-center gap-2">
                     <AlertCircle className="w-4 h-4 shrink-0" />
                     <span>{error}</span>
                   </div>
@@ -125,7 +126,7 @@ export const ResetPasswordPage: React.FC = () => {
                   )}
 
                   <div>
-                    <label className="text-xs font-medium text-[#202938] mb-1.5 block">
+                    <label className="text-xs font-medium text-[#F4F7FF] mb-1.5 block">
                       New Password
                     </label>
                     <Input
@@ -138,7 +139,7 @@ export const ResetPasswordPage: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="text-[#667085] hover:text-[#202938]"
+                          className="text-[#9AA8C7] hover:text-[#F4F7FF] transition-colors"
                         >
                           {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
@@ -157,17 +158,22 @@ export const ResetPasswordPage: React.FC = () => {
                     required
                   />
 
-                  <Button type="submit" size="md" className="w-full" loading={loading}>
+                  <Button
+                    type="submit"
+                    size="md"
+                    className="w-full bg-gradient-to-r from-[#4F8CFF] to-[#42E8F5] text-[#070B17] font-semibold shadow-lg shadow-[#4F8CFF]/20"
+                    loading={loading}
+                  >
                     Update Password
                   </Button>
                 </form>
               </>
             )}
-          </Card>
+          </div>
 
-          <p className="text-center text-xs text-[#667085]">
+          <p className="text-center text-xs text-[#9AA8C7]">
             Remembered your password?{' '}
-            <Link to="/login" className="text-[#356AE6] hover:text-[#2856C5] font-medium">
+            <Link to="/login" className="text-[#4F8CFF] hover:text-[#42E8F5] font-medium transition-colors">
               Sign In
             </Link>
           </p>

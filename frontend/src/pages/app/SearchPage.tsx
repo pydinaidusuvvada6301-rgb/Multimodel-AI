@@ -46,15 +46,15 @@ export const SearchPage: React.FC = () => {
     <div className="space-y-6 max-w-5xl mx-auto">
       {/* Header */}
       <div>
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600">
-            <Search className="w-5 h-5" />
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#4F8CFF] to-[#42E8F5] flex items-center justify-center text-white shadow-lg shadow-[#4F8CFF]/20">
+            <Search className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-semibold text-text-primary tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold font-display text-[#F4F7FF] tracking-tight">
               Hybrid Knowledge Search
             </h1>
-            <p className="text-xs sm:text-sm text-text-secondary mt-0.5">
+            <p className="text-xs sm:text-sm text-[#9AA8C7] mt-0.5">
               Perform vector semantic similarity searches combined with keyword ranking across your workspace files.
             </p>
           </div>
@@ -62,31 +62,36 @@ export const SearchPage: React.FC = () => {
       </div>
 
       {/* Search Input Box */}
-      <Card className="p-4 sm:p-5 space-y-3.5">
+      <div className="glass-card p-4 sm:p-5 space-y-3.5 rounded-2xl border border-[rgba(79,140,255,0.2)] bg-[#0D1428]/80 backdrop-blur-md">
         <form onSubmit={handleSearch} className="flex gap-2.5">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-text-muted absolute left-3.5 top-3.5 pointer-events-none" />
+            <Search className="w-4 h-4 text-[#9AA8C7] absolute left-3.5 top-3.5 pointer-events-none" />
             <input
               type="text"
               placeholder="Search across PDFs, diagrams, recordings, and structured files..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full bg-surface-secondary border border-border-default rounded-lg pl-10 pr-4 py-2.5 text-xs sm:text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-colors"
+              className="w-full bg-[#070B17] border border-[rgba(79,140,255,0.25)] rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-[#F4F7FF] placeholder:text-[#9AA8C7]/60 focus:outline-none focus:ring-2 focus:ring-[#4F8CFF]/30 focus:border-[#4F8CFF] transition-colors"
               autoFocus
             />
           </div>
-          <Button type="submit" size="md" loading={loading}>
+          <Button
+            type="submit"
+            size="md"
+            loading={loading}
+            className="bg-gradient-to-r from-[#4F8CFF] to-[#42E8F5] text-[#070B17] font-semibold"
+          >
             Search
           </Button>
         </form>
 
         <div className="flex flex-wrap items-center justify-between gap-3 text-xs pt-1">
           <div className="flex items-center gap-2">
-            <span className="text-text-secondary font-medium">Scope:</span>
+            <span className="text-[#9AA8C7] font-medium">Scope:</span>
             <select
               value={selectedWorkspace}
               onChange={(e) => setSelectedWorkspace(e.target.value)}
-              className="bg-surface-secondary border border-border-default rounded-lg px-2.5 py-1 text-xs text-text-primary focus:outline-none focus:ring-1 focus:ring-brand-500 font-medium"
+              className="bg-[#070B17] border border-[rgba(79,140,255,0.25)] rounded-xl px-3 py-1.5 text-xs text-[#F4F7FF] focus:outline-none focus:ring-1 focus:ring-[#4F8CFF] font-medium"
             >
               <option value="all">All Workspaces</option>
               {workspaces.map((ws) => (
@@ -98,15 +103,15 @@ export const SearchPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-text-secondary font-medium">Search Engine:</span>
-            <div className="flex rounded-lg bg-surface-secondary border border-border-default p-0.5">
+            <span className="text-[#9AA8C7] font-medium">Search Engine:</span>
+            <div className="flex rounded-xl bg-[#070B17] border border-[rgba(79,140,255,0.25)] p-0.5">
               <button
                 type="button"
                 onClick={() => setSearchMode('hybrid')}
-                className={`px-2.5 py-1 rounded text-[11px] font-medium transition-colors ${
+                className={`px-3 py-1 rounded-lg text-[11px] font-medium transition-colors ${
                   searchMode === 'hybrid'
-                    ? 'bg-brand-600 text-white font-semibold'
-                    : 'text-text-secondary hover:text-text-primary'
+                    ? 'bg-[#4F8CFF] text-[#070B17] font-bold'
+                    : 'text-[#9AA8C7] hover:text-[#F4F7FF]'
                 }`}
               >
                 Hybrid (Vector + Full-Text)
@@ -114,10 +119,10 @@ export const SearchPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setSearchMode('semantic')}
-                className={`px-2.5 py-1 rounded text-[11px] font-medium transition-colors ${
+                className={`px-3 py-1 rounded-lg text-[11px] font-medium transition-colors ${
                   searchMode === 'semantic'
-                    ? 'bg-brand-600 text-white font-semibold'
-                    : 'text-text-secondary hover:text-text-primary'
+                    ? 'bg-[#4F8CFF] text-[#070B17] font-bold'
+                    : 'text-[#9AA8C7] hover:text-[#F4F7FF]'
                 }`}
               >
                 Semantic Vector
@@ -125,61 +130,60 @@ export const SearchPage: React.FC = () => {
             </div>
           </div>
         </div>
-      </Card>
+      </div>
 
       {/* Results List */}
       <div className="space-y-3">
         {hasSearched && (
-          <p className="text-xs text-text-secondary font-medium">
-            Found <strong className="text-text-primary">{results.length}</strong> relevant chunk(s) for "{query}"
+          <p className="text-xs text-[#9AA8C7] font-medium">
+            Found <strong className="text-[#42E8F5]">{results.length}</strong> relevant chunk(s) for "{query}"
           </p>
         )}
 
         {hasSearched && results.length === 0 && !loading && (
-          <Card className="p-8 text-center text-xs text-text-secondary space-y-2">
-            <p className="font-semibold text-text-primary">No matching evidence found.</p>
-            <p className="text-[11px] text-text-muted">
+          <div className="glass-card p-8 text-center text-xs text-[#9AA8C7] space-y-2 rounded-2xl border border-[rgba(79,140,255,0.2)] bg-[#0D1428]/80">
+            <p className="font-semibold text-[#F4F7FF]">No matching evidence found.</p>
+            <p className="text-[11px] text-[#9AA8C7]/70">
               Try adjusting your query keywords or upload additional documents to this workspace.
             </p>
-          </Card>
+          </div>
         )}
 
         {results.map((res, idx) => (
-          <Card
+          <div
             key={res.id || idx}
-            hover
             onClick={() => navigate(`/app/documents/${res.document_id}`)}
-            className="p-4 space-y-2.5 cursor-pointer"
+            className="glass-card p-4 space-y-2.5 cursor-pointer rounded-xl bg-[#0D1428]/70 hover:bg-[#0D1428] border border-[rgba(79,140,255,0.18)] hover:border-[#42E8F5]/40 transition-all shadow-md group"
           >
             <div className="flex items-center justify-between text-xs">
               <div className="flex items-center gap-2">
                 <span
-                  className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded border font-semibold ${getModalityColor(
+                  className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-lg border font-semibold ${getModalityColor(
                     res.modality
                   )}`}
                 >
                   {res.modality}
                 </span>
-                <span className="font-semibold text-text-primary">{res.document_name}</span>
+                <span className="font-semibold text-[#F4F7FF] group-hover:text-[#42E8F5] transition-colors">{res.document_name}</span>
                 {res.page_number && (
-                  <span className="text-text-muted text-[11px]">Page {res.page_number}</span>
+                  <span className="text-[#9AA8C7] text-[11px]">Page {res.page_number}</span>
                 )}
                 {res.start_seconds !== undefined && res.start_seconds !== null && (
-                  <span className="text-text-muted text-[11px]">{res.start_seconds}s</span>
+                  <span className="text-[#9AA8C7] text-[11px]">{res.start_seconds}s</span>
                 )}
               </div>
 
               {res.relevance_score && (
-                <span className="text-[11px] text-brand-600 font-mono font-medium bg-brand-50 px-2 py-0.5 rounded border border-brand-100">
+                <span className="text-[11px] text-[#42E8F5] font-mono font-medium bg-[#4F8CFF]/15 px-2.5 py-0.5 rounded-full border border-[#4F8CFF]/30">
                   Relevance: {Math.round(res.relevance_score * 100)}%
                 </span>
               )}
             </div>
 
-            <p className="text-xs text-text-secondary leading-relaxed font-sans bg-surface-secondary/60 p-3 rounded-lg border border-border-default">
+            <p className="text-xs text-[#F4F7FF]/90 leading-relaxed font-sans bg-[#070B17]/70 p-3 rounded-lg border border-[rgba(79,140,255,0.15)]">
               {res.content}
             </p>
-          </Card>
+          </div>
         ))}
       </div>
     </div>

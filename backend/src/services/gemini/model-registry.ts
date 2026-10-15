@@ -15,6 +15,29 @@ export interface ModelCapability {
 }
 
 export const SUPPORTED_MODELS: Record<string, ModelCapability> = {
+  'gemini-3.8-flash': {
+    id: 'gemini-3.8-flash',
+    name: 'Gemini 3.8 Flash',
+    intendedTasks: [
+      'general_chat',
+      'document_qa',
+      'summarization',
+      'image_analysis',
+      'audio_transcription',
+      'video_analysis',
+      'cross_modal_analysis',
+      'coding_help',
+      'deep_reasoning',
+    ],
+    inputModalities: ['text', 'document', 'image', 'audio', 'video', 'structured'],
+    outputModalities: ['text', 'json', 'structured'],
+    contextWindowTokens: 1048576,
+    maxOutputTokens: 8192,
+    isAvailable: true,
+    isDefault: true,
+    fallbackModelId: 'gemini-2.5-flash',
+    provider: 'google',
+  },
   'gemini-2.5-flash': {
     id: 'gemini-2.5-flash',
     name: 'Gemini 2.5 Flash',
@@ -33,7 +56,7 @@ export const SUPPORTED_MODELS: Record<string, ModelCapability> = {
     contextWindowTokens: 1048576,
     maxOutputTokens: 8192,
     isAvailable: true,
-    isDefault: true,
+    isDefault: false,
     fallbackModelId: 'gemini-1.5-flash',
     provider: 'google',
   },
@@ -95,7 +118,7 @@ export class ModelRegistry {
    * Get all server-approved models and their capability specifications
    */
   public static getAllModels(): ModelCapability[] {
-    const defaultModel = env.GEMINI_MODEL || 'gemini-2.5-flash';
+    const defaultModel = env.GEMINI_MODEL || 'gemini-3.8-flash';
     return Object.values(SUPPORTED_MODELS).map((m) => ({
       ...m,
       isDefault: m.id === defaultModel,
@@ -109,8 +132,8 @@ export class ModelRegistry {
     if (modelId && SUPPORTED_MODELS[modelId]) {
       return SUPPORTED_MODELS[modelId];
     }
-    const defaultId = env.GEMINI_MODEL || 'gemini-2.5-flash';
-    return SUPPORTED_MODELS[defaultId] || SUPPORTED_MODELS['gemini-2.5-flash'];
+    const defaultId = env.GEMINI_MODEL || 'gemini-3.8-flash';
+    return SUPPORTED_MODELS[defaultId] || SUPPORTED_MODELS['gemini-3.8-flash'] || Object.values(SUPPORTED_MODELS)[0];
   }
 
   /**
