@@ -138,7 +138,18 @@ export class GeminiService {
   }
 
   public static isConfigured(): boolean {
-    return Boolean(env.GEMINI_API_KEY && env.GEMINI_API_KEY !== 'replace_with_your_gemini_api_key');
+    const key = env.GEMINI_API_KEY?.trim() || '';
+    if (!key) return false;
+    if (
+      key === 'replace_with_your_gemini_api_key' ||
+      key === 'your_gemini_api_key_here' ||
+      key.startsWith('your_') ||
+      key.startsWith('replace_') ||
+      key === 'placeholder'
+    ) {
+      return false;
+    }
+    return true;
   }
 
   /**
