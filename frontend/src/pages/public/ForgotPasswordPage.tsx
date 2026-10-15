@@ -5,18 +5,20 @@ import { PublicNavbar } from '../../components/layout/PublicNavbar.js';
 import { Button } from '../../components/ui/Button.js';
 import { Input } from '../../components/ui/Input.js';
 import { Card } from '../../components/ui/Card.js';
-import { api } from '../../lib/api.js';
+import { useAuth } from '../../context/AuthContext.js';
 
 export const ForgotPasswordPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { requestPasswordReset } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email.trim()) return;
     setLoading(true);
     try {
-      await api.post('/auth/forgot-password', { email });
+      await requestPasswordReset(email);
       setSubmitted(true);
     } catch {
       setSubmitted(true);

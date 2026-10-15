@@ -1,9 +1,17 @@
 import axios from 'axios';
 
-// Get base URL from environment or default to local API proxy, normalizing trailing slashes and version path
 function resolveApiBaseUrl(): string {
-  const envUrl = (import.meta.env.VITE_API_BASE_URL || '/api/v1').trim();
-  const cleanUrl = envUrl.endsWith('/') ? envUrl.slice(0, -1) : envUrl;
+  const envUrl = (import.meta.env.VITE_API_BASE_URL || '').trim();
+
+  // In production browser loaded over HTTPS, never attempt plain HTTP to localhost (avoids mixed content & ERR_CONNECTION_REFUSED)
+  if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
+    if (!envUrl || envUrl.includes('localhost') || envUrl.includes('127.0.0.1')) {
+      return '/api/v1';
+    }
+  }
+
+  const base = envUrl || 'http://localhost:5000/api/v1';
+  const cleanUrl = base.endsWith('/') ? base.slice(0, -1) : base;
   return cleanUrl.endsWith('/api/v1') ? cleanUrl : `${cleanUrl}/api/v1`;
 }
 

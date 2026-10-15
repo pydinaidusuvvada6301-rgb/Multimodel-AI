@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Sparkles, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import { supabaseClient } from '../../lib/supabase.js';
+import { setAccessToken } from '../../lib/api.js';
 import { Card } from '../../components/ui/Card.js';
 import { Button } from '../../components/ui/Button.js';
 
@@ -48,11 +49,15 @@ export const AuthCallbackPage: React.FC = () => {
           return;
         }
 
+        if (data.session) {
+          setAccessToken(data.session.access_token);
+        }
+
         if (data.session || type === 'signup' || type === 'email_change') {
           setStatus('success');
           setTimeout(() => {
             navigate('/app');
-          }, 1500);
+          }, 1200);
           return;
         }
 
