@@ -14,13 +14,13 @@ export const Badge: React.FC<BadgeProps> = ({
   ...props
 }) => {
   const variants = {
-    default: 'bg-[#070B17] text-[#9AA8C7] border-[#4F8CFF]/20',
-    blue: 'bg-[#4F8CFF]/15 text-[#4F8CFF] border-[#4F8CFF]/30',
-    cyan: 'bg-[#42E8F5]/15 text-[#42E8F5] border-[#42E8F5]/30',
-    indigo: 'bg-[#6366F1]/15 text-[#818CF8] border-[#6366F1]/30',
-    emerald: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-    amber: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
-    rose: 'bg-rose-500/15 text-rose-400 border-rose-500/30',
+    default: 'bg-slate-100 text-slate-700 border-slate-200',
+    blue: 'bg-blue-50 text-blue-700 border-blue-200',
+    cyan: 'bg-cyan-50 text-cyan-800 border-cyan-200',
+    indigo: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+    emerald: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    amber: 'bg-amber-50 text-amber-700 border-amber-200',
+    rose: 'bg-rose-50 text-rose-700 border-rose-200',
   };
 
   const sizes = {
@@ -42,3 +42,4 @@ export const Badge: React.FC<BadgeProps> = ({
     </span>
   );
 };
+

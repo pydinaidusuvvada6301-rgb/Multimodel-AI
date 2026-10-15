@@ -11,7 +11,6 @@ import { api } from '../../lib/api.js';
 import { DocumentItem } from '../../types/index.js';
 import { useAuth } from '../../context/AuthContext.js';
 import { useToast } from '../../context/ToastContext.js';
-import { Card } from '../../components/ui/Card.js';
 import { Button } from '../../components/ui/Button.js';
 import { formatBytes, formatDate, getModalityColor, getStatusBadge } from '../../lib/utils.js';
 
@@ -80,19 +79,19 @@ export const LibraryPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
+    <div className="space-y-6 max-w-7xl mx-auto text-slate-900">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[rgba(79,140,255,0.15)]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
         <div>
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#4F8CFF] to-[#42E8F5] flex items-center justify-center text-white shadow-lg shadow-[#4F8CFF]/20">
+            <div className="w-11 h-11 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-sm">
               <FolderOpen className="w-6 h-6" />
             </div>
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold font-display text-[#F4F7FF] tracking-tight">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
                 Knowledge Library
               </h1>
-              <p className="text-xs sm:text-sm text-[#9AA8C7] mt-0.5">
+              <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
                 Browse, filter, inspect, and manage all your multimodal source files.
               </p>
             </div>
@@ -103,22 +102,21 @@ export const LibraryPage: React.FC = () => {
           size="sm"
           onClick={() => navigate('/app/upload')}
           icon={<Plus className="w-4 h-4" />}
-          className="bg-gradient-to-r from-[#4F8CFF] to-[#42E8F5] text-[#070B17] font-semibold"
         >
           Upload New File
         </Button>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="glass-card p-3 sm:p-4 flex flex-col md:flex-row items-center justify-between gap-3 rounded-2xl border border-[rgba(79,140,255,0.2)] bg-[#0D1428]/80 backdrop-blur-md">
+      <div className="p-3 sm:p-4 flex flex-col md:flex-row items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white shadow-sm">
         <form onSubmit={handleSearchSubmit} className="relative w-full md:w-80">
-          <Search className="w-4 h-4 text-[#9AA8C7] absolute left-3 top-3 pointer-events-none" />
+          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3 pointer-events-none" />
           <input
             type="text"
             placeholder="Search by filename or content..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-[#070B17] border border-[rgba(79,140,255,0.25)] rounded-xl pl-9 pr-3 py-2 text-xs sm:text-sm text-[#F4F7FF] placeholder:text-[#9AA8C7]/60 focus:outline-none focus:ring-2 focus:ring-[#4F8CFF]/30 focus:border-[#4F8CFF] transition-colors"
+            className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-9 pr-3 py-2 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-colors"
           />
         </form>
 
@@ -127,7 +125,7 @@ export const LibraryPage: React.FC = () => {
           <select
             value={selectedWorkspace}
             onChange={(e) => setSelectedWorkspace(e.target.value)}
-            className="bg-[#070B17] border border-[rgba(79,140,255,0.25)] rounded-xl px-3 py-2 text-xs sm:text-sm text-[#F4F7FF] focus:outline-none focus:ring-1 focus:ring-[#4F8CFF] font-medium"
+            className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 font-medium cursor-pointer"
           >
             <option value="all">All Workspaces</option>
             {workspaces.map((ws) => (
@@ -141,7 +139,7 @@ export const LibraryPage: React.FC = () => {
           <select
             value={selectedModality}
             onChange={(e) => setSelectedModality(e.target.value)}
-            className="bg-[#070B17] border border-[rgba(79,140,255,0.25)] rounded-xl px-3 py-2 text-xs sm:text-sm text-[#F4F7FF] focus:outline-none focus:ring-1 focus:ring-[#4F8CFF] font-medium capitalize"
+            className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 font-medium capitalize cursor-pointer"
           >
             <option value="all">All Modalities</option>
             {['document', 'image', 'audio', 'video', 'structured', 'text'].map((mod) => (
@@ -155,12 +153,12 @@ export const LibraryPage: React.FC = () => {
 
       {/* Document Table / Cards */}
       {documents.length === 0 ? (
-        <div className="glass-card p-12 text-center space-y-3 rounded-2xl border border-[rgba(79,140,255,0.2)] bg-[#0D1428]/80 backdrop-blur-md">
-          <div className="w-14 h-14 rounded-2xl bg-[#070B17] border border-[rgba(79,140,255,0.2)] flex items-center justify-center text-[#9AA8C7] mx-auto shadow-inner">
+        <div className="p-12 text-center space-y-3 rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div className="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 mx-auto">
             <FolderOpen className="w-7 h-7" />
           </div>
-          <h3 className="text-sm font-semibold font-display text-[#F4F7FF]">No documents found</h3>
-          <p className="text-xs text-[#9AA8C7] max-w-sm mx-auto">
+          <h3 className="text-sm font-bold text-slate-900">No documents found</h3>
+          <p className="text-xs text-slate-500 max-w-sm mx-auto">
             Try adjusting your search criteria or upload files to your workspace.
           </p>
         </div>
@@ -172,7 +170,7 @@ export const LibraryPage: React.FC = () => {
               <div
                 key={doc.id}
                 onClick={() => navigate(`/app/documents/${doc.id}`)}
-                className="glass-card p-4 rounded-xl bg-[#0D1428]/70 hover:bg-[#0D1428] border border-[rgba(79,140,255,0.18)] hover:border-[#42E8F5]/40 transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 group shadow-md"
+                className="p-4 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 hover:border-slate-300 transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 group shadow-xs"
               >
                 <div className="flex items-center gap-3.5 truncate">
                   <div
@@ -184,10 +182,10 @@ export const LibraryPage: React.FC = () => {
                   </div>
 
                   <div className="min-w-0">
-                    <p className="text-xs sm:text-sm font-semibold text-[#F4F7FF] group-hover:text-[#42E8F5] transition-colors truncate">
+                    <p className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors truncate">
                       {doc.original_filename}
                     </p>
-                    <p className="text-[11px] sm:text-xs text-[#9AA8C7] mt-0.5 truncate">
+                    <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5 truncate">
                       {formatBytes(doc.file_size_bytes)} • {formatDate(doc.created_at)}
                       {doc.category && ` • Category: ${doc.category}`}
                     </p>
@@ -195,14 +193,14 @@ export const LibraryPage: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-2.5 shrink-0 self-end sm:self-center">
-                  <span className={`text-[11px] px-2.5 py-0.5 rounded-full border font-medium ${badge.className}`}>
+                  <span className={`text-[11px] px-2.5 py-0.5 rounded-full border font-semibold ${badge.className}`}>
                     {badge.label}
                   </span>
 
                   {doc.status === 'failed' && (
                     <button
                       onClick={(e) => handleRetry(doc.id, e)}
-                      className="p-1.5 text-[#4F8CFF] hover:text-[#42E8F5] hover:bg-[#4F8CFF]/15 rounded-lg transition-colors"
+                      className="p-1.5 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
                       title="Retry processing"
                       aria-label="Retry processing"
                     >
@@ -212,7 +210,7 @@ export const LibraryPage: React.FC = () => {
 
                   <button
                     onClick={(e) => handleDelete(doc.id, e)}
-                    className="p-1.5 text-[#9AA8C7] hover:text-red-400 hover:bg-red-500/15 rounded-lg transition-colors"
+                    className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                     title="Delete document"
                     aria-label="Delete document"
                   >
@@ -227,4 +225,5 @@ export const LibraryPage: React.FC = () => {
     </div>
   );
 };
+
 

@@ -13,9 +13,9 @@ export const AppLayout: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#070B17] flex flex-col items-center justify-center gap-3 text-[#F4F7FF]">
-        <Loader2 className="w-7 h-7 text-[#42E8F5] animate-spin" />
-        <p className="text-xs text-[#9AA8C7] font-medium tracking-wide">Connecting to OmniMind AI...</p>
+      <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center gap-3 text-slate-900">
+        <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+        <p className="text-xs text-slate-500 font-medium tracking-wide">Connecting to OmniMind AI...</p>
       </div>
     );
   }
@@ -25,7 +25,7 @@ export const AppLayout: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#070B17] text-[#F4F7FF]">
+    <div className="flex h-screen w-screen overflow-hidden bg-[#F8FAFC] text-slate-900">
       {/* Global Command Palette (Ctrl+K / Cmd+K) */}
       <CommandPalette />
 
@@ -38,7 +38,7 @@ export const AppLayout: React.FC = () => {
       {isMobileSidebarOpen && (
         <div className="fixed inset-0 z-50 lg:hidden flex animate-in fade-in duration-150">
           <div
-            className="fixed inset-0 bg-[#070B17]/70 backdrop-blur-sm"
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs"
             onClick={() => setIsMobileSidebarOpen(false)}
             aria-hidden="true"
           />
@@ -49,9 +49,9 @@ export const AppLayout: React.FC = () => {
       )}
 
       {/* Main Content Area */}
-      <div className="flex flex-col flex-1 min-w-0 h-full overflow-hidden bg-[#070B17]">
+      <div className="flex flex-col flex-1 min-w-0 h-full overflow-hidden bg-[#F8FAFC]">
         <TopNavigation onOpenMobileSidebar={() => setIsMobileSidebarOpen(true)} />
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[#070B17] text-[#F4F7FF]">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[#F8FAFC] text-slate-900">
           <Outlet />
         </main>
       </div>
@@ -61,4 +61,5 @@ export const AppLayout: React.FC = () => {
     </div>
   );
 };
+
 

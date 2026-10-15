@@ -48,7 +48,7 @@ export const Modal: React.FC<ModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-150">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-[#070B17]/75 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -59,24 +59,24 @@ export const Modal: React.FC<ModalProps> = ({
         aria-modal="true"
         aria-labelledby={title ? 'modal-title' : undefined}
         className={cn(
-          'relative w-full rounded-2xl bg-[#0D1428]/95 backdrop-blur-xl border border-[#4F8CFF]/25 p-6 shadow-2xl',
-          'z-10 overflow-hidden transform transition-all text-[#F4F7FF]',
+          'relative w-full rounded-2xl bg-white border border-slate-200 p-6 shadow-2xl',
+          'z-10 overflow-hidden transform transition-all text-slate-900',
           maxWidths[maxWidth]
         )}
       >
         <div className="flex items-start justify-between mb-4">
           <div>
             {title && (
-              <h3 id="modal-title" className="text-base font-semibold text-[#F4F7FF]">
+              <h3 id="modal-title" className="text-base font-bold text-slate-900">
                 {title}
               </h3>
             )}
-            {description && <p className="text-xs text-[#9AA8C7] mt-1">{description}</p>}
+            {description && <p className="text-xs text-slate-500 mt-1">{description}</p>}
           </div>
           <button
             onClick={onClose}
             aria-label="Close modal"
-            className="p-1.5 text-[#9AA8C7] hover:text-[#F4F7FF] rounded-lg hover:bg-[#4F8CFF]/15 transition-colors focus:outline-none focus:ring-2 focus:ring-[#42E8F5]"
+            className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -87,3 +87,4 @@ export const Modal: React.FC<ModalProps> = ({
     </div>
   );
 };
+
