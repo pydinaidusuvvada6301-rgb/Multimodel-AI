@@ -14,10 +14,14 @@
     "build:backend": "npm --prefix backend run build",
     "build:frontend": "npm --prefix frontend run build",
     "build": "npm run build:backend && npm run build:frontend",
+    "start": "npm --prefix backend start",
     "test": "npm --prefix backend test",
     "test:backend": "npm --prefix backend test",
     "db:test": "npm --prefix backend run db:test",
     "lint:frontend": "npm --prefix frontend run lint"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   },
   "author": "OmniMind AI Engineering Team",
   "license": "MIT"

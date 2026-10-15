@@ -4,6 +4,17 @@ import { GeminiService } from '../services/gemini/gemini.service.js';
 
 const router = Router();
 
+// GET / (Root health & service info for Render default health check)
+router.get('/', (req: Request, res: Response) => {
+  res.json({
+    status: 'healthy',
+    service: 'omnimind-api',
+    message: 'OmniMind AI Backend API is online and operational.',
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+  });
+});
+
 // GET /health
 router.get('/health', (req: Request, res: Response) => {
   res.json({
