@@ -1,20 +1,22 @@
 {
-  "name": "omnimind-ai-monorepo",
+  "name": "omnimind-ai",
   "version": "1.0.0",
   "private": true,
   "description": "OmniMind AI — One Workspace. Every Modality. Connected Intelligence.",
   "type": "module",
   "workspaces": [
-    "apps/*"
+    "frontend",
+    "backend"
   ],
   "scripts": {
-    "dev:api": "npm --prefix apps/api run dev",
-    "dev:web": "npm --prefix apps/web run dev",
-    "build:api": "npm --prefix apps/api run build",
-    "build:web": "npm --prefix apps/web run build",
-    "build": "npm run build:api && npm run build:web",
-    "test": "npm --prefix apps/api test",
-    "lint": "npm --prefix apps/web run lint"
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:backend": "npm --prefix backend run build",
+    "build:frontend": "npm --prefix frontend run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "test": "npm --prefix backend test",
+    "test:backend": "npm --prefix backend test",
+    "lint:frontend": "npm --prefix frontend run lint"
   },
   "author": "OmniMind AI Engineering Team",
   "license": "MIT"

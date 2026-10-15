@@ -1,5 +1,5 @@
 {
-  "name": "omnimind-api",
+  "name": "omnimind-backend",
   "version": "1.0.0",
   "description": "OmniMind AI — Backend API & AI Multimodal Orchestration Service",
   "type": "module",

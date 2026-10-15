@@ -26,8 +26,8 @@ This guide outlines the exact steps to deploy OmniMind AI across Supabase, Rende
 1. Log into [Render](https://render.com) and click **New +** -> **Web Service**.
 2. Connect your GitHub repository.
 3. Configure the service settings:
-   - **Name:** `omnimind-api`
-   - **Root Directory:** `apps/api`
+   - **Name:** `omnimind-backend`
+   - **Root Directory:** `backend`
    - **Environment:** `Node`
    - **Build Command:** `npm install && npm run build`
    - **Start Command:** `npm start`
@@ -36,8 +36,8 @@ This guide outlines the exact steps to deploy OmniMind AI across Supabase, Rende
    NODE_ENV=production
    PORT=5000
    API_BASE_URL=/api/v1
-   FRONTEND_URL=https://your-omnimind-web.vercel.app
-   CORS_ORIGINS=https://your-omnimind-web.vercel.app
+   FRONTEND_URL=https://your-omnimind-frontend.vercel.app
+   CORS_ORIGINS=https://your-omnimind-frontend.vercel.app
 
    SUPABASE_URL=https://your-project.supabase.co
    SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
@@ -55,7 +55,7 @@ This guide outlines the exact steps to deploy OmniMind AI across Supabase, Rende
    MAX_FILE_SIZE_MB=25
    ```
 5. Set Health Check path to `/health`.
-6. Click **Create Web Service**. Once deployed, copy your Render backend URL (e.g. `https://omnimind-api.onrender.com`).
+6. Click **Create Web Service**. Once deployed, copy your Render backend URL (e.g. `https://omnimind-backend.onrender.com`).
 
 ---
 
@@ -65,13 +65,13 @@ This guide outlines the exact steps to deploy OmniMind AI across Supabase, Rende
 2. Select your GitHub repository.
 3. In **Configure Project**:
    - **Framework Preset:** `Vite`
-   - **Root Directory:** Edit and select `apps/web`.
+   - **Root Directory:** Edit and select `frontend`.
 4. In **Environment Variables**:
    ```env
-   VITE_API_BASE_URL=https://omnimind-api.onrender.com/api/v1
+   VITE_API_BASE_URL=https://omnimind-backend.onrender.com/api/v1
    ```
 5. Click **Deploy**.
-6. Direct URL routing is handled by `apps/web/vercel.json` rewrites.
+6. Direct URL routing is handled by `frontend/vercel.json` rewrites.
 
 ---
 
@@ -84,10 +84,10 @@ To run the complete monorepo locally:
 npm install
 
 # 2. Run backend API (Port 5000)
-npm run dev:api
+npm run dev:backend
 
 # 3. In another terminal, run frontend web app (Port 5173)
-npm run dev:web
+npm run dev:frontend
 ```
 
 Access the frontend at `http://localhost:5173`.

@@ -24,10 +24,10 @@ jobs:
         run: npm ci
 
       - name: Run Backend Vitest Suite
-        run: npm --prefix apps/api test
+        run: npm --prefix backend test
 
       - name: Compile Backend TypeScript
-        run: npm --prefix apps/api run build
+        run: npm --prefix backend run build
 
       - name: Build Frontend Vite Application
-        run: npm --prefix apps/web run build
+        run: npm --prefix frontend run build
