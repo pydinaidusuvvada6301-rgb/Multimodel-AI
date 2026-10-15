@@ -85,28 +85,28 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-[#F7F9FC] flex flex-col text-[#202938]">
       <PublicNavbar />
 
       <div className="flex-1 flex items-center justify-center p-4 sm:p-6">
         <div className="w-full max-w-md space-y-5">
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center mx-auto shadow-xl shadow-cyan-500/20">
-              <Sparkles className="w-6 h-6 text-slate-950 font-bold" />
+            <div className="w-9 h-9 rounded-md bg-[#356AE6] flex items-center justify-center mx-auto text-white shadow-xs">
+              <Sparkles className="w-4 h-4" />
             </div>
-            <h2 className="text-2xl font-bold text-slate-100">Create an Account</h2>
-            <p className="text-xs text-slate-400">
+            <h2 className="text-2xl font-bold text-[#202938]">Create an Account</h2>
+            <p className="text-xs text-[#667085]">
               Join OmniMind AI to connect knowledge across all your modalities
             </p>
           </div>
 
-          <Card className="p-6 sm:p-8 space-y-5 bg-surface-200/90 border-slate-700/80 shadow-2xl">
+          <Card className="p-6 sm:p-8 space-y-5 bg-white border border-[#E5EAF1] rounded-xl shadow-xs">
             {/* Google OAuth Button */}
             <Button
               type="button"
               variant="outline"
               size="md"
-              className="w-full flex items-center justify-center gap-2.5 border-slate-700 hover:bg-slate-800/80 text-slate-200 transition-colors"
+              className="w-full flex items-center justify-center gap-2.5 border-[#E5EAF1] hover:bg-[#F7F9FC] text-[#202938] transition-colors"
               onClick={handleGoogleSignIn}
               disabled={loading || googleLoading}
               loading={googleLoading}
@@ -134,14 +134,14 @@ export const RegisterPage: React.FC = () => {
 
             {/* Divider */}
             <div className="relative flex items-center justify-center">
-              <div className="border-t border-slate-700/80 w-full" />
-              <span className="bg-surface-200 px-3 text-[11px] text-slate-400 uppercase tracking-wider absolute">
+              <div className="border-t border-[#E5EAF1] w-full" />
+              <span className="bg-white px-3 text-[11px] text-[#98A2B3] uppercase tracking-wider absolute">
                 or register with email
               </span>
             </div>
 
             {error && (
-              <div className="p-3 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs">
+              <div className="p-3 rounded-lg bg-[#FEF3F2] border border-[#FECDCA] text-[#B42318] text-xs">
                 {error}
               </div>
             )}
@@ -178,7 +178,7 @@ export const RegisterPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="text-slate-400 hover:text-slate-200"
+                    className="text-[#667085] hover:text-[#202938]"
                     aria-label="Toggle password visibility"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -188,16 +188,16 @@ export const RegisterPage: React.FC = () => {
               />
 
               {/* Password strength checklist */}
-              <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-[11px] space-y-1">
-                <span className="text-slate-400 font-medium">Password requirements:</span>
-                <div className="grid grid-cols-2 gap-1 text-slate-400">
-                  <span className={hasMinLength ? 'text-emerald-400 flex items-center gap-1' : ''}>
+              <div className="p-2.5 rounded-md bg-[#F7F9FC] border border-[#E5EAF1] text-[11px] space-y-1">
+                <span className="text-[#667085] font-medium">Password requirements:</span>
+                <div className="grid grid-cols-2 gap-1 text-[#667085]">
+                  <span className={hasMinLength ? 'text-[#027A48] font-semibold flex items-center gap-1' : ''}>
                     • 8+ characters
                   </span>
-                  <span className={hasNumber ? 'text-emerald-400 flex items-center gap-1' : ''}>
+                  <span className={hasNumber ? 'text-[#027A48] font-semibold flex items-center gap-1' : ''}>
                     • Numbers
                   </span>
-                  <span className={hasSpecial ? 'text-emerald-400 flex items-center gap-1' : ''}>
+                  <span className={hasSpecial ? 'text-[#027A48] font-semibold flex items-center gap-1' : ''}>
                     • Symbols
                   </span>
                 </div>
@@ -214,7 +214,7 @@ export const RegisterPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="text-slate-400 hover:text-slate-200"
+                    className="text-[#667085] hover:text-[#202938]"
                     aria-label="Toggle confirm password visibility"
                   >
                     {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -229,9 +229,9 @@ export const RegisterPage: React.FC = () => {
                   id="agreeTerms"
                   checked={agreeTerms}
                   onChange={(e) => setAgreeTerms(e.target.checked)}
-                  className="rounded border-slate-700 bg-slate-900 text-cyan-500 focus:ring-cyan-500 cursor-pointer"
+                  className="rounded border-[#D0D7E2] bg-white text-[#356AE6] focus:ring-[#356AE6] cursor-pointer"
                 />
-                <label htmlFor="agreeTerms" className="text-xs text-slate-400 cursor-pointer">
+                <label htmlFor="agreeTerms" className="text-xs text-[#667085] cursor-pointer">
                   I agree to the Terms of Service & Privacy Policy
                 </label>
               </div>
@@ -242,9 +242,9 @@ export const RegisterPage: React.FC = () => {
             </form>
           </Card>
 
-          <p className="text-center text-xs text-slate-400">
+          <p className="text-center text-xs text-[#667085]">
             Already have an account?{' '}
-            <Link to="/login" className="text-cyan-400 hover:text-cyan-300 font-medium">
+            <Link to="/login" className="text-[#356AE6] hover:text-[#2856C5] font-medium">
               Sign In
             </Link>
           </p>

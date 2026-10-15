@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal } from '../ui/Modal.js';
 import { Button } from '../ui/Button.js';
 import { DocumentItem } from '../../types/index.js';
-import { Check, FileText, Image, Mic, Video } from 'lucide-react';
+import { Check, FileText } from 'lucide-react';
 import { cn } from '../../lib/utils.js';
 
 interface SourceSelectorModalProps {
@@ -32,22 +32,23 @@ export const SourceSelectorModal: React.FC<SourceSelectorModalProps> = ({
       description="Choose specific documents, images, audio, or video files to ground the AI's answers."
       maxWidth="lg"
     >
-      <div className="space-y-4 pt-2">
-        <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-800">
-          <span className="text-slate-400">
-            {selectedDocIds.length} of {documents.length} sources selected
+      <div className="space-y-4 pt-1">
+        <div className="flex items-center justify-between text-xs pb-3 border-b border-border-default">
+          <span className="text-text-secondary">
+            <strong className="text-text-primary font-semibold">{selectedDocIds.length}</strong> of{' '}
+            {documents.length} sources selected
           </span>
           <div className="flex gap-2">
             <button
               onClick={onSelectAll}
-              className="text-cyan-400 hover:text-cyan-300 font-medium"
+              className="text-brand-600 hover:text-brand-700 font-medium transition-colors"
             >
               Select All
             </button>
-            <span className="text-slate-600">•</span>
+            <span className="text-border-default">•</span>
             <button
               onClick={onClearAll}
-              className="text-slate-400 hover:text-slate-300 font-medium"
+              className="text-text-muted hover:text-text-primary font-medium transition-colors"
             >
               Clear
             </button>
@@ -55,11 +56,11 @@ export const SourceSelectorModal: React.FC<SourceSelectorModalProps> = ({
         </div>
 
         {documents.length === 0 ? (
-          <p className="text-xs text-slate-400 py-6 text-center">
+          <p className="text-xs text-text-muted py-8 text-center">
             No ready documents in this workspace. Upload files to ground your queries.
           </p>
         ) : (
-          <div className="max-h-64 overflow-y-auto space-y-1.5 pr-1">
+          <div className="max-h-64 overflow-y-auto space-y-2 pr-1">
             {documents.map((doc) => {
               const isSelected = selectedDocIds.includes(doc.id);
               return (
@@ -67,24 +68,29 @@ export const SourceSelectorModal: React.FC<SourceSelectorModalProps> = ({
                   key={doc.id}
                   onClick={() => onToggleDoc(doc.id)}
                   className={cn(
-                    'flex items-center justify-between p-2.5 rounded-lg border text-xs cursor-pointer transition-colors',
+                    'flex items-center justify-between p-3 rounded-lg border text-xs cursor-pointer transition-colors',
                     isSelected
-                      ? 'bg-cyan-500/10 border-cyan-500/40 text-slate-100'
-                      : 'bg-slate-900 border-slate-800/80 text-slate-400 hover:bg-slate-800/50'
+                      ? 'bg-brand-50/70 border-brand-200 text-text-primary'
+                      : 'bg-surface-secondary/50 border-border-default text-text-secondary hover:bg-surface-secondary'
                   )}
                 >
                   <div className="flex items-center gap-2.5 truncate">
                     <div
                       className={cn(
-                        'w-4 h-4 rounded border flex items-center justify-center shrink-0',
-                        isSelected ? 'bg-cyan-500 border-cyan-500 text-slate-950' : 'border-slate-700'
+                        'w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors',
+                        isSelected
+                          ? 'bg-brand-600 border-brand-600 text-white'
+                          : 'border-border-default bg-surface-primary'
                       )}
                     >
                       {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
                     </div>
-                    <span className="font-medium truncate">{doc.original_filename}</span>
+                    <FileText className="w-4 h-4 text-brand-500 shrink-0" />
+                    <span className="font-medium text-text-primary truncate">
+                      {doc.original_filename}
+                    </span>
                   </div>
-                  <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400">
+                  <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-surface-primary border border-border-default text-text-muted">
                     {doc.modality}
                   </span>
                 </div>
@@ -93,7 +99,7 @@ export const SourceSelectorModal: React.FC<SourceSelectorModalProps> = ({
           </div>
         )}
 
-        <div className="flex justify-end pt-3 border-t border-slate-800">
+        <div className="flex justify-end pt-3 border-t border-border-default">
           <Button size="sm" onClick={onClose}>
             Done
           </Button>
@@ -102,3 +108,4 @@ export const SourceSelectorModal: React.FC<SourceSelectorModalProps> = ({
     </Modal>
   );
 };
+

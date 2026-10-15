@@ -9,21 +9,32 @@ export const UploadPage: React.FC = () => {
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
+      {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-100 flex items-center gap-2">
-          <UploadCloud className="w-6 h-6 text-cyan-400" />
-          Multimodal Ingestion Center
-        </h1>
-        <p className="text-xs text-slate-400 mt-1">
-          Upload documents, images, audio recordings, or videos for parsing, vector indexing, and AI synthesis.
-        </p>
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600">
+            <UploadCloud className="w-5 h-5" />
+          </div>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-semibold text-text-primary tracking-tight">
+              Multimodal Ingestion Center
+            </h1>
+            <p className="text-xs sm:text-sm text-text-secondary mt-0.5">
+              Upload documents, images, audio recordings, or videos for parsing, vector indexing, and AI synthesis.
+            </p>
+          </div>
+        </div>
       </div>
 
-      {/* Target Workspace Picker */}
-      <Card className="p-4 bg-surface-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      {/* Target Workspace Selector */}
+      <Card className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <span className="text-xs font-semibold text-slate-200">Target Workspace:</span>
-          <p className="text-[11px] text-slate-400">All uploaded media will be indexed into this collection</p>
+          <span className="text-xs font-semibold text-text-primary uppercase tracking-wider">
+            Target Workspace
+          </span>
+          <p className="text-xs text-text-secondary mt-0.5">
+            All uploaded files will be securely indexed into this collection
+          </p>
         </div>
 
         <select
@@ -32,7 +43,7 @@ export const UploadPage: React.FC = () => {
             const found = workspaces.find((w) => w.id === e.target.value);
             if (found) setActiveWorkspace(found);
           }}
-          className="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-500 font-medium"
+          className="bg-surface-secondary border border-border-default rounded-lg px-3 py-2 text-xs sm:text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 font-medium transition-colors"
         >
           {workspaces.map((ws) => (
             <option key={ws.id} value={ws.id}>
@@ -46,39 +57,39 @@ export const UploadPage: React.FC = () => {
       {activeWorkspace ? (
         <FileDropzone workspaceId={activeWorkspace.id} />
       ) : (
-        <Card className="p-8 text-center text-slate-400 text-xs">
+        <Card className="p-8 text-center text-text-muted text-xs">
           Please select or create a workspace first.
         </Card>
       )}
 
       {/* Ingestion Pipeline Explanation Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
-        <Card className="p-4 space-y-2 text-xs">
-          <div className="flex items-center gap-2 text-cyan-400 font-semibold">
-            <CheckCircle2 className="w-4 h-4" />
-            <span>1. Parsing & Extraction</span>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+        <Card className="p-4 space-y-2.5 text-xs">
+          <div className="flex items-center gap-2 text-brand-600 font-semibold">
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            <span className="text-text-primary">1. Parsing & Extraction</span>
           </div>
-          <p className="text-slate-400 leading-relaxed">
+          <p className="text-text-secondary leading-relaxed">
             Extracts clean text from PDFs and DOCX, metadata from images, and transcripts from audio and video recordings.
           </p>
         </Card>
 
-        <Card className="p-4 space-y-2 text-xs">
-          <div className="flex items-center gap-2 text-indigo-400 font-semibold">
-            <Cpu className="w-4 h-4" />
-            <span>2. Chunking & Embeddings</span>
+        <Card className="p-4 space-y-2.5 text-xs">
+          <div className="flex items-center gap-2 text-brand-600 font-semibold">
+            <Cpu className="w-4 h-4 shrink-0" />
+            <span className="text-text-primary">2. Chunking & Embeddings</span>
           </div>
-          <p className="text-slate-400 leading-relaxed">
+          <p className="text-text-secondary leading-relaxed">
             Splits content into bounded chunks with overlap, generating 768-dim embeddings via Google Gemini text-embedding-004.
           </p>
         </Card>
 
-        <Card className="p-4 space-y-2 text-xs">
-          <div className="flex items-center gap-2 text-emerald-400 font-semibold">
-            <ShieldCheck className="w-4 h-4" />
-            <span>3. Grounded Retrieval</span>
+        <Card className="p-4 space-y-2.5 text-xs">
+          <div className="flex items-center gap-2 text-emerald-600 font-semibold">
+            <ShieldCheck className="w-4 h-4 shrink-0" />
+            <span className="text-text-primary">3. Grounded Retrieval</span>
           </div>
-          <p className="text-slate-400 leading-relaxed">
+          <p className="text-text-secondary leading-relaxed">
             Ensures that every fact and quotation cited during cross-modal reasoning is anchored to user-authorized source evidence.
           </p>
         </Card>
@@ -86,3 +97,4 @@ export const UploadPage: React.FC = () => {
     </div>
   );
 };
+

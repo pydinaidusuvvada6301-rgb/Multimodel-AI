@@ -67,15 +67,15 @@ export const DashboardPage: React.FC = () => {
   const failedDocs = documents.filter((d) => d.status === 'failed').length;
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
+    <div className="space-y-6 max-w-7xl mx-auto text-[#202938]">
       {/* Welcome Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#E5EAF1]">
         <div>
-          <h1 className="text-2xl font-bold text-slate-100 tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-[#202938] tracking-tight">
             Intelligence Overview
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
-            {activeWorkspace ? `Scaped to workspace: ${activeWorkspace.name}` : 'All user workspaces'}
+          <p className="text-xs text-[#667085] mt-0.5">
+            {activeWorkspace ? `Active workspace: ${activeWorkspace.name}` : 'All user workspaces'}
           </p>
         </div>
 
@@ -100,43 +100,43 @@ export const DashboardPage: React.FC = () => {
 
       {/* Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="flex items-center justify-between p-4 bg-surface-200/90">
+        <Card className="flex items-center justify-between p-4 bg-white border border-[#E5EAF1] shadow-xs">
           <div className="space-y-1">
-            <p className="text-xs text-slate-400 font-medium">Total Documents</p>
-            <p className="text-2xl font-extrabold text-slate-100">{totalDocs}</p>
+            <p className="text-xs text-[#667085] font-medium">Total Documents</p>
+            <p className="text-2xl font-bold text-[#202938]">{totalDocs}</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center">
-            <FileText className="w-5 h-5" />
+          <div className="w-9 h-9 rounded-md bg-[#EEF4FF] border border-[#D0D7E2] text-[#356AE6] flex items-center justify-center">
+            <FileText className="w-4 h-4" />
           </div>
         </Card>
 
-        <Card className="flex items-center justify-between p-4 bg-surface-200/90">
+        <Card className="flex items-center justify-between p-4 bg-white border border-[#E5EAF1] shadow-xs">
           <div className="space-y-1">
-            <p className="text-xs text-slate-400 font-medium">Ready & Indexed</p>
-            <p className="text-2xl font-extrabold text-emerald-400">{readyDocs}</p>
+            <p className="text-xs text-[#667085] font-medium">Ready & Indexed</p>
+            <p className="text-2xl font-bold text-[#027A48]">{readyDocs}</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center">
-            <CheckCircle2 className="w-5 h-5" />
+          <div className="w-9 h-9 rounded-md bg-[#ECFDF3] border border-[#A6F4C5] text-[#027A48] flex items-center justify-center">
+            <CheckCircle2 className="w-4 h-4" />
           </div>
         </Card>
 
-        <Card className="flex items-center justify-between p-4 bg-surface-200/90">
+        <Card className="flex items-center justify-between p-4 bg-white border border-[#E5EAF1] shadow-xs">
           <div className="space-y-1">
-            <p className="text-xs text-slate-400 font-medium">Processing Queue</p>
-            <p className="text-2xl font-extrabold text-cyan-400">{processingDocs}</p>
+            <p className="text-xs text-[#667085] font-medium">Processing Queue</p>
+            <p className="text-2xl font-bold text-[#2856C5]">{processingDocs}</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center">
-            <Clock className="w-5 h-5" />
+          <div className="w-9 h-9 rounded-md bg-[#EEF4FF] border border-[#D0D7E2] text-[#2856C5] flex items-center justify-center">
+            <Clock className="w-4 h-4" />
           </div>
         </Card>
 
-        <Card className="flex items-center justify-between p-4 bg-surface-200/90">
+        <Card className="flex items-center justify-between p-4 bg-white border border-[#E5EAF1] shadow-xs">
           <div className="space-y-1">
-            <p className="text-xs text-slate-400 font-medium">Generated Artifacts</p>
-            <p className="text-2xl font-extrabold text-indigo-400">{artifacts.length}</p>
+            <p className="text-xs text-[#667085] font-medium">Generated Artifacts</p>
+            <p className="text-2xl font-bold text-[#202938]">{artifacts.length}</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 flex items-center justify-center">
-            <FileCheck className="w-5 h-5" />
+          <div className="w-9 h-9 rounded-md bg-[#F8F9FC] border border-[#E5EAF1] text-[#667085] flex items-center justify-center">
+            <FileCheck className="w-4 h-4" />
           </div>
         </Card>
       </div>
@@ -146,23 +146,23 @@ export const DashboardPage: React.FC = () => {
         {/* Left Column: Recent Ingested Files (2 cols) */}
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-slate-200 flex items-center gap-2">
-              <FileText className="w-4 h-4 text-cyan-400" />
+            <h3 className="text-sm font-semibold text-[#202938] flex items-center gap-2">
+              <FileText className="w-4 h-4 text-[#356AE6]" />
               Recent Workspace Ingestions
             </h3>
             <Link
               to="/app/library"
-              className="text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1 font-medium"
+              className="text-xs text-[#356AE6] hover:text-[#2856C5] flex items-center gap-1 font-medium"
             >
               View all <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
           {documents.length === 0 ? (
-            <Card className="p-8 text-center space-y-3">
-              <UploadCloud className="w-10 h-10 text-slate-500 mx-auto" />
-              <h4 className="text-sm font-medium text-slate-200">No documents in this workspace yet</h4>
-              <p className="text-xs text-slate-400 max-w-sm mx-auto">
+            <Card className="p-8 text-center space-y-3 bg-white border border-[#E5EAF1] rounded-lg">
+              <UploadCloud className="w-9 h-9 text-[#98A2B3] mx-auto" />
+              <h4 className="text-sm font-medium text-[#202938]">No documents in this workspace yet</h4>
+              <p className="text-xs text-[#667085] max-w-sm mx-auto">
                 Upload your PDFs, image screenshots, audio interviews, or videos to start building connected intelligence.
               </p>
               <Button size="sm" onClick={() => navigate('/app/upload')}>
@@ -177,28 +177,28 @@ export const DashboardPage: React.FC = () => {
                   <div
                     key={doc.id}
                     onClick={() => navigate(`/app/documents/${doc.id}`)}
-                    className="p-3 rounded-xl bg-slate-900/80 hover:bg-slate-800/60 border border-slate-800 hover:border-slate-700 transition-all cursor-pointer flex items-center justify-between gap-3 group"
+                    className="p-3 rounded-lg bg-white hover:bg-[#F7F9FC] border border-[#E5EAF1] hover:border-[#D0D7E2] shadow-xs transition-all cursor-pointer flex items-center justify-between gap-3 group"
                   >
                     <div className="flex items-center gap-3 truncate">
                       <div
-                        className={`w-9 h-9 rounded-lg border flex items-center justify-center font-mono text-[10px] uppercase font-bold shrink-0 ${getModalityColor(
+                        className={`w-8 h-8 rounded-md border flex items-center justify-center font-mono text-[10px] uppercase font-bold shrink-0 ${getModalityColor(
                           doc.modality
                         )}`}
                       >
                         {doc.modality.slice(0, 3)}
                       </div>
                       <div className="min-w-0">
-                        <p className="text-xs font-semibold text-slate-200 group-hover:text-cyan-400 transition-colors truncate">
+                        <p className="text-xs font-semibold text-[#202938] group-hover:text-[#356AE6] transition-colors truncate">
                           {doc.original_filename}
                         </p>
-                        <p className="text-[11px] text-slate-400 truncate">
+                        <p className="text-[11px] text-[#667085] truncate">
                           {formatBytes(doc.file_size_bytes)} • {formatDate(doc.created_at)}
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full border ${badge.className}`}>
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full border font-medium ${badge.className}`}>
                         {badge.label}
                       </span>
                     </div>
@@ -211,19 +211,21 @@ export const DashboardPage: React.FC = () => {
 
         {/* Right Column: AI Assistant Teaser & Recent Conversations */}
         <div className="space-y-4">
-          <Card className="p-5 bg-gradient-to-br from-cyan-950/40 via-surface-200 to-indigo-950/30 border-cyan-500/30 space-y-3">
+          <Card className="p-5 bg-white border border-[#E5EAF1] rounded-lg shadow-xs space-y-3">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-cyan-400" />
-              <h4 className="text-sm font-bold text-slate-100">Cross-Modal Assistant</h4>
+              <div className="w-6 h-6 rounded bg-[#EEF4FF] flex items-center justify-center text-[#356AE6]">
+                <Sparkles className="w-3.5 h-3.5" />
+              </div>
+              <h4 className="text-sm font-semibold text-[#202938]">Cross-Modal Assistant</h4>
             </div>
-            <p className="text-xs text-slate-300 leading-relaxed">
+            <p className="text-xs text-[#667085] leading-relaxed">
               Ask questions that connect facts across your documents, images, audio transcripts, and video segments.
             </p>
             <Button
               size="sm"
               className="w-full"
               onClick={() => navigate('/app/chat')}
-              icon={<MessageSquareCode className="w-4 h-4" />}
+              icon={<MessageSquareCode className="w-3.5 h-3.5" />}
             >
               Open OmniMind Chat
             </Button>
@@ -232,26 +234,26 @@ export const DashboardPage: React.FC = () => {
           {/* Recent Conversations */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
+              <h4 className="text-xs font-semibold text-[#667085] uppercase tracking-wider">
                 Recent Chats
               </h4>
-              <Link to="/app/chat" className="text-xs text-cyan-400 hover:text-cyan-300">
+              <Link to="/app/chat" className="text-xs text-[#356AE6] hover:text-[#2856C5] font-medium">
                 New
               </Link>
             </div>
 
             {conversations.length === 0 ? (
-              <p className="text-xs text-slate-500 py-3">No conversations yet.</p>
+              <p className="text-xs text-[#98A2B3] py-2">No conversations yet.</p>
             ) : (
               <div className="space-y-1.5">
                 {conversations.slice(0, 4).map((c) => (
                   <div
                     key={c.id}
                     onClick={() => navigate(`/app/chat?c=${c.id}`)}
-                    className="p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-xs text-slate-300 hover:text-slate-100 cursor-pointer truncate border border-slate-800"
+                    className="p-2.5 rounded-md bg-white hover:bg-[#F7F9FC] text-xs text-[#202938] hover:border-[#D0D7E2] cursor-pointer truncate border border-[#E5EAF1] shadow-xs transition-colors"
                   >
                     <p className="font-medium truncate">{c.title}</p>
-                    <p className="text-[10px] text-slate-500 mt-0.5">{formatDate(c.updated_at)}</p>
+                    <p className="text-[10px] text-[#667085] mt-0.5">{formatDate(c.updated_at)}</p>
                   </div>
                 ))}
               </div>

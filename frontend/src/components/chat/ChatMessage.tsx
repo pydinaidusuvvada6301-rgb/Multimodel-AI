@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { ChatMessage as ChatMessageType } from '../../types/index.js';
 import { CitationCard } from './CitationCard.js';
-import { Copy, Check, Sparkles, User, ShieldCheck, AlertCircle } from 'lucide-react';
+import { Copy, Check, Sparkles, User, ShieldCheck } from 'lucide-react';
 import { Badge } from '../ui/Badge.js';
 import { cn } from '../../lib/utils.js';
 
@@ -20,41 +20,41 @@ export const ChatMessage: React.FC<{ message: ChatMessageType }> = ({ message })
   return (
     <div
       className={cn(
-        'flex gap-3.5 p-4 rounded-xl transition-colors',
+        'flex gap-3 sm:gap-4 p-4 sm:p-5 rounded-xl transition-colors',
         isUser
-          ? 'bg-slate-900/40 border border-slate-800/60 ml-8 sm:ml-16'
-          : 'bg-surface-200/90 border border-slate-800 mr-4 sm:mr-12'
+          ? 'bg-brand-50/70 border border-brand-100 ml-6 sm:ml-16'
+          : 'bg-surface-primary border border-border-default shadow-xs mr-4 sm:mr-12'
       )}
     >
       {/* Avatar */}
       <div
         className={cn(
-          'w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold shadow-md',
+          'w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-semibold shadow-xs',
           isUser
-            ? 'bg-slate-800 text-slate-300 border border-slate-700'
-            : 'bg-gradient-to-tr from-cyan-500 to-indigo-600 text-slate-950 shadow-cyan-500/20'
+            ? 'bg-surface-primary text-text-primary border border-border-default'
+            : 'bg-brand-50 text-brand-600 border border-brand-100'
         )}
       >
-        {isUser ? <User className="w-4 h-4" /> : <Sparkles className="w-4 h-4 font-bold" />}
+        {isUser ? <User className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
       </div>
 
       {/* Message Content */}
       <div className="flex-1 min-w-0 space-y-2">
         <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-slate-200">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs font-semibold text-text-primary">
               {isUser ? 'You' : 'OmniMind AI'}
             </span>
             {!isUser && message.confidence && (
               <Badge
-                variant={message.confidence === 'high' ? 'emerald' : message.confidence === 'medium' ? 'cyan' : 'amber'}
+                variant={message.confidence === 'high' ? 'emerald' : message.confidence === 'medium' ? 'blue' : 'amber'}
                 size="sm"
               >
                 {message.confidence.toUpperCase()} CONFIDENCE
               </Badge>
             )}
             {!isUser && message.intent && (
-              <span className="text-[10px] text-slate-400 font-mono uppercase bg-slate-800/80 px-1.5 py-0.5 rounded border border-slate-700/60">
+              <span className="text-[10px] text-text-secondary font-mono uppercase bg-surface-secondary px-1.5 py-0.5 rounded border border-border-default">
                 {message.intent}
               </span>
             )}
@@ -63,27 +63,28 @@ export const ChatMessage: React.FC<{ message: ChatMessageType }> = ({ message })
           {!isUser && (
             <button
               onClick={handleCopy}
-              className="text-slate-400 hover:text-slate-200 p-1 rounded hover:bg-slate-800 transition-colors"
+              className="text-text-muted hover:text-text-primary p-1 rounded hover:bg-surface-secondary transition-colors"
               title="Copy answer"
+              aria-label="Copy answer"
             >
-              {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+              {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
             </button>
           )}
         </div>
 
         {/* Prose Markdown Body */}
-        <div className="text-sm text-slate-200 leading-relaxed prose prose-invert max-w-none prose-p:leading-relaxed prose-pre:bg-slate-950 prose-pre:border prose-pre:border-slate-800">
+        <div className="text-sm text-text-primary leading-relaxed prose prose-neutral max-w-none prose-p:leading-relaxed prose-pre:bg-surface-secondary prose-pre:text-text-primary prose-pre:border prose-pre:border-border-default prose-headings:text-text-primary prose-a:text-brand-600 prose-code:text-brand-700 prose-code:bg-surface-secondary prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.content}</ReactMarkdown>
         </div>
 
         {/* Citations / Supporting Evidence Chips */}
         {message.citations && message.citations.length > 0 && (
-          <div className="pt-2 border-t border-slate-800/80 mt-3 space-y-1.5">
-            <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-400">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+          <div className="pt-3 border-t border-border-default mt-3 space-y-2">
+            <div className="flex items-center gap-1.5 text-xs font-medium text-text-secondary">
+              <ShieldCheck className="w-4 h-4 text-emerald-600" />
               <span>Grounded Evidence Citations ({message.citations.length}):</span>
             </div>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2">
               {message.citations.map((citation, idx) => (
                 <CitationCard key={citation.id || idx} citation={citation} />
               ))}
@@ -94,3 +95,4 @@ export const ChatMessage: React.FC<{ message: ChatMessageType }> = ({ message })
     </div>
   );
 };
+

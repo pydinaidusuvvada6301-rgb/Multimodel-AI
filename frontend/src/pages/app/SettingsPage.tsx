@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, Shield, User, Key, Cpu, Database, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Settings, User, Key, Cpu, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.js';
 import { Card } from '../../components/ui/Card.js';
 import { Button } from '../../components/ui/Button.js';
@@ -7,7 +7,7 @@ import { Input } from '../../components/ui/Input.js';
 import { api } from '../../lib/api.js';
 
 export const SettingsPage: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -70,34 +70,41 @@ export const SettingsPage: React.FC = () => {
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
-      <div className="pb-3 border-b border-slate-800">
-        <h1 className="text-2xl font-bold text-slate-100 flex items-center gap-2">
-          <Settings className="w-6 h-6 text-cyan-400" />
-          Settings & Account Security
-        </h1>
-        <p className="text-xs text-slate-400 mt-1">
-          Manage your profile identity, security credentials, and view system readiness.
-        </p>
+      {/* Header */}
+      <div className="pb-3 border-b border-border-default">
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600">
+            <Settings className="w-5 h-5" />
+          </div>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-semibold text-text-primary tracking-tight">
+              Settings & Account Security
+            </h1>
+            <p className="text-xs sm:text-sm text-text-secondary mt-0.5">
+              Manage your profile identity, security credentials, and view system readiness.
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="space-y-6">
         {/* Profile Card */}
-        <Card className="p-6 space-y-4 bg-surface-200/90 border-slate-800">
-          <div className="flex items-center gap-2 text-sm font-semibold text-slate-200">
-            <User className="w-4 h-4 text-cyan-400" />
+        <Card className="p-5 sm:p-6 space-y-4">
+          <div className="flex items-center gap-2 text-sm font-semibold text-text-primary">
+            <User className="w-4 h-4 text-brand-600" />
             <span>Profile Identity</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             <div>
-              <label className="text-slate-400 text-[11px] font-medium">Display Name</label>
-              <p className="text-slate-100 font-semibold mt-1 p-2 bg-slate-900 rounded-lg border border-slate-800">
-                {user?.displayName}
+              <label className="text-text-secondary text-xs font-medium">Display Name</label>
+              <p className="text-text-primary font-semibold mt-1 p-2.5 bg-surface-secondary rounded-lg border border-border-default">
+                {user?.displayName || 'Authorized User'}
               </p>
             </div>
             <div>
-              <label className="text-slate-400 text-[11px] font-medium">Email Address</label>
-              <p className="text-slate-100 font-semibold mt-1 p-2 bg-slate-900 rounded-lg border border-slate-800">
+              <label className="text-text-secondary text-xs font-medium">Email Address</label>
+              <p className="text-text-primary font-semibold mt-1 p-2.5 bg-surface-secondary rounded-lg border border-border-default">
                 {user?.email}
               </p>
             </div>
@@ -105,18 +112,18 @@ export const SettingsPage: React.FC = () => {
         </Card>
 
         {/* Change Password Card */}
-        <Card className="p-6 space-y-4 bg-surface-200/90 border-slate-800">
-          <div className="flex items-center gap-2 text-sm font-semibold text-slate-200">
-            <Key className="w-4 h-4 text-cyan-400" />
+        <Card className="p-5 sm:p-6 space-y-4">
+          <div className="flex items-center gap-2 text-sm font-semibold text-text-primary">
+            <Key className="w-4 h-4 text-brand-600" />
             <span>Update Password</span>
           </div>
 
           {passwordMsg && (
             <div
-              className={`p-3 rounded-lg text-xs ${
+              className={`p-3 rounded-lg text-xs font-medium ${
                 passwordMsg.type === 'success'
-                  ? 'bg-emerald-500/15 border border-emerald-500/30 text-emerald-300'
-                  : 'bg-rose-500/15 border border-rose-500/30 text-rose-300'
+                  ? 'bg-emerald-50 border border-emerald-200 text-emerald-800'
+                  : 'bg-rose-50 border border-rose-200 text-rose-800'
               }`}
             >
               {passwordMsg.text}
@@ -155,35 +162,35 @@ export const SettingsPage: React.FC = () => {
         </Card>
 
         {/* System & Architecture Status */}
-        <Card className="p-6 space-y-4 bg-surface-200/90 border-slate-800">
-          <div className="flex items-center gap-2 text-sm font-semibold text-slate-200">
-            <Cpu className="w-4 h-4 text-cyan-400" />
+        <Card className="p-5 sm:p-6 space-y-4">
+          <div className="flex items-center gap-2 text-sm font-semibold text-text-primary">
+            <Cpu className="w-4 h-4 text-brand-600" />
             <span>Infrastructure & Multimodal Engine Status</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-            <div className="p-3 rounded-lg bg-slate-900 border border-slate-800">
-              <span className="text-slate-400 text-[10px] uppercase font-semibold">Database Engine</span>
-              <p className="text-slate-200 font-medium mt-1 flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+            <div className="p-3.5 rounded-lg bg-surface-secondary border border-border-default">
+              <span className="text-text-muted text-[10px] uppercase font-semibold tracking-wider">Database Engine</span>
+              <p className="text-text-primary font-medium mt-1 flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                 {systemReadiness?.checks?.database === 'connected'
                   ? 'Supabase PostgreSQL (RLS)'
                   : 'Resilient PostgreSQL'}
               </p>
             </div>
 
-            <div className="p-3 rounded-lg bg-slate-900 border border-slate-800">
-              <span className="text-slate-400 text-[10px] uppercase font-semibold">Gemini AI Model</span>
-              <p className="text-slate-200 font-medium mt-1 flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                gemini-3.8-flash
+            <div className="p-3.5 rounded-lg bg-surface-secondary border border-border-default">
+              <span className="text-text-muted text-[10px] uppercase font-semibold tracking-wider">Gemini AI Model</span>
+              <p className="text-text-primary font-medium mt-1 flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                gemini-2.5-flash
               </p>
             </div>
 
-            <div className="p-3 rounded-lg bg-slate-900 border border-slate-800">
-              <span className="text-slate-400 text-[10px] uppercase font-semibold">Embedding Model</span>
-              <p className="text-slate-200 font-medium mt-1 flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+            <div className="p-3.5 rounded-lg bg-surface-secondary border border-border-default">
+              <span className="text-text-muted text-[10px] uppercase font-semibold tracking-wider">Embedding Model</span>
+              <p className="text-text-primary font-medium mt-1 flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                 text-embedding-004 (768d)
               </p>
             </div>
@@ -191,13 +198,13 @@ export const SettingsPage: React.FC = () => {
         </Card>
 
         {/* Danger Zone: Account Deletion */}
-        <Card className="p-6 space-y-4 bg-surface-200/90 border-rose-900/40">
-          <div className="flex items-center gap-2 text-sm font-semibold text-rose-400">
-            <AlertCircle className="w-4 h-4 text-rose-400" />
+        <Card className="p-5 sm:p-6 space-y-4 border-rose-200 bg-rose-50/20">
+          <div className="flex items-center gap-2 text-sm font-semibold text-rose-700">
+            <AlertCircle className="w-4 h-4 text-rose-600" />
             <span>Danger Zone: Account Deletion</span>
           </div>
 
-          <p className="text-xs text-slate-400 leading-relaxed">
+          <p className="text-xs text-text-secondary leading-relaxed">
             Permanently delete your OmniMind AI account, workspaces, uploaded multimodal sources, and conversation history.
             This action cannot be undone. To prevent accidental deletion, you must explicitly confirm.
           </p>
@@ -235,9 +242,8 @@ const DeleteAccountSection: React.FC = () => {
     return (
       <Button
         type="button"
-        variant="outline"
+        variant="danger"
         size="sm"
-        className="border-rose-800/60 text-rose-400 hover:bg-rose-950/40 hover:text-rose-300"
         onClick={() => setShowConfirm(true)}
       >
         Delete Account & All Data
@@ -246,13 +252,13 @@ const DeleteAccountSection: React.FC = () => {
   }
 
   return (
-    <div className="p-4 rounded-xl bg-rose-950/20 border border-rose-900/50 space-y-3 max-w-lg">
-      <p className="text-xs font-semibold text-rose-300">
-        Please confirm: Type <span className="font-mono bg-rose-950 px-1.5 py-0.5 rounded text-rose-200">DELETE</span> below:
+    <div className="p-4 rounded-xl bg-surface-primary border border-rose-200 space-y-3 max-w-lg shadow-xs">
+      <p className="text-xs font-semibold text-rose-700">
+        Please confirm: Type <span className="font-mono bg-rose-100 text-rose-900 px-1.5 py-0.5 rounded">DELETE</span> below:
       </p>
 
       {error && (
-        <div className="p-2 rounded bg-rose-900/40 border border-rose-800 text-rose-200 text-xs">
+        <div className="p-2.5 rounded bg-rose-50 border border-rose-200 text-rose-800 text-xs">
           {error}
         </div>
       )}
@@ -268,7 +274,7 @@ const DeleteAccountSection: React.FC = () => {
         <Button
           type="button"
           size="sm"
-          className="bg-rose-600 hover:bg-rose-500 text-white"
+          variant="danger"
           disabled={confirmText !== 'DELETE' || loading}
           loading={loading}
           onClick={handleDelete}
@@ -291,3 +297,4 @@ const DeleteAccountSection: React.FC = () => {
     </div>
   );
 };
+

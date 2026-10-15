@@ -81,35 +81,32 @@ export const LandingPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background flex flex-col selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div className="min-h-screen bg-white flex flex-col text-[#202938]">
       <PublicNavbar />
 
       {/* Hero Section */}
-      <section className="relative pt-24 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center overflow-hidden">
-        {/* Ambient Glow Orbs */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-cyan-500/15 via-indigo-600/15 to-transparent blur-[120px] pointer-events-none rounded-full" />
-
-        <div className="relative z-10 max-w-4xl mx-auto space-y-6">
-          <Badge variant="cyan" size="md" className="mx-auto">
-            <Sparkles className="w-3.5 h-3.5 mr-1.5" />
-            Connected Multimodal Intelligence Platform
+      <section className="relative pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
+        <div className="max-w-3xl mx-auto space-y-6">
+          <Badge variant="blue" size="md" className="mx-auto">
+            <Sparkles className="w-3.5 h-3.5 mr-1.5 text-[#356AE6]" />
+            Multimodal Intelligence Workspace
           </Badge>
 
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-100 tracking-tight leading-[1.1]">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#202938] tracking-tight leading-[1.15]">
             One Workspace. <br className="hidden sm:inline" />
             Every Modality.{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-400 to-violet-400">
+            <span className="text-[#356AE6]">
               Connected Intelligence.
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            Stop switching between disconnected tools. Upload PDFs, diagrams, audio lectures, and video
-            demonstrations into unified workspaces. Ask complex questions and receive evidence-grounded
-            answers with verified citations.
+          <p className="text-base sm:text-lg text-[#667085] max-w-2xl mx-auto leading-relaxed">
+            Ingest PDFs, architectural diagrams, audio recordings, and video demonstrations into
+            unified workspaces. Ask complex cross-source questions and receive verified,
+            evidence-grounded answers with precise citations.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <Link to="/register">
               <Button size="lg" icon={<ArrowRight className="w-4 h-4" />}>
                 Start Free Workspace
@@ -119,146 +116,213 @@ export const LandingPage: React.FC = () => {
               size="lg"
               variant="outline"
               onClick={handleDemoLaunch}
-              icon={<Sparkles className="w-4 h-4 text-cyan-400" />}
+              icon={<Sparkles className="w-4 h-4 text-[#356AE6]" />}
             >
               Launch Live Demo Account
             </Button>
           </div>
 
-          <div className="flex items-center justify-center gap-6 pt-6 text-xs text-slate-500 font-medium">
+          <div className="flex flex-wrap items-center justify-center gap-6 pt-4 text-xs text-[#667085] font-medium">
             <span className="flex items-center gap-1.5">
-              <CheckCircle className="w-4 h-4 text-emerald-400" />
+              <CheckCircle className="w-4 h-4 text-[#12B76A]" />
               Evidence-Grounded Citations
             </span>
             <span className="flex items-center gap-1.5">
-              <CheckCircle className="w-4 h-4 text-emerald-400" />
+              <CheckCircle className="w-4 h-4 text-[#12B76A]" />
               Private Storage Isolation
             </span>
             <span className="flex items-center gap-1.5">
-              <CheckCircle className="w-4 h-4 text-emerald-400" />
-              Powered by Google Gemini
+              <CheckCircle className="w-4 h-4 text-[#12B76A]" />
+              Google Gemini 2.5 Flash SDK
             </span>
           </div>
         </div>
       </section>
 
-      {/* Cross-Modal Comparison Showcase Banner */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full">
-        <Card className="bg-gradient-to-br from-surface-300 via-slate-900 to-surface-200 border-slate-700/80 p-8 shadow-2xl relative overflow-hidden">
-          <div className="flex flex-col lg:flex-row items-center gap-8 justify-between relative z-10">
-            <div className="space-y-4 max-w-xl">
-              <Badge variant="indigo" size="sm">
-                CORE DIFFERENTIATION
-              </Badge>
-              <h3 className="text-2xl font-bold text-slate-100">
+      {/* Product Interface Preview Showcase */}
+      <section className="py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full">
+        <div className="bg-[#F7F9FC] border border-[#E5EAF1] rounded-xl p-6 sm:p-8 shadow-xs">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-8 justify-between">
+            <div className="space-y-3 max-w-xl">
+              <span className="text-[11px] font-semibold tracking-wider text-[#356AE6] uppercase bg-[#EEF4FF] px-2.5 py-1 rounded">
+                Cross-Modal Synthesis
+              </span>
+              <h2 className="text-xl sm:text-2xl font-bold text-[#202938]">
                 Ask Questions Across Formats Simultaneously
-              </h3>
-              <p className="text-sm text-slate-400 leading-relaxed">
-                "Compare the deployment architecture in my uploaded PDF with the diagram screenshot
-                and the recording steps mentioned at 02:15."
+              </h2>
+              <p className="text-xs sm:text-sm text-[#667085] leading-relaxed">
+                Query across multiple active sources in a single prompt. OmniMind AI analyzes documents,
+                visuals, and recordings together, resolving corroborating evidence and highlighting discrepancies.
               </p>
-              <div className="flex flex-wrap gap-2 pt-2">
-                <span className="text-xs bg-slate-800 text-cyan-400 px-3 py-1 rounded-md border border-slate-700 font-mono">
-                  #PDF-Spec.pdf
+              <div className="flex flex-wrap gap-2 pt-1">
+                <span className="text-xs bg-white text-[#202938] px-2.5 py-1 rounded border border-[#E5EAF1] font-mono">
+                  #Technical-Spec.pdf
                 </span>
-                <span className="text-xs bg-slate-800 text-purple-400 px-3 py-1 rounded-md border border-slate-700 font-mono">
-                  #Architecture_Diagram.png
+                <span className="text-xs bg-white text-[#202938] px-2.5 py-1 rounded border border-[#E5EAF1] font-mono">
+                  #System_Architecture.png
                 </span>
-                <span className="text-xs bg-slate-800 text-emerald-400 px-3 py-1 rounded-md border border-slate-700 font-mono">
-                  #Tech_Sync_Audio.m4a
+                <span className="text-xs bg-white text-[#202938] px-2.5 py-1 rounded border border-[#E5EAF1] font-mono">
+                  #Design_Review.m4a
                 </span>
               </div>
             </div>
 
-            <div className="w-full lg:w-96 p-4 rounded-xl bg-slate-950/80 border border-cyan-500/30 text-xs font-mono space-y-2 text-slate-300">
-              <div className="flex items-center justify-between text-cyan-400 font-semibold border-b border-slate-800 pb-2">
+            <div className="w-full lg:w-96 p-4 rounded-lg bg-white border border-[#E5EAF1] text-xs font-mono space-y-2 text-[#202938] shadow-xs">
+              <div className="flex items-center justify-between text-[#356AE6] font-semibold border-b border-[#E5EAF1] pb-2">
                 <span>OMNIMIND AI SYNTHESIS</span>
-                <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded">
+                <span className="text-[10px] bg-[#ECFDF3] text-[#027A48] border border-[#A6F4C5] px-1.5 py-0.2 rounded font-sans font-medium">
                   VERIFIED CITATION
                 </span>
               </div>
-              <p className="text-slate-300">
-                <span className="text-slate-500">Agreements:</span> Both the diagram and document specify pgvector embedding dimensions of 768.
+              <p className="text-[#202938] leading-relaxed">
+                <span className="text-[#667085] font-semibold">Agreements:</span> Both the diagram and document specify vector embedding dimensions of 768.
               </p>
-              <p className="text-slate-300">
-                <span className="text-slate-500">Difference:</span> The audio discussion notes that asynchronous workers handle video transcoding, whereas the spec lists synchronous queues.
+              <p className="text-[#202938] leading-relaxed">
+                <span className="text-[#667085] font-semibold">Discrepancy:</span> The audio recording notes asynchronous queuing for video transcoding, while the spec describes synchronous pipelines.
               </p>
             </div>
           </div>
-        </Card>
+        </div>
       </section>
 
-      {/* Modalities Grid */}
+      {/* 4-Step Workflow Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-        <div className="text-center space-y-3 mb-12">
-          <Badge variant="cyan" size="sm" className="mx-auto">
-            ALL-IN-ONE INGESTION
-          </Badge>
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-100">
-            Engineered for Every Type of Knowledge
+        <div className="text-center space-y-2 mb-10">
+          <span className="text-xs font-semibold tracking-wider text-[#356AE6] uppercase">
+            Product Workflow
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#202938]">
+            From Raw Modality to Grounded Answer
           </h2>
-          <p className="text-sm text-slate-400 max-w-xl mx-auto">
-            Native parsing, text chunking, and embedding vectors for each modality.
+          <p className="text-xs sm:text-sm text-[#667085] max-w-lg mx-auto">
+            A transparent four-stage pipeline engineered to prevent hallucination.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-white border border-[#E5EAF1] rounded-lg p-5 space-y-2.5 shadow-xs">
+            <span className="text-xs font-bold font-mono text-[#356AE6] bg-[#EEF4FF] px-2 py-0.5 rounded">
+              01
+            </span>
+            <h3 className="text-sm font-semibold text-[#202938]">Upload & Ingest</h3>
+            <p className="text-xs text-[#667085] leading-relaxed">
+              Upload supported PDFs, images, audio, or video files with validated MIME types and metadata inspection.
+            </p>
+          </div>
+          <div className="bg-white border border-[#E5EAF1] rounded-lg p-5 space-y-2.5 shadow-xs">
+            <span className="text-xs font-bold font-mono text-[#356AE6] bg-[#EEF4FF] px-2 py-0.5 rounded">
+              02
+            </span>
+            <h3 className="text-sm font-semibold text-[#202938]">Extract & Embed</h3>
+            <p className="text-xs text-[#667085] leading-relaxed">
+              Deep OCR, vision analysis, audio transcription, and semantic vector chunking via Gemini models.
+            </p>
+          </div>
+          <div className="bg-white border border-[#E5EAF1] rounded-lg p-5 space-y-2.5 shadow-xs">
+            <span className="text-xs font-bold font-mono text-[#356AE6] bg-[#EEF4FF] px-2 py-0.5 rounded">
+              03
+            </span>
+            <h3 className="text-sm font-semibold text-[#202938]">Hybrid Retrieval</h3>
+            <p className="text-xs text-[#667085] leading-relaxed">
+              Retrieve relevant passages across active workspace sources using vector cosine similarity and full-text keyword matching.
+            </p>
+          </div>
+          <div className="bg-white border border-[#E5EAF1] rounded-lg p-5 space-y-2.5 shadow-xs">
+            <span className="text-xs font-bold font-mono text-[#356AE6] bg-[#EEF4FF] px-2 py-0.5 rounded">
+              04
+            </span>
+            <h3 className="text-sm font-semibold text-[#202938]">Verify Citations</h3>
+            <p className="text-xs text-[#667085] leading-relaxed">
+              Model answers are grounded in returned evidence chunks. Every citation links to verifiable source text and page numbers.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Modalities Grid */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full border-t border-[#E5EAF1]">
+        <div className="text-center space-y-2 mb-10">
+          <span className="text-xs font-semibold tracking-wider text-[#356AE6] uppercase">
+            Supported Modalities
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#202938]">
+            Engineered for Every Type of Knowledge
+          </h2>
+          <p className="text-xs sm:text-sm text-[#667085] max-w-md mx-auto">
+            Native parsing, semantic extraction, and citation tracking across data formats.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {modalities.map((item) => (
-            <Card key={item.title} hover className="space-y-3">
+            <div
+              key={item.title}
+              className="bg-white border border-[#E5EAF1] hover:border-[#D0D7E2] hover:shadow-sm rounded-lg p-5 space-y-3 transition-all"
+            >
               <div className="flex items-center justify-between">
-                <div className={`p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/80 ${item.color}`}>
-                  <item.icon className="w-5 h-5" />
+                <div className="w-8 h-8 rounded-md bg-[#EEF4FF] flex items-center justify-center text-[#356AE6]">
+                  <item.icon className="w-4 h-4" />
                 </div>
                 <Badge variant="default" size="sm">
                   {item.badge}
                 </Badge>
               </div>
-              <h3 className="text-base font-semibold text-slate-100">{item.title}</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">{item.desc}</p>
-            </Card>
+              <h3 className="text-sm font-semibold text-[#202938]">{item.title}</h3>
+              <p className="text-xs text-[#667085] leading-relaxed">{item.desc}</p>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* Security & Architecture Highlights */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full border-t border-slate-800/80">
+      {/* Security & Reliability Pillars */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full border-t border-[#E5EAF1]">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="space-y-2.5">
-            <ShieldCheck className="w-6 h-6 text-cyan-400" />
-            <h4 className="text-base font-semibold text-slate-100">Evidence Grounding</h4>
-            <p className="text-xs text-slate-400 leading-relaxed">
+          <div className="bg-[#F7F9FC] border border-[#E5EAF1] rounded-lg p-5 space-y-2">
+            <div className="w-8 h-8 rounded-md bg-[#EEF4FF] flex items-center justify-center text-[#356AE6]">
+              <ShieldCheck className="w-4 h-4" />
+            </div>
+            <h4 className="text-sm font-semibold text-[#202938]">Evidence Grounding</h4>
+            <p className="text-xs text-[#667085] leading-relaxed">
               Every answer resolves citations against verified server-side evidence records.
-              Model-hallucinated citation IDs are rejected automatically.
+              Model-hallucinated citation IDs are filtered out automatically.
             </p>
-          </Card>
-          <Card className="space-y-2.5">
-            <Lock className="w-6 h-6 text-indigo-400" />
-            <h4 className="text-base font-semibold text-slate-100">Zero-Leakage Isolation</h4>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Strict per-user ownership and workspace scoping on all PostgreSQL queries, vector similarity
-              searches, and private storage download URLs.
+          </div>
+          <div className="bg-[#F7F9FC] border border-[#E5EAF1] rounded-lg p-5 space-y-2">
+            <div className="w-8 h-8 rounded-md bg-[#EEF4FF] flex items-center justify-center text-[#356AE6]">
+              <Lock className="w-4 h-4" />
+            </div>
+            <h4 className="text-sm font-semibold text-[#202938]">Zero-Leakage Isolation</h4>
+            <p className="text-xs text-[#667085] leading-relaxed">
+              Strict per-user ownership and workspace scoping on all database queries, vector similarity
+              searches, and document assets.
             </p>
-          </Card>
-          <Card className="space-y-2.5">
-            <Cpu className="w-6 h-6 text-emerald-400" />
-            <h4 className="text-base font-semibold text-slate-100">Official Google Gemini SDK</h4>
-            <p className="text-xs text-slate-400 leading-relaxed">
+          </div>
+          <div className="bg-[#F7F9FC] border border-[#E5EAF1] rounded-lg p-5 space-y-2">
+            <div className="w-8 h-8 rounded-md bg-[#EEF4FF] flex items-center justify-center text-[#356AE6]">
+              <Cpu className="w-4 h-4" />
+            </div>
+            <h4 className="text-sm font-semibold text-[#202938]">Google Gemini 2.5 Flash</h4>
+            <p className="text-xs text-[#667085] leading-relaxed">
               Direct server-side orchestration with Gemini 2.5 Flash and text-embedding-004.
-              No API keys or service role secrets exposed to browser bundles.
+              No API keys or service role secrets are ever exposed to the client.
             </p>
-          </Card>
+          </div>
         </div>
       </section>
 
-      {/* CTA Footer */}
-      <footer className="mt-auto border-t border-slate-800/80 py-12 px-4 sm:px-8 bg-surface-500">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      {/* Footer */}
+      <footer className="mt-auto border-t border-[#E5EAF1] py-8 px-4 sm:px-8 bg-white">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#667085]">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-cyan-400" />
-            <span className="font-semibold text-slate-300">OmniMind AI</span>
-            <span>— Connected Multimodal Intelligence</span>
+            <div className="w-5 h-5 rounded bg-[#356AE6] flex items-center justify-center text-white text-[10px]">
+              <Sparkles className="w-3 h-3" />
+            </div>
+            <span className="font-semibold text-[#202938]">OmniMind AI</span>
+            <span>— Minimal Intelligence Workspace</span>
           </div>
-          <div>Built with React, Express, Supabase PostgreSQL, and Google Gemini API.</div>
+          <div className="text-center sm:text-right">
+            Engineered with React, TypeScript, Supabase PostgreSQL, and Google Gemini API.
+          </div>
         </div>
       </footer>
     </div>

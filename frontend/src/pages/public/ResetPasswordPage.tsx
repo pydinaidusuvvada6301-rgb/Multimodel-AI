@@ -72,27 +72,27 @@ export const ResetPasswordPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-[#F7F9FC] flex flex-col text-[#202938]">
       <PublicNavbar />
 
       <div className="flex-1 flex items-center justify-center p-4 sm:p-6">
         <div className="w-full max-w-md space-y-5">
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center mx-auto shadow-xl shadow-cyan-500/20">
-              <Lock className="w-6 h-6 text-slate-950 font-bold" />
+            <div className="w-9 h-9 rounded-md bg-[#356AE6] flex items-center justify-center mx-auto text-white shadow-xs">
+              <Lock className="w-4 h-4" />
             </div>
-            <h2 className="text-2xl font-bold text-slate-100">Set New Password</h2>
-            <p className="text-xs text-slate-400">
+            <h2 className="text-2xl font-bold text-[#202938]">Set New Password</h2>
+            <p className="text-xs text-[#667085]">
               Create a strong password to protect your multimodal knowledge workspace
             </p>
           </div>
 
-          <Card className="p-6 sm:p-8 space-y-5 bg-surface-200/90 border-slate-700/80 shadow-2xl">
+          <Card className="p-6 sm:p-8 space-y-5 bg-white border border-[#E5EAF1] rounded-xl shadow-xs">
             {success ? (
               <div className="text-center space-y-4 py-3">
-                <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto" />
-                <h3 className="text-sm font-semibold text-slate-100">Password Updated Successfully</h3>
-                <p className="text-xs text-slate-300">
+                <CheckCircle2 className="w-10 h-10 text-[#12B76A] mx-auto" />
+                <h3 className="text-sm font-semibold text-[#202938]">Password Updated Successfully</h3>
+                <p className="text-xs text-[#667085]">
                   Your new credentials are now active. You can safely sign in with your updated password.
                 </p>
                 <Button
@@ -106,8 +106,8 @@ export const ResetPasswordPage: React.FC = () => {
             ) : (
               <>
                 {error && (
-                  <div className="p-3 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  <div className="p-3 rounded-lg bg-[#FEF3F2] border border-[#FECDCA] text-[#B42318] text-xs flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
                     <span>{error}</span>
                   </div>
                 )}
@@ -125,7 +125,7 @@ export const ResetPasswordPage: React.FC = () => {
                   )}
 
                   <div>
-                    <label className="text-xs font-medium text-slate-300 mb-1.5 block">
+                    <label className="text-xs font-medium text-[#202938] mb-1.5 block">
                       New Password
                     </label>
                     <Input
@@ -138,7 +138,7 @@ export const ResetPasswordPage: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="text-slate-400 hover:text-slate-200"
+                          className="text-[#667085] hover:text-[#202938]"
                         >
                           {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
@@ -165,9 +165,9 @@ export const ResetPasswordPage: React.FC = () => {
             )}
           </Card>
 
-          <p className="text-center text-xs text-slate-400">
+          <p className="text-center text-xs text-[#667085]">
             Remembered your password?{' '}
-            <Link to="/login" className="text-cyan-400 hover:text-cyan-300 font-medium">
+            <Link to="/login" className="text-[#356AE6] hover:text-[#2856C5] font-medium">
               Sign In
             </Link>
           </p>

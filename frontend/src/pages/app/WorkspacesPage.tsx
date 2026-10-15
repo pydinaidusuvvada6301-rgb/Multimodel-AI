@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Layers, Plus, Trash2, ArrowRight, Check, Sparkles } from 'lucide-react';
+import { Layers, Plus, Trash2, ArrowRight, Check } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.js';
 import { Card } from '../../components/ui/Card.js';
 import { Button } from '../../components/ui/Button.js';
 import { Modal } from '../../components/ui/Modal.js';
 import { Input } from '../../components/ui/Input.js';
 import { api } from '../../lib/api.js';
-import { formatDate } from '../../lib/utils.js';
 
 export const WorkspacesPage: React.FC = () => {
   const { workspaces, activeWorkspace, setActiveWorkspace, refreshWorkspaces } = useAuth();
@@ -57,15 +56,22 @@ export const WorkspacesPage: React.FC = () => {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
-      <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-border-default">
         <div>
-          <h1 className="text-2xl font-bold text-slate-100 flex items-center gap-2">
-            <Layers className="w-6 h-6 text-cyan-400" />
-            Knowledge Workspaces
-          </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            Isolate and organize multimodal knowledge collections for projects, research, or teams.
-          </p>
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600">
+              <Layers className="w-5 h-5" />
+            </div>
+            <div>
+              <h1 className="text-xl sm:text-2xl font-semibold text-text-primary tracking-tight">
+                Knowledge Workspaces
+              </h1>
+              <p className="text-xs sm:text-sm text-text-secondary mt-0.5">
+                Isolate and organize multimodal knowledge collections for projects, research, or teams.
+              </p>
+            </div>
+          </div>
         </div>
 
         <Button size="sm" onClick={() => setIsModalOpen(true)} icon={<Plus className="w-4 h-4" />}>
@@ -84,40 +90,41 @@ export const WorkspacesPage: React.FC = () => {
                 setActiveWorkspace(ws);
                 navigate(`/app/workspaces/${ws.id}`);
               }}
-              className={`space-y-3 relative ${
-                isActive ? 'border-cyan-500/50 bg-slate-900/90' : 'border-slate-800'
+              className={`space-y-3.5 relative transition-all ${
+                isActive ? 'border-brand-300 ring-2 ring-brand-500/10' : ''
               }`}
             >
               {isActive && (
-                <span className="absolute top-4 right-4 text-[10px] bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 px-2 py-0.5 rounded-full font-semibold flex items-center gap-1">
+                <span className="absolute top-4 right-4 text-[11px] bg-brand-50 text-brand-700 border border-brand-200 px-2 py-0.5 rounded-full font-semibold flex items-center gap-1">
                   <Check className="w-3 h-3" />
                   Active
                 </span>
               )}
 
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono uppercase bg-slate-800 px-2 py-0.5 rounded text-slate-400 border border-slate-700">
+                <span className="text-[10px] font-mono uppercase bg-surface-secondary px-2 py-0.5 rounded text-text-secondary border border-border-default font-semibold">
                   {ws.category}
                 </span>
               </div>
 
-              <h3 className="text-base font-semibold text-slate-100 truncate pr-16">{ws.name}</h3>
+              <h3 className="text-base font-semibold text-text-primary truncate pr-16">{ws.name}</h3>
 
-              <p className="text-xs text-slate-400 line-clamp-2 min-h-[32px]">
+              <p className="text-xs text-text-secondary line-clamp-2 min-h-[32px] leading-relaxed">
                 {ws.description || 'No description provided.'}
               </p>
 
-              <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+              <div className="pt-3 border-t border-border-default flex items-center justify-between text-xs text-text-secondary">
                 <span>{ws.documentCount || 0} Documents</span>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={(e) => handleDelete(ws.id, e)}
-                    className="p-1 hover:text-rose-400 text-slate-500 transition-colors"
+                    className="p-1 hover:text-rose-600 text-text-muted hover:bg-rose-50 rounded transition-colors"
                     title="Delete workspace"
+                    aria-label="Delete workspace"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
-                  <ArrowRight className="w-4 h-4 text-cyan-400" />
+                  <ArrowRight className="w-4 h-4 text-brand-600" />
                 </div>
               </div>
             </Card>
@@ -152,7 +159,7 @@ export const WorkspacesPage: React.FC = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-          <div className="flex justify-end gap-2 pt-3 border-t border-slate-800">
+          <div className="flex justify-end gap-2 pt-3 border-t border-border-default">
             <Button type="button" variant="outline" size="sm" onClick={() => setIsModalOpen(false)}>
               Cancel
             </Button>
@@ -165,3 +172,4 @@ export const WorkspacesPage: React.FC = () => {
     </div>
   );
 };
+

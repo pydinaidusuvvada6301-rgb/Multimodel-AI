@@ -80,28 +80,28 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-[#F7F9FC] flex flex-col text-[#202938]">
       <PublicNavbar />
 
       <div className="flex-1 flex items-center justify-center p-4 sm:p-6">
         <div className="w-full max-w-md space-y-5">
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center mx-auto shadow-xl shadow-cyan-500/20">
-              <Sparkles className="w-6 h-6 text-slate-950 font-bold" />
+            <div className="w-9 h-9 rounded-md bg-[#356AE6] flex items-center justify-center mx-auto text-white shadow-xs">
+              <Sparkles className="w-4 h-4" />
             </div>
-            <h2 className="text-2xl font-bold text-slate-100">Welcome Back</h2>
-            <p className="text-xs text-slate-400">Sign in to your OmniMind intelligence workspace</p>
+            <h2 className="text-2xl font-bold text-[#202938]">Welcome Back</h2>
+            <p className="text-xs text-[#667085]">Sign in to your OmniMind intelligence workspace</p>
           </div>
 
-          <Card className="p-6 sm:p-8 space-y-5 bg-surface-200/90 border-slate-700/80 shadow-2xl">
+          <Card className="p-6 sm:p-8 space-y-5 bg-white border border-[#E5EAF1] rounded-xl shadow-xs">
             {/* Quick Demo Login Banner for Reviewers & Judges */}
-            <div className="p-3 rounded-lg bg-gradient-to-r from-cyan-500/10 via-indigo-500/10 to-transparent border border-cyan-500/30 flex items-center justify-between">
+            <div className="p-3 rounded-lg bg-[#EEF4FF] border border-[#D0D7E2] flex items-center justify-between">
               <div>
-                <p className="text-xs font-semibold text-cyan-300 flex items-center gap-1">
+                <p className="text-xs font-semibold text-[#2856C5] flex items-center gap-1.5">
                   <Zap className="w-3.5 h-3.5" />
                   Judge / Reviewer Access
                 </p>
-                <p className="text-[11px] text-slate-400 mt-0.5">Explore with pre-seeded multimodal data</p>
+                <p className="text-[11px] text-[#667085] mt-0.5">Explore with pre-seeded multimodal data</p>
               </div>
               <Button
                 type="button"
@@ -119,7 +119,7 @@ export const LoginPage: React.FC = () => {
               type="button"
               variant="outline"
               size="md"
-              className="w-full flex items-center justify-center gap-2.5 border-slate-700 hover:bg-slate-800/80 text-slate-200 transition-colors"
+              className="w-full flex items-center justify-center gap-2.5 border-[#E5EAF1] hover:bg-[#F7F9FC] text-[#202938] transition-colors"
               onClick={handleGoogleSignIn}
               disabled={loading || googleLoading}
               loading={googleLoading}
@@ -147,20 +147,20 @@ export const LoginPage: React.FC = () => {
 
             {/* Divider */}
             <div className="relative flex items-center justify-center">
-              <div className="border-t border-slate-700/80 w-full" />
-              <span className="bg-surface-200 px-3 text-[11px] text-slate-400 uppercase tracking-wider absolute">
+              <div className="border-t border-[#E5EAF1] w-full" />
+              <span className="bg-white px-3 text-[11px] text-[#98A2B3] uppercase tracking-wider absolute">
                 or sign in with email
               </span>
             </div>
 
             {error && (
-              <div className="p-3.5 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs space-y-2">
+              <div className="p-3 rounded-lg bg-[#FEF3F2] border border-[#FECDCA] text-[#B42318] text-xs space-y-2">
                 <p>{error}</p>
                 {isUnverified && (
                   <div className="pt-1">
                     <Link
                       to={`/verify-email?email=${encodeURIComponent(email)}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 text-xs font-semibold transition-colors"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#FEE4E2] text-[#B42318] text-xs font-semibold hover:bg-[#FECDCA] transition-colors"
                     >
                       <Mail className="w-3.5 h-3.5" />
                       Verify or Resend Confirmation Link
@@ -184,10 +184,10 @@ export const LoginPage: React.FC = () => {
 
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="text-xs font-medium text-slate-300">Password</label>
+                  <label className="text-xs font-medium text-[#202938]">Password</label>
                   <Link
                     to="/forgot-password"
-                    className="text-[11px] text-cyan-400 hover:text-cyan-300"
+                    className="text-[11px] text-[#356AE6] hover:text-[#2856C5]"
                   >
                     Forgot password?
                   </Link>
@@ -202,7 +202,7 @@ export const LoginPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="text-slate-400 hover:text-slate-200"
+                      className="text-[#667085] hover:text-[#202938]"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -217,9 +217,9 @@ export const LoginPage: React.FC = () => {
             </form>
           </Card>
 
-          <p className="text-center text-xs text-slate-400">
+          <p className="text-center text-xs text-[#667085]">
             Don't have an account yet?{' '}
-            <Link to="/register" className="text-cyan-400 hover:text-cyan-300 font-medium">
+            <Link to="/register" className="text-[#356AE6] hover:text-[#2856C5] font-medium">
               Create an account
             </Link>
           </p>

@@ -45,31 +45,40 @@ export const Modal: React.FC<ModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-150">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-[#202938]/40 backdrop-blur-xs transition-opacity"
         onClick={onClose}
+        aria-hidden="true"
       />
 
       {/* Modal Dialog Content */}
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={title ? 'modal-title' : undefined}
         className={cn(
-          'relative w-full rounded-2xl bg-surface-200 border border-slate-700/80 p-6 shadow-2xl',
-          'z-10 overflow-hidden transform transition-all',
+          'relative w-full rounded-xl bg-white border border-[#E5EAF1] p-6 shadow-modal',
+          'z-10 overflow-hidden transform transition-all text-[#202938]',
           maxWidths[maxWidth]
         )}
       >
         <div className="flex items-start justify-between mb-4">
           <div>
-            {title && <h3 className="text-lg font-semibold text-slate-100">{title}</h3>}
-            {description && <p className="text-xs text-slate-400 mt-1">{description}</p>}
+            {title && (
+              <h3 id="modal-title" className="text-base font-semibold text-[#202938]">
+                {title}
+              </h3>
+            )}
+            {description && <p className="text-xs text-[#667085] mt-1">{description}</p>}
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-100 rounded-lg hover:bg-slate-800 transition-colors"
+            aria-label="Close modal"
+            className="p-1.5 text-[#667085] hover:text-[#202938] rounded-md hover:bg-[#F7F9FC] transition-colors focus:outline-none focus:ring-2 focus:ring-[#356AE6]"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 

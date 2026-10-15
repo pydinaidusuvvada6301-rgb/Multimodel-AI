@@ -12,9 +12,9 @@ export const AppLayout: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-8 h-8 text-cyan-400 animate-spin" />
-        <p className="text-xs text-slate-400 font-mono tracking-wide">Connecting to OmniMind AI...</p>
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center gap-3">
+        <Loader2 className="w-6 h-6 text-[#356AE6] animate-spin" />
+        <p className="text-xs text-[#667085] font-medium tracking-wide">Connecting to OmniMind AI...</p>
       </div>
     );
   }
@@ -24,7 +24,7 @@ export const AppLayout: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-background">
+    <div className="flex h-screen w-screen overflow-hidden bg-[#F7F9FC]">
       {/* Desktop Sidebar */}
       <div className="hidden lg:block shrink-0">
         <Sidebar />
@@ -32,10 +32,11 @@ export const AppLayout: React.FC = () => {
 
       {/* Mobile Drawer Sidebar */}
       {isMobileSidebarOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden flex">
+        <div className="fixed inset-0 z-50 lg:hidden flex animate-in fade-in duration-150">
           <div
-            className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"
+            className="fixed inset-0 bg-[#202938]/40 backdrop-blur-xs"
             onClick={() => setIsMobileSidebarOpen(false)}
+            aria-hidden="true"
           />
           <div className="relative z-10 w-64 max-w-[80vw]">
             <Sidebar onCloseMobile={() => setIsMobileSidebarOpen(false)} />
@@ -46,7 +47,7 @@ export const AppLayout: React.FC = () => {
       {/* Main Content Area */}
       <div className="flex flex-col flex-1 min-w-0 h-full overflow-hidden">
         <TopNavigation onOpenMobileSidebar={() => setIsMobileSidebarOpen(true)} />
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[#F7F9FC]">
           <Outlet />
         </main>
       </div>

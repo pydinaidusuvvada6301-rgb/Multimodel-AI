@@ -4,12 +4,7 @@ import {
   Layers,
   UploadCloud,
   MessageSquareCode,
-  Search,
-  Trash2,
-  FileText,
-  Filter,
   ArrowLeft,
-  Sparkles,
 } from 'lucide-react';
 import { api } from '../../lib/api.js';
 import { Workspace, DocumentItem } from '../../types/index.js';
@@ -57,20 +52,24 @@ export const WorkspaceDetailPage: React.FC = () => {
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border-default">
         <div>
           <button
             onClick={() => navigate('/app/workspaces')}
-            className="text-xs text-slate-400 hover:text-cyan-400 flex items-center gap-1 mb-2 font-medium"
+            className="text-xs text-text-secondary hover:text-brand-600 flex items-center gap-1 mb-2 font-medium transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             Back to Workspaces
           </button>
-          <h1 className="text-2xl font-bold text-slate-100 flex items-center gap-2">
-            <Layers className="w-6 h-6 text-cyan-400" />
-            {workspace?.name || 'Workspace'}
-          </h1>
-          <p className="text-xs text-slate-400 mt-1 max-w-2xl">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600">
+              <Layers className="w-4 h-4" />
+            </div>
+            <h1 className="text-xl sm:text-2xl font-semibold text-text-primary tracking-tight">
+              {workspace?.name || 'Workspace'}
+            </h1>
+          </div>
+          <p className="text-xs sm:text-sm text-text-secondary mt-1 max-w-2xl">
             {workspace?.description || 'No description provided.'}
           </p>
         </div>
@@ -80,7 +79,7 @@ export const WorkspaceDetailPage: React.FC = () => {
             size="sm"
             variant="outline"
             onClick={() => navigate(`/app/chat?ws=${workspaceId}`)}
-            icon={<MessageSquareCode className="w-3.5 h-3.5 text-cyan-400" />}
+            icon={<MessageSquareCode className="w-3.5 h-3.5 text-brand-600" />}
           >
             Chat with Workspace
           </Button>
@@ -100,10 +99,10 @@ export const WorkspaceDetailPage: React.FC = () => {
           <button
             key={mod}
             onClick={() => setSelectedModality(mod)}
-            className={`px-3 py-1 rounded-lg text-xs font-medium capitalize border transition-colors ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize border transition-colors ${
               selectedModality === mod
-                ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40'
-                : 'bg-slate-900 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                ? 'bg-brand-50 text-brand-700 border-brand-200 font-semibold shadow-xs'
+                : 'bg-surface-primary border-border-default text-text-secondary hover:bg-surface-secondary hover:text-text-primary'
             }`}
           >
             {mod === 'all' ? `All Sources (${documents.length})` : mod}
@@ -114,14 +113,18 @@ export const WorkspaceDetailPage: React.FC = () => {
       {/* Documents List */}
       {filteredDocs.length === 0 ? (
         <Card className="p-12 text-center space-y-3">
-          <UploadCloud className="w-12 h-12 text-slate-600 mx-auto" />
-          <h3 className="text-sm font-semibold text-slate-200">No documents found in this view</h3>
-          <p className="text-xs text-slate-400 max-w-sm mx-auto">
+          <div className="w-12 h-12 rounded-xl bg-surface-secondary border border-border-default flex items-center justify-center text-text-muted mx-auto">
+            <UploadCloud className="w-6 h-6" />
+          </div>
+          <h3 className="text-sm font-semibold text-text-primary">No documents found in this view</h3>
+          <p className="text-xs text-text-secondary max-w-sm mx-auto">
             Upload files in supported modalities to populate this knowledge workspace.
           </p>
-          <Button size="sm" onClick={() => setIsUploadModalOpen(true)}>
-            Upload Files
-          </Button>
+          <div className="pt-2">
+            <Button size="sm" onClick={() => setIsUploadModalOpen(true)}>
+              Upload Files
+            </Button>
+          </div>
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -132,31 +135,31 @@ export const WorkspaceDetailPage: React.FC = () => {
                 key={doc.id}
                 hover
                 onClick={() => navigate(`/app/documents/${doc.id}`)}
-                className="p-4 space-y-3 bg-surface-200/90"
+                className="p-4 space-y-3"
               >
                 <div className="flex items-center justify-between">
                   <span
-                    className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded border ${getModalityColor(
+                    className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded border font-semibold ${getModalityColor(
                       doc.modality
                     )}`}
                   >
                     {doc.modality}
                   </span>
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full border ${badge.className}`}>
+                  <span className={`text-[10px] px-2 py-0.5 rounded-full border font-medium ${badge.className}`}>
                     {badge.label}
                   </span>
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-semibold text-slate-100 truncate">
+                  <h4 className="text-sm font-semibold text-text-primary truncate">
                     {doc.original_filename}
                   </h4>
-                  <p className="text-xs text-slate-400 mt-1 line-clamp-2 min-h-[32px]">
+                  <p className="text-xs text-text-secondary mt-1 line-clamp-2 min-h-[32px] leading-relaxed">
                     {doc.summary || 'Summary generating...'}
                   </p>
                 </div>
 
-                <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500">
+                <div className="pt-2 border-t border-border-default flex items-center justify-between text-[11px] text-text-muted">
                   <span>{formatBytes(doc.file_size_bytes)}</span>
                   <span>{formatDate(doc.created_at)}</span>
                 </div>
@@ -189,3 +192,4 @@ export const WorkspaceDetailPage: React.FC = () => {
     </div>
   );
 };
+

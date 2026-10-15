@@ -2,7 +2,7 @@ import React from 'react';
 import { cn } from '../../lib/utils.js';
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: 'default' | 'cyan' | 'indigo' | 'emerald' | 'amber' | 'rose';
+  variant?: 'default' | 'blue' | 'cyan' | 'indigo' | 'emerald' | 'amber' | 'rose';
   size?: 'sm' | 'md';
 }
 
@@ -14,12 +14,13 @@ export const Badge: React.FC<BadgeProps> = ({
   ...props
 }) => {
   const variants = {
-    default: 'bg-slate-800 text-slate-300 border-slate-700',
-    cyan: 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30',
-    indigo: 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30',
-    emerald: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-    amber: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
-    rose: 'bg-rose-500/15 text-rose-400 border-rose-500/30',
+    default: 'bg-[#F7F9FC] text-[#667085] border-[#E5EAF1]',
+    blue: 'bg-[#EEF4FF] text-[#2856C5] border-[#D0D7E2]',
+    cyan: 'bg-[#EEF4FF] text-[#2856C5] border-[#D0D7E2]',
+    indigo: 'bg-[#EEF4FF] text-[#2856C5] border-[#D0D7E2]',
+    emerald: 'bg-[#ECFDF3] text-[#027A48] border-[#A6F4C5]',
+    amber: 'bg-[#FFFAEB] text-[#B54708] border-[#FEDF89]',
+    rose: 'bg-[#FEF3F2] text-[#B42318] border-[#FECDCA]',
   };
 
   const sizes = {

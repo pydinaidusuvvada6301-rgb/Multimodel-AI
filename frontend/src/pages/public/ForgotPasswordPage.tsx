@@ -28,24 +28,27 @@ export const ForgotPasswordPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-[#F7F9FC] flex flex-col text-[#202938]">
       <PublicNavbar />
 
       <div className="flex-1 flex items-center justify-center p-4 sm:p-6">
         <div className="w-full max-w-md space-y-5">
           <div className="text-center space-y-2">
-            <h2 className="text-2xl font-bold text-slate-100">Reset Password</h2>
-            <p className="text-xs text-slate-400">
+            <div className="w-9 h-9 rounded-md bg-[#356AE6] flex items-center justify-center mx-auto text-white shadow-xs">
+              <Mail className="w-4 h-4" />
+            </div>
+            <h2 className="text-2xl font-bold text-[#202938]">Reset Password</h2>
+            <p className="text-xs text-[#667085]">
               Enter your email address and we'll send recovery instructions.
             </p>
           </div>
 
-          <Card className="p-6 sm:p-8 space-y-5 bg-surface-200/90 border-slate-700/80 shadow-2xl">
+          <Card className="p-6 sm:p-8 space-y-5 bg-white border border-[#E5EAF1] rounded-xl shadow-xs">
             {submitted ? (
               <div className="text-center space-y-3 py-4">
-                <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto" />
-                <h3 className="text-sm font-semibold text-slate-100">Instructions Dispatched</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
+                <CheckCircle2 className="w-10 h-10 text-[#12B76A] mx-auto" />
+                <h3 className="text-sm font-semibold text-[#202938]">Instructions Dispatched</h3>
+                <p className="text-xs text-[#667085] leading-relaxed">
                   If an account exists for {email}, a password reset link has been dispatched.
                 </p>
                 <Link to="/login" className="inline-block pt-2">
@@ -72,8 +75,11 @@ export const ForgotPasswordPage: React.FC = () => {
             )}
           </Card>
 
-          <p className="text-center text-xs text-slate-400">
-            <Link to="/login" className="text-cyan-400 hover:text-cyan-300 font-medium flex items-center justify-center gap-1">
+          <p className="text-center text-xs text-[#667085]">
+            <Link
+              to="/login"
+              className="text-[#356AE6] hover:text-[#2856C5] font-medium flex items-center justify-center gap-1.5"
+            >
               <ArrowLeft className="w-3.5 h-3.5" />
               Back to Sign In
             </Link>

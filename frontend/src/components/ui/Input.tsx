@@ -24,36 +24,36 @@ export const Input: React.FC<InputProps> = ({
   return (
     <div className="w-full space-y-1.5">
       {label && (
-        <label htmlFor={inputId} className="block text-xs font-medium text-slate-300">
+        <label htmlFor={inputId} className="block text-xs font-medium text-[#202938]">
           {label}
         </label>
       )}
       <div className="relative flex items-center">
         {icon && (
-          <div className="absolute left-3 text-slate-400 pointer-events-none flex items-center">
+          <div className="absolute left-3 text-[#98A2B3] pointer-events-none flex items-center">
             {icon}
           </div>
         )}
         <input
           id={inputId}
           className={cn(
-            'w-full bg-slate-900/90 border border-slate-700/80 rounded-lg px-3.5 py-2 text-sm text-slate-100 placeholder:text-slate-500',
-            'transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500',
+            'w-full bg-white border border-[#E5EAF1] rounded-md px-3.5 py-2 text-sm text-[#202938] placeholder:text-[#98A2B3]',
+            'transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-[#356AE6]/20 focus:border-[#356AE6]',
             icon && 'pl-10',
             rightElement && 'pr-10',
-            error && 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/30',
+            error && 'border-[#F04438] focus:border-[#F04438] focus:ring-[#F04438]/20',
             className
           )}
           {...props}
         />
         {rightElement && (
-          <div className="absolute right-3 flex items-center">
+          <div className="absolute right-3 flex items-center text-[#667085]">
             {rightElement}
           </div>
         )}
       </div>
-      {error && <p className="text-xs text-rose-400 mt-1">{error}</p>}
-      {helperText && !error && <p className="text-xs text-slate-400 mt-1">{helperText}</p>}
+      {error && <p className="text-xs text-[#D92D20] mt-1 font-medium">{error}</p>}
+      {helperText && !error && <p className="text-xs text-[#667085] mt-1">{helperText}</p>}
     </div>
   );
 };

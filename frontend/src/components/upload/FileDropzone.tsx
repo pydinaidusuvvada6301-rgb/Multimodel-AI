@@ -119,10 +119,10 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({ workspaceId, onUploa
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
         className={cn(
-          'border-2 border-dashed rounded-2xl p-8 sm:p-12 text-center cursor-pointer transition-all duration-200',
+          'border-2 border-dashed rounded-xl p-8 sm:p-12 text-center cursor-pointer transition-all duration-200',
           isDragOver
-            ? 'border-cyan-400 bg-cyan-500/10 scale-[1.01]'
-            : 'border-slate-700 hover:border-slate-600 bg-slate-900/50 hover:bg-slate-900/80'
+            ? 'border-brand-500 bg-brand-50/70 scale-[1.005]'
+            : 'border-border-default hover:border-brand-400 bg-surface-primary hover:bg-surface-secondary/60'
         )}
       >
         <input
@@ -132,30 +132,30 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({ workspaceId, onUploa
           className="hidden"
           onChange={(e) => addFiles(e.target.files)}
         />
-        <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-cyan-500/10">
-          <UploadCloud className="w-7 h-7" />
+        <div className="w-12 h-12 rounded-xl bg-brand-50 border border-brand-100 text-brand-600 flex items-center justify-center mx-auto mb-3 shadow-xs">
+          <UploadCloud className="w-6 h-6" />
         </div>
-        <h4 className="text-sm font-semibold text-slate-100">
+        <h4 className="text-sm font-semibold text-text-primary">
           Drop multimodal documents, images, audio, or video files here
         </h4>
-        <p className="text-xs text-slate-400 mt-1.5 max-w-md mx-auto">
+        <p className="text-xs text-text-secondary mt-1.5 max-w-md mx-auto">
           Supports PDF, DOCX, TXT, CSV, JSON, PNG, JPG, MP3, WAV, MP4, and WEBM up to 25MB per file.
         </p>
       </div>
 
       {/* Staged Files Queue */}
       {stagedFiles.length > 0 && (
-        <div className="space-y-3 p-4 rounded-xl bg-slate-900 border border-slate-800">
+        <div className="space-y-3 p-4 rounded-xl bg-surface-primary border border-border-default shadow-xs">
           <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold text-slate-200">
+            <span className="font-semibold text-text-primary">
               Selected Files ({stagedFiles.length})
             </span>
             <div className="flex items-center gap-2">
-              <span className="text-slate-400">Category:</span>
+              <span className="text-text-secondary">Category:</span>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="bg-slate-800 border border-slate-700 rounded px-2 py-1 text-xs text-slate-200"
+                className="bg-surface-secondary border border-border-default rounded px-2.5 py-1 text-xs text-text-primary focus:outline-none focus:ring-1 focus:ring-brand-500 font-medium"
               >
                 <option value="general">General</option>
                 <option value="research">Research</option>
@@ -170,25 +170,27 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({ workspaceId, onUploa
             {stagedFiles.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center justify-between p-2.5 rounded-lg bg-slate-950 border border-slate-800/80 text-xs"
+                className="flex items-center justify-between p-2.5 rounded-lg bg-surface-secondary/70 border border-border-default text-xs"
               >
                 <div className="flex items-center gap-2.5 truncate max-w-[70%]">
-                  <File className="w-4 h-4 text-cyan-400 shrink-0" />
-                  <span className="text-slate-200 font-medium truncate">{item.file.name}</span>
-                  <span className="text-[11px] text-slate-500 shrink-0">
+                  <div className="w-6 h-6 rounded bg-brand-50 border border-brand-100 text-brand-600 flex items-center justify-center shrink-0">
+                    <File className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-text-primary font-medium truncate">{item.file.name}</span>
+                  <span className="text-[11px] text-text-muted shrink-0">
                     ({formatBytes(item.file.size)})
                   </span>
                 </div>
 
                 <div className="flex items-center gap-2">
                   {item.status === 'uploading' && (
-                    <Loader2 className="w-4 h-4 text-cyan-400 animate-spin" />
+                    <Loader2 className="w-4 h-4 text-brand-600 animate-spin" />
                   )}
                   {item.status === 'completed' && (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                   )}
                   {item.status === 'error' && (
-                    <span className="text-rose-400 flex items-center gap-1 text-[11px]">
+                    <span className="text-rose-600 flex items-center gap-1 text-[11px] font-medium">
                       <AlertTriangle className="w-3.5 h-3.5" />
                       Failed
                     </span>
@@ -196,7 +198,8 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({ workspaceId, onUploa
                   {!isUploading && (
                     <button
                       onClick={() => removeFile(item.id)}
-                      className="p-1 text-slate-500 hover:text-slate-300 rounded"
+                      className="p-1 text-text-muted hover:text-text-primary rounded transition-colors"
+                      title="Remove file"
                     >
                       <X className="w-3.5 h-3.5" />
                     </button>
@@ -206,7 +209,7 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({ workspaceId, onUploa
             ))}
           </div>
 
-          <div className="flex justify-end gap-2 pt-2 border-t border-slate-800">
+          <div className="flex justify-end gap-2 pt-2 border-t border-border-default">
             <Button
               variant="outline"
               size="sm"

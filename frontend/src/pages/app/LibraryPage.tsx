@@ -3,13 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import {
   FolderOpen,
   Search,
-  Filter,
   Trash2,
   RefreshCw,
-  Eye,
-  Download,
-  AlertCircle,
-  FileText,
+  Plus,
 } from 'lucide-react';
 import { api } from '../../lib/api.js';
 import { DocumentItem } from '../../types/index.js';
@@ -85,32 +81,39 @@ export const LibraryPage: React.FC = () => {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-800">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-border-default">
         <div>
-          <h1 className="text-2xl font-bold text-slate-100 flex items-center gap-2">
-            <FolderOpen className="w-6 h-6 text-cyan-400" />
-            Knowledge Library
-          </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            Browse, filter, preview, and manage all your multimodal source files.
-          </p>
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600">
+              <FolderOpen className="w-5 h-5" />
+            </div>
+            <div>
+              <h1 className="text-xl sm:text-2xl font-semibold text-text-primary tracking-tight">
+                Knowledge Library
+              </h1>
+              <p className="text-xs sm:text-sm text-text-secondary mt-0.5">
+                Browse, filter, inspect, and manage all your multimodal source files.
+              </p>
+            </div>
+          </div>
         </div>
 
-        <Button size="sm" onClick={() => navigate('/app/upload')}>
+        <Button size="sm" onClick={() => navigate('/app/upload')} icon={<Plus className="w-4 h-4" />}>
           Upload New File
         </Button>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800">
+      <Card className="p-3 sm:p-4 flex flex-col md:flex-row items-center justify-between gap-3">
         <form onSubmit={handleSearchSubmit} className="relative w-full md:w-80">
-          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-3 pointer-events-none" />
+          <Search className="w-3.5 h-3.5 text-text-muted absolute left-3 top-3 pointer-events-none" />
           <input
             type="text"
             placeholder="Search by filename or content..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-slate-950 border border-slate-700/80 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-cyan-500"
+            className="w-full bg-surface-secondary border border-border-default rounded-lg pl-9 pr-3 py-2 text-xs sm:text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-colors"
           />
         </form>
 
@@ -119,7 +122,7 @@ export const LibraryPage: React.FC = () => {
           <select
             value={selectedWorkspace}
             onChange={(e) => setSelectedWorkspace(e.target.value)}
-            className="bg-slate-950 border border-slate-700/80 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none"
+            className="bg-surface-secondary border border-border-default rounded-lg px-3 py-2 text-xs sm:text-sm text-text-primary focus:outline-none focus:ring-1 focus:ring-brand-500 font-medium"
           >
             <option value="all">All Workspaces</option>
             {workspaces.map((ws) => (
@@ -133,7 +136,7 @@ export const LibraryPage: React.FC = () => {
           <select
             value={selectedModality}
             onChange={(e) => setSelectedModality(e.target.value)}
-            className="bg-slate-950 border border-slate-700/80 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none capitalize"
+            className="bg-surface-secondary border border-border-default rounded-lg px-3 py-2 text-xs sm:text-sm text-text-primary focus:outline-none focus:ring-1 focus:ring-brand-500 font-medium capitalize"
           >
             <option value="all">All Modalities</option>
             {['document', 'image', 'audio', 'video', 'structured', 'text'].map((mod) => (
@@ -143,14 +146,16 @@ export const LibraryPage: React.FC = () => {
             ))}
           </select>
         </div>
-      </div>
+      </Card>
 
       {/* Document Table / Cards */}
       {documents.length === 0 ? (
         <Card className="p-12 text-center space-y-3">
-          <FolderOpen className="w-12 h-12 text-slate-600 mx-auto" />
-          <h3 className="text-sm font-semibold text-slate-200">No documents found</h3>
-          <p className="text-xs text-slate-400 max-w-sm mx-auto">
+          <div className="w-12 h-12 rounded-xl bg-surface-secondary border border-border-default flex items-center justify-center text-text-muted mx-auto">
+            <FolderOpen className="w-6 h-6" />
+          </div>
+          <h3 className="text-sm font-semibold text-text-primary">No documents found</h3>
+          <p className="text-xs text-text-secondary max-w-sm mx-auto">
             Try adjusting your search criteria or upload files to your workspace.
           </p>
         </Card>
@@ -162,7 +167,7 @@ export const LibraryPage: React.FC = () => {
               <div
                 key={doc.id}
                 onClick={() => navigate(`/app/documents/${doc.id}`)}
-                className="p-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-800/60 border border-slate-800 hover:border-slate-700 transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
+                className="p-3.5 rounded-xl bg-surface-primary hover:bg-surface-secondary/70 border border-border-default hover:border-brand-200 transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 group shadow-xs"
               >
                 <div className="flex items-center gap-3 truncate">
                   <div
@@ -174,10 +179,10 @@ export const LibraryPage: React.FC = () => {
                   </div>
 
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold text-slate-200 group-hover:text-cyan-400 transition-colors truncate">
+                    <p className="text-xs sm:text-sm font-semibold text-text-primary group-hover:text-brand-600 transition-colors truncate">
                       {doc.original_filename}
                     </p>
-                    <p className="text-[11px] text-slate-400 mt-0.5 truncate">
+                    <p className="text-[11px] sm:text-xs text-text-secondary mt-0.5 truncate">
                       {formatBytes(doc.file_size_bytes)} • {formatDate(doc.created_at)}
                       {doc.category && ` • Category: ${doc.category}`}
                     </p>
@@ -185,15 +190,16 @@ export const LibraryPage: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-2.5 shrink-0 self-end sm:self-center">
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full border ${badge.className}`}>
+                  <span className={`text-[11px] px-2.5 py-0.5 rounded-full border font-medium ${badge.className}`}>
                     {badge.label}
                   </span>
 
                   {doc.status === 'failed' && (
                     <button
                       onClick={(e) => handleRetry(doc.id, e)}
-                      className="p-1 text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/10 rounded transition-colors"
+                      className="p-1 text-brand-600 hover:text-brand-700 hover:bg-brand-50 rounded transition-colors"
                       title="Retry processing"
+                      aria-label="Retry processing"
                     >
                       <RefreshCw className="w-3.5 h-3.5" />
                     </button>
@@ -201,8 +207,9 @@ export const LibraryPage: React.FC = () => {
 
                   <button
                     onClick={(e) => handleDelete(doc.id, e)}
-                    className="p-1 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 rounded transition-colors"
+                    className="p-1 text-text-muted hover:text-rose-600 hover:bg-rose-50 rounded transition-colors"
                     title="Delete document"
+                    aria-label="Delete document"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
@@ -215,3 +222,4 @@ export const LibraryPage: React.FC = () => {
     </div>
   );
 };
+

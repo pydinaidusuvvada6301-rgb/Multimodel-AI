@@ -1,16 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
-  MessageSquareCode,
   Send,
   Plus,
-  Filter,
   Sparkles,
-  ShieldCheck,
-  Trash2,
-  SlidersHorizontal,
   Loader2,
   FileText,
+  RotateCcw,
 } from 'lucide-react';
 import { api } from '../../lib/api.js';
 import { useAuth } from '../../context/AuthContext.js';
@@ -18,7 +14,7 @@ import { ChatMessage as ChatMessageType, Conversation, DocumentItem } from '../.
 import { ChatMessage } from '../../components/chat/ChatMessage.js';
 import { SourceSelectorModal } from '../../components/chat/SourceSelectorModal.js';
 import { Button } from '../../components/ui/Button.js';
-import { Card } from '../../components/ui/Card.js';
+import { cn } from '../../lib/utils.js';
 
 export const ChatPage: React.FC = () => {
   const { activeWorkspace } = useAuth();
@@ -35,6 +31,7 @@ export const ChatPage: React.FC = () => {
   const [isSourceModalOpen, setIsSourceModalOpen] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -177,6 +174,13 @@ export const ChatPage: React.FC = () => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
   const sampleQuestions = [
     'Summarize the core technical findings across my uploaded files.',
     'Compare the deployment steps in the document with the diagram.',
@@ -187,7 +191,7 @@ export const ChatPage: React.FC = () => {
   return (
     <div className="h-[calc(100vh-6.5rem)] flex gap-4 max-w-7xl mx-auto">
       {/* Conversations History Sidebar */}
-      <div className="hidden md:flex flex-col w-64 bg-surface-200/90 rounded-2xl border border-slate-800 p-3 shrink-0">
+      <div className="hidden md:flex flex-col w-64 bg-surface-primary rounded-xl border border-border-default p-3 shrink-0 shadow-xs">
         <Button
           size="sm"
           onClick={handleStartNewChat}
@@ -198,21 +202,22 @@ export const ChatPage: React.FC = () => {
         </Button>
 
         <div className="flex-1 overflow-y-auto space-y-1 pr-1">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 px-2 mb-1">
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-text-muted px-2 mb-1.5">
             History
           </p>
           {conversations.length === 0 ? (
-            <p className="text-xs text-slate-500 px-2 py-4">No chat history yet.</p>
+            <p className="text-xs text-text-muted px-2 py-4">No chat history yet.</p>
           ) : (
             conversations.map((c) => (
               <button
                 key={c.id}
                 onClick={() => setSearchParams({ c: c.id })}
-                className={`w-full text-left p-2.5 rounded-lg text-xs truncate transition-colors flex items-center justify-between group ${
+                className={cn(
+                  'w-full text-left p-2.5 rounded-lg text-xs truncate transition-colors flex items-center justify-between group',
                   activeConvId === c.id
-                    ? 'bg-cyan-500/10 text-cyan-400 font-semibold border border-cyan-500/30'
-                    : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
-                }`}
+                    ? 'bg-brand-50 text-brand-700 font-semibold border border-brand-200'
+                    : 'text-text-secondary hover:bg-surface-secondary hover:text-text-primary'
+                )}
               >
                 <span className="truncate">{c.title}</span>
               </button>
@@ -222,14 +227,14 @@ export const ChatPage: React.FC = () => {
       </div>
 
       {/* Main Chat Interface */}
-      <div className="flex-1 flex flex-col bg-surface-200/80 rounded-2xl border border-slate-800 overflow-hidden shadow-2xl">
+      <div className="flex-1 flex flex-col bg-surface-primary rounded-xl border border-border-default overflow-hidden shadow-xs">
         {/* Chat Header Context Strip */}
-        <div className="p-3 border-b border-slate-800/80 bg-surface-300/60 flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div className="p-3 border-b border-border-default bg-surface-secondary/40 flex flex-wrap items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-2">
-            <span className="text-slate-400 font-medium">Grounded in:</span>
+            <span className="text-text-secondary font-medium">Grounded in:</span>
             <button
               onClick={() => setIsSourceModalOpen(true)}
-              className="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-700/80 hover:border-cyan-500/50 text-cyan-400 text-xs font-semibold flex items-center gap-1.5 transition-colors"
+              className="px-2.5 py-1 rounded-md bg-surface-primary border border-border-default hover:border-brand-300 text-brand-600 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-xs"
             >
               <FileText className="w-3.5 h-3.5" />
               <span>
@@ -240,23 +245,36 @@ export const ChatPage: React.FC = () => {
             </button>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-slate-400 text-[11px]">Detail:</span>
-            <div className="flex bg-slate-900 rounded p-0.5 border border-slate-700">
-              {(['concise', 'balanced', 'detailed'] as const).map((lvl) => (
-                <button
-                  key={lvl}
-                  onClick={() => setDetailLevel(lvl)}
-                  className={`px-2 py-0.5 rounded text-[10px] capitalize font-medium ${
-                    detailLevel === lvl
-                      ? 'bg-cyan-500 text-slate-950 font-bold'
-                      : 'text-slate-400 hover:text-slate-200'
-                  }`}
-                >
-                  {lvl}
-                </button>
-              ))}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5">
+              <span className="text-text-secondary text-[11px]">Detail:</span>
+              <div className="flex bg-surface-secondary rounded p-0.5 border border-border-default">
+                {(['concise', 'balanced', 'detailed'] as const).map((lvl) => (
+                  <button
+                    key={lvl}
+                    onClick={() => setDetailLevel(lvl)}
+                    className={cn(
+                      'px-2 py-0.5 rounded text-[11px] capitalize font-medium transition-colors',
+                      detailLevel === lvl
+                        ? 'bg-brand-600 text-white font-semibold'
+                        : 'text-text-secondary hover:text-text-primary'
+                    )}
+                  >
+                    {lvl}
+                  </button>
+                ))}
+              </div>
             </div>
+
+            {messages.length > 0 && (
+              <button
+                onClick={handleStartNewChat}
+                className="text-text-muted hover:text-text-primary p-1 rounded hover:bg-surface-secondary transition-colors"
+                title="Reset conversation"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
         </div>
 
@@ -264,28 +282,28 @@ export const ChatPage: React.FC = () => {
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
           {messages.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center max-w-lg mx-auto text-center space-y-4 py-8">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-slate-950 shadow-xl shadow-cyan-500/20">
-                <Sparkles className="w-6 h-6 font-bold" />
+              <div className="w-12 h-12 rounded-xl bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600 shadow-xs">
+                <Sparkles className="w-6 h-6" />
               </div>
               <div className="space-y-1">
-                <h3 className="text-base font-bold text-slate-100">
+                <h3 className="text-base font-semibold text-text-primary">
                   OmniMind Connected Intelligence
                 </h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-text-secondary">
                   Ask any question across your uploaded documents, images, audio transcripts, or video scenes.
                 </p>
               </div>
 
               {/* Sample Prompts */}
-              <div className="w-full space-y-2 pt-2 text-left">
-                <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider text-center">
+              <div className="w-full space-y-2 pt-3 text-left">
+                <p className="text-[11px] font-semibold text-text-muted uppercase tracking-wider text-center">
                   Suggested inquiries
                 </p>
                 {sampleQuestions.map((q) => (
                   <button
                     key={q}
                     onClick={() => handleSendMessage(undefined, q)}
-                    className="w-full p-2.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-xs text-slate-300 hover:text-cyan-300 text-left transition-colors truncate"
+                    className="w-full p-3 rounded-lg bg-surface-secondary hover:bg-brand-50/50 border border-border-default hover:border-brand-200 text-xs text-text-primary text-left transition-colors truncate shadow-xs"
                   >
                     "{q}"
                   </button>
@@ -297,9 +315,9 @@ export const ChatPage: React.FC = () => {
           )}
 
           {loading && (
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-surface-200/90 border border-slate-800 mr-12 animate-pulse">
-              <Loader2 className="w-4 h-4 text-cyan-400 animate-spin" />
-              <span className="text-xs text-slate-400 font-mono">
+            <div className="flex items-center gap-3 p-4 rounded-xl bg-surface-primary border border-border-default mr-12 shadow-xs">
+              <Loader2 className="w-4 h-4 text-brand-600 animate-spin" />
+              <span className="text-xs text-text-secondary font-mono">
                 Searching authorized evidence & synthesizing grounded answer...
               </span>
             </div>
@@ -307,24 +325,30 @@ export const ChatPage: React.FC = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input Bar */}
-        <form onSubmit={handleSendMessage} className="p-3 sm:p-4 border-t border-slate-800 bg-surface-300/40">
-          <div className="relative flex items-center">
-            <input
-              type="text"
-              placeholder="Ask a question across your workspace knowledge..."
+        {/* Multiline Input Bar */}
+        <form onSubmit={handleSendMessage} className="p-3 sm:p-4 border-t border-border-default bg-surface-secondary/30">
+          <div className="relative flex items-end bg-surface-primary border border-border-default rounded-xl focus-within:ring-2 focus-within:ring-brand-500/20 focus-within:border-brand-500 transition-colors shadow-xs">
+            <textarea
+              ref={textareaRef}
+              rows={2}
+              placeholder="Ask a question across your workspace knowledge (Shift+Enter for new line)..."
               value={inputQuestion}
               onChange={(e) => setInputQuestion(e.target.value)}
+              onKeyDown={handleKeyDown}
               disabled={loading}
-              className="w-full bg-slate-900 border border-slate-700/80 rounded-xl pl-4 pr-12 py-3 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              className="w-full bg-transparent border-0 px-4 py-2.5 text-xs sm:text-sm text-text-primary placeholder:text-text-muted focus:outline-none resize-none min-h-[44px] max-h-32"
             />
-            <button
-              type="submit"
-              disabled={!inputQuestion.trim() || loading}
-              className="absolute right-2 p-2 rounded-lg bg-cyan-500 text-slate-950 hover:bg-cyan-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all font-semibold"
-            >
-              <Send className="w-4 h-4" />
-            </button>
+            <div className="p-2 shrink-0">
+              <button
+                type="submit"
+                disabled={!inputQuestion.trim() || loading}
+                className="p-2 rounded-lg bg-brand-600 text-white hover:bg-brand-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all font-semibold shadow-xs"
+                title="Send query"
+                aria-label="Send query"
+              >
+                <Send className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </form>
       </div>
@@ -346,3 +370,4 @@ export const ChatPage: React.FC = () => {
     </div>
   );
 };
+

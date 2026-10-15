@@ -75,14 +75,14 @@ export const AuthCallbackPage: React.FC = () => {
   }, [navigate, location]);
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#F7F9FC] flex items-center justify-center p-4 text-[#202938]">
       <div className="w-full max-w-md">
-        <Card className="p-8 text-center space-y-4 bg-surface-200/90 border-slate-700/80 shadow-2xl">
+        <Card className="p-8 text-center space-y-4 bg-white border border-[#E5EAF1] rounded-xl shadow-xs">
           {status === 'verifying' && (
             <div className="space-y-3 py-4">
-              <Loader2 className="w-10 h-10 text-cyan-400 animate-spin mx-auto" />
-              <h2 className="text-lg font-bold text-slate-100">Verifying Security Credentials</h2>
-              <p className="text-xs text-slate-400">
+              <Loader2 className="w-9 h-9 text-[#356AE6] animate-spin mx-auto" />
+              <h2 className="text-base font-bold text-[#202938]">Verifying Security Credentials</h2>
+              <p className="text-xs text-[#667085]">
                 Please wait while OmniMind AI authenticates your session...
               </p>
             </div>
@@ -90,19 +90,19 @@ export const AuthCallbackPage: React.FC = () => {
 
           {status === 'success' && (
             <div className="space-y-3 py-4">
-              <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto" />
-              <h2 className="text-lg font-bold text-slate-100">Account Verified!</h2>
-              <p className="text-xs text-slate-300">
-                Your email has been confirmed. Redirecting you to your multimodal workspace...
+              <CheckCircle2 className="w-10 h-10 text-[#12B76A] mx-auto" />
+              <h2 className="text-base font-bold text-[#202938]">Account Verified!</h2>
+              <p className="text-xs text-[#667085]">
+                Your session is verified. Redirecting you to your multimodal workspace...
               </p>
             </div>
           )}
 
           {status === 'error' && (
             <div className="space-y-4 py-2">
-              <AlertCircle className="w-10 h-10 text-rose-400 mx-auto" />
-              <h2 className="text-lg font-bold text-slate-100">Verification Failed</h2>
-              <p className="text-xs text-rose-300 leading-relaxed">
+              <AlertCircle className="w-10 h-10 text-[#F04438] mx-auto" />
+              <h2 className="text-base font-bold text-[#202938]">Verification Failed</h2>
+              <p className="text-xs text-[#B42318] bg-[#FEF3F2] border border-[#FECDCA] p-3 rounded-md leading-relaxed">
                 {errorMessage || 'This verification link is invalid, has expired, or has already been used.'}
               </p>
               <div className="pt-2 flex flex-col gap-2">

@@ -34,33 +34,33 @@ export function formatDate(dateString: string): string {
 export function getModalityColor(modality: ModalityType): string {
   switch (modality) {
     case 'document':
-      return 'bg-blue-500/10 text-blue-400 border-blue-500/30';
+      return 'bg-[#EEF4FF] text-[#2856C5] border-[#D0D7E2]';
     case 'image':
-      return 'bg-purple-500/10 text-purple-400 border-purple-500/30';
+      return 'bg-[#F4F3FF] text-[#5925DC] border-[#D9D6FE]';
     case 'audio':
-      return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30';
+      return 'bg-[#ECFDF3] text-[#027A48] border-[#A6F4C5]';
     case 'video':
-      return 'bg-rose-500/10 text-rose-400 border-rose-500/30';
+      return 'bg-[#FEF3F2] text-[#B42318] border-[#FECDCA]';
     case 'structured':
-      return 'bg-amber-500/10 text-amber-400 border-amber-500/30';
+      return 'bg-[#FFFAEB] text-[#B54708] border-[#FEDF89]';
     case 'text':
     default:
-      return 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30';
+      return 'bg-[#F8F9FC] text-[#344054] border-[#EAECF0]';
   }
 }
 
 export function getStatusBadge(status: string): { label: string; className: string } {
   switch (status) {
     case 'ready':
-      return { label: 'Ready', className: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' };
+      return { label: 'Ready', className: 'bg-[#ECFDF3] text-[#027A48] border-[#A6F4C5]' };
     case 'processing':
-      return { label: 'Processing', className: 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30 animate-pulse' };
+      return { label: 'Processing', className: 'bg-[#EEF4FF] text-[#2856C5] border-[#D0D7E2]' };
     case 'uploading':
-      return { label: 'Uploading', className: 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30 animate-pulse' };
+      return { label: 'Uploading', className: 'bg-[#EEF4FF] text-[#2856C5] border-[#D0D7E2]' };
     case 'failed':
-      return { label: 'Failed', className: 'bg-rose-500/15 text-rose-400 border-rose-500/30' };
+      return { label: 'Failed', className: 'bg-[#FEF3F2] text-[#B42318] border-[#FECDCA]' };
     case 'queued':
     default:
-      return { label: 'Queued', className: 'bg-slate-500/15 text-slate-400 border-slate-500/30' };
+      return { label: 'Queued', className: 'bg-[#F8F9FC] text-[#667085] border-[#E5EAF1]' };
   }
 }

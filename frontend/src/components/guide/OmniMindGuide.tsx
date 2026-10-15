@@ -20,10 +20,8 @@ import {
   ExternalLink,
   ChevronRight,
   ShieldCheck,
-  Upload,
 } from 'lucide-react';
 import { api } from '../../lib/api.js';
-import { useAuth } from '../../context/AuthContext.js';
 
 interface Message {
   id: string;
@@ -112,7 +110,6 @@ const ONBOARDING_SUGGESTIONS = [
 ];
 
 export const OmniMindGuide: React.FC = () => {
-  const { user } = useAuth();
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -237,12 +234,12 @@ export const OmniMindGuide: React.FC = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-4 py-3 rounded-full bg-gradient-to-r from-cyan-500 via-indigo-600 to-violet-600 text-white font-medium text-xs shadow-2xl shadow-cyan-500/30 hover:scale-105 active:scale-95 transition-all duration-200 border border-white/20"
+          className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-4 py-3 rounded-full bg-brand-600 hover:bg-brand-700 text-white font-medium text-xs shadow-lg shadow-brand-600/25 hover:shadow-xl transition-all duration-200 border border-brand-500 cursor-pointer"
           aria-label="Open OmniMind Guide"
         >
           <div className="relative">
-            <Sparkles className="w-4 h-4 text-cyan-200 animate-pulse" />
-            <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-slate-900" />
+            <Sparkles className="w-4 h-4 text-white" />
+            <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-white" />
           </div>
           <span className="font-semibold tracking-wide">OmniMind Guide</span>
         </button>
@@ -250,21 +247,21 @@ export const OmniMindGuide: React.FC = () => {
 
       {/* Slide-over / Pop-out Customer Guidance Chatbot Panel */}
       {isOpen && (
-        <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-full sm:w-[440px] max-w-[calc(100vw-2rem)] h-[640px] max-h-[88vh] flex flex-col rounded-2xl bg-surface-200/95 backdrop-blur-xl border border-slate-700/80 shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
+        <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-full sm:w-[440px] max-w-[calc(100vw-2rem)] h-[640px] max-h-[88vh] flex flex-col rounded-2xl bg-surface-primary border border-border-default shadow-xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
           {/* Header */}
-          <div className="p-3.5 px-4 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
+          <div className="p-3.5 px-4 bg-surface-primary border-b border-border-default flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-                <Sparkles className="w-4 h-4 text-slate-950 font-bold" />
+              <div className="w-8 h-8 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600">
+                <Sparkles className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-xs font-bold text-slate-100 flex items-center gap-1.5">
+                <h3 className="text-xs font-semibold text-text-primary flex items-center gap-1.5">
                   OmniMind Guide
-                  <span className="px-1.5 py-0.2 rounded text-[9px] font-medium bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                    AI Assistant
+                  <span className="px-1.5 py-0.2 rounded text-[10px] font-medium bg-brand-50 text-brand-700 border border-brand-200">
+                    Copilot
                   </span>
                 </h3>
-                <p className="text-[10px] text-slate-400">Contextual multimodal copilot</p>
+                <p className="text-[11px] text-text-muted">Contextual workspace guidance</p>
               </div>
             </div>
 
@@ -274,13 +271,13 @@ export const OmniMindGuide: React.FC = () => {
                 type="button"
                 onClick={() => setGuideMode(!guideMode)}
                 title="Toggle Step-by-Step Guidance"
-                className={`text-[10px] font-medium px-2 py-1 rounded-md transition-colors ${
+                className={`text-[10px] font-semibold px-2 py-1 rounded-md transition-colors ${
                   guideMode
-                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
-                    : 'bg-slate-800 text-slate-400'
+                    ? 'bg-brand-50 text-brand-700 border border-brand-200'
+                    : 'bg-surface-secondary text-text-muted'
                 }`}
               >
-                Guide Me: {guideMode ? 'ON' : 'OFF'}
+                Guide: {guideMode ? 'ON' : 'OFF'}
               </button>
 
               {messages.length > 0 && (
@@ -288,7 +285,7 @@ export const OmniMindGuide: React.FC = () => {
                   type="button"
                   onClick={clearChat}
                   title="Clear Chat History"
-                  className="p-1 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-800"
+                  className="p-1.5 rounded-md text-text-muted hover:text-text-primary hover:bg-surface-secondary transition-colors"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                 </button>
@@ -297,7 +294,7 @@ export const OmniMindGuide: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="p-1 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-800"
+                className="p-1.5 rounded-md text-text-muted hover:text-text-primary hover:bg-surface-secondary transition-colors"
                 aria-label="Close Guide"
               >
                 <X className="w-4 h-4" />
@@ -306,16 +303,16 @@ export const OmniMindGuide: React.FC = () => {
           </div>
 
           {/* Conversation Area */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-surface-secondary/30">
             {messages.length === 0 ? (
               <div className="space-y-4">
                 {/* Welcome Card */}
-                <div className="p-4 rounded-xl bg-gradient-to-br from-cyan-950/40 via-indigo-950/30 to-slate-900 border border-cyan-800/40 space-y-2">
-                  <div className="flex items-center gap-2 text-cyan-300 font-semibold text-xs">
-                    <Sparkles className="w-4 h-4 text-cyan-400" />
-                    <span>Welcome to OmniMind AI!</span>
+                <div className="p-4 rounded-xl bg-surface-primary border border-border-default shadow-xs space-y-2">
+                  <div className="flex items-center gap-2 text-brand-600 font-semibold text-xs">
+                    <Sparkles className="w-4 h-4" />
+                    <span className="text-text-primary font-semibold">Welcome to OmniMind AI</span>
                   </div>
-                  <p className="text-xs text-slate-200 leading-relaxed">
+                  <p className="text-xs text-text-secondary leading-relaxed">
                     "Hi! I'm your OmniMind Guide. Tell me what you're trying to do, and I'll help you
                     choose the right tools. You don't need to know technical terms."
                   </p>
@@ -323,7 +320,7 @@ export const OmniMindGuide: React.FC = () => {
 
                 {/* 9 Clickable Suggestions */}
                 <div className="space-y-1.5">
-                  <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-1">
+                  <p className="text-[11px] font-semibold text-text-muted uppercase tracking-wider px-1">
                     What would you like to do?
                   </p>
                   <div className="grid grid-cols-1 gap-2">
@@ -335,17 +332,17 @@ export const OmniMindGuide: React.FC = () => {
                           onClick={() => {
                             handleSendMessage(sug.title, sug.action);
                           }}
-                          className="w-full text-left p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-cyan-500/40 transition-all flex items-start gap-2.5 group"
+                          className="w-full text-left p-3 rounded-xl bg-surface-primary hover:bg-brand-50/50 border border-border-default hover:border-brand-200 transition-all flex items-start gap-3 group shadow-xs cursor-pointer"
                         >
-                          <div className="p-1.5 rounded-lg bg-cyan-950/60 border border-cyan-800/40 text-cyan-400 group-hover:text-cyan-300 shrink-0 mt-0.5">
-                            <Icon className="w-3.5 h-3.5" />
+                          <div className="p-2 rounded-lg bg-brand-50 border border-brand-100 text-brand-600 shrink-0 mt-0.5">
+                            <Icon className="w-4 h-4" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs font-semibold text-slate-200 group-hover:text-cyan-300 flex items-center justify-between">
+                            <p className="text-xs font-semibold text-text-primary group-hover:text-brand-600 flex items-center justify-between">
                               <span>{sug.title}</span>
-                              <ChevronRight className="w-3 h-3 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-transform" />
+                              <ChevronRight className="w-3.5 h-3.5 text-text-muted group-hover:text-brand-600 group-hover:translate-x-0.5 transition-transform" />
                             </p>
-                            <p className="text-[11px] text-slate-400 truncate mt-0.5">
+                            <p className="text-[11px] text-text-secondary truncate mt-0.5">
                               {sug.description}
                             </p>
                           </div>
@@ -364,17 +361,17 @@ export const OmniMindGuide: React.FC = () => {
                   } space-y-1`}
                 >
                   <div
-                    className={`max-w-[88%] p-3.5 rounded-2xl text-xs leading-relaxed ${
+                    className={`max-w-[88%] p-3.5 rounded-xl text-xs leading-relaxed ${
                       msg.role === 'user'
-                        ? 'bg-gradient-to-r from-cyan-600 to-indigo-600 text-white rounded-br-none shadow-md'
-                        : 'bg-slate-900/90 border border-slate-800 text-slate-200 rounded-bl-none shadow-sm space-y-2.5'
+                        ? 'bg-brand-600 text-white rounded-br-none shadow-xs'
+                        : 'bg-surface-primary border border-border-default text-text-primary rounded-bl-none shadow-xs space-y-2.5'
                     }`}
                   >
                     <div className="whitespace-pre-wrap">{msg.content}</div>
 
                     {/* Step Guide Tracker */}
                     {msg.stepGuide && (
-                      <div className="p-2 rounded-lg bg-cyan-950/40 border border-cyan-800/40 text-[11px] flex items-center justify-between text-cyan-300">
+                      <div className="p-2 rounded-lg bg-brand-50 border border-brand-100 text-[11px] flex items-center justify-between text-brand-700">
                         <span className="font-semibold">
                           Step {msg.stepGuide.currentStep} of {msg.stepGuide.totalSteps}:{' '}
                           {msg.stepGuide.stepTitle}
@@ -383,7 +380,7 @@ export const OmniMindGuide: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => executeAction(msg.stepGuide!.actionId!)}
-                            className="underline hover:text-white font-medium"
+                            className="underline hover:text-brand-900 font-medium"
                           >
                             Execute Step →
                           </button>
@@ -393,19 +390,19 @@ export const OmniMindGuide: React.FC = () => {
 
                     {/* Grounded Citations */}
                     {msg.citations && msg.citations.length > 0 && (
-                      <div className="pt-2 border-t border-slate-800 space-y-1 text-[11px]">
-                        <p className="text-[10px] uppercase font-semibold text-cyan-400 flex items-center gap-1">
-                          <ShieldCheck className="w-3 h-3" /> Grounded Evidence Citations
+                      <div className="pt-2 border-t border-border-default space-y-1 text-[11px]">
+                        <p className="text-[10px] uppercase font-semibold text-brand-600 flex items-center gap-1">
+                          <ShieldCheck className="w-3 h-3 text-emerald-600" /> Grounded Evidence Citations
                         </p>
                         {msg.citations.map((c, idx) => (
                           <div
                             key={idx}
-                            className="p-1.5 rounded bg-slate-950 border border-slate-800 text-slate-300 flex items-center justify-between"
+                            className="p-1.5 rounded bg-surface-secondary border border-border-default text-text-primary flex items-center justify-between"
                           >
-                            <span className="truncate max-w-[200px] text-[10px]">
+                            <span className="truncate max-w-[200px] text-[10px] font-medium">
                               {c.document_name || 'Document'}
                             </span>
-                            <span className="text-[10px] text-cyan-300 font-mono">
+                            <span className="text-[10px] text-brand-600 font-mono font-medium">
                               {c.page_number
                                 ? `Page ${c.page_number}`
                                 : c.start_seconds
@@ -419,13 +416,13 @@ export const OmniMindGuide: React.FC = () => {
 
                     {/* Actionable buttons */}
                     {msg.suggestedActions && msg.suggestedActions.length > 0 && (
-                      <div className="pt-2 border-t border-slate-800 flex flex-wrap gap-1.5">
+                      <div className="pt-2 border-t border-border-default flex flex-wrap gap-1.5">
                         {msg.suggestedActions.map((act) => (
                           <button
                             key={act.id}
                             type="button"
                             onClick={() => executeAction(act.id)}
-                            className="px-2.5 py-1 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 text-cyan-300 hover:text-white text-[11px] font-medium transition-colors flex items-center gap-1"
+                            className="px-2.5 py-1 rounded-md bg-brand-50 hover:bg-brand-100 border border-brand-200 text-brand-700 text-[11px] font-medium transition-colors flex items-center gap-1 cursor-pointer"
                           >
                             <span>{act.label}</span>
                             <ExternalLink className="w-2.5 h-2.5 opacity-60" />
@@ -440,12 +437,12 @@ export const OmniMindGuide: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => handleCopy(msg.content, msg.id)}
-                        className="p-1 text-slate-500 hover:text-slate-300 text-[10px] flex items-center gap-1 transition-colors"
+                        className="p-1 text-text-muted hover:text-text-primary text-[10px] flex items-center gap-1 transition-colors"
                       >
                         {copiedId === msg.id ? (
                           <>
-                            <Check className="w-3 h-3 text-emerald-400" />
-                            <span className="text-emerald-400">Copied</span>
+                            <Check className="w-3 h-3 text-emerald-600" />
+                            <span className="text-emerald-600">Copied</span>
                           </>
                         ) : (
                           <>
@@ -461,8 +458,8 @@ export const OmniMindGuide: React.FC = () => {
             )}
 
             {loading && (
-              <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-400 max-w-[70%]">
-                <Loader2 className="w-3.5 h-3.5 text-cyan-400 animate-spin" />
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-surface-primary border border-border-default text-xs text-text-secondary max-w-[75%] shadow-xs">
+                <Loader2 className="w-3.5 h-3.5 text-brand-600 animate-spin" />
                 <span>OmniMind Guide is thinking...</span>
               </div>
             )}
@@ -471,7 +468,7 @@ export const OmniMindGuide: React.FC = () => {
           </div>
 
           {/* Input Footer */}
-          <div className="p-3 bg-slate-900/90 border-t border-slate-800">
+          <div className="p-3 bg-surface-primary border-t border-border-default">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -485,12 +482,12 @@ export const OmniMindGuide: React.FC = () => {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 disabled={loading}
-                className="flex-1 bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-xs text-slate-100 rounded-xl px-3 py-2.5 placeholder-slate-500 transition-colors"
+                className="flex-1 bg-surface-secondary border border-border-default focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-xs text-text-primary rounded-xl px-3.5 py-2.5 placeholder:text-text-muted transition-colors outline-none"
               />
               <button
                 type="submit"
                 disabled={loading || !inputValue.trim()}
-                className="p-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 disabled:opacity-40 text-slate-950 font-bold transition-transform active:scale-95"
+                className="p-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 disabled:opacity-40 text-white font-semibold transition-all cursor-pointer shadow-xs"
                 aria-label="Send query"
               >
                 <Send className="w-3.5 h-3.5" />
@@ -502,3 +499,4 @@ export const OmniMindGuide: React.FC = () => {
     </>
   );
 };
+

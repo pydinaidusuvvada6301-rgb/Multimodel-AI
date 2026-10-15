@@ -48,48 +48,48 @@ export const VerifyEmailPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-[#F7F9FC] flex flex-col text-[#202938]">
       <PublicNavbar />
 
       <div className="flex-1 flex items-center justify-center p-4 sm:p-6">
         <div className="w-full max-w-md space-y-5">
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center mx-auto shadow-xl shadow-cyan-500/20">
-              <Mail className="w-6 h-6 text-slate-950 font-bold" />
+            <div className="w-9 h-9 rounded-md bg-[#356AE6] flex items-center justify-center mx-auto text-white shadow-xs">
+              <Mail className="w-4 h-4" />
             </div>
-            <h2 className="text-2xl font-bold text-slate-100">Verify Your Email</h2>
-            <p className="text-xs text-slate-400">
+            <h2 className="text-2xl font-bold text-[#202938]">Verify Your Email</h2>
+            <p className="text-xs text-[#667085]">
               Activate your OmniMind AI account to begin processing multimodal intelligence
             </p>
           </div>
 
-          <Card className="p-6 sm:p-8 space-y-5 bg-surface-200/90 border-slate-700/80 shadow-2xl">
-            <div className="p-4 rounded-xl bg-cyan-950/30 border border-cyan-800/40 text-center space-y-2">
-              <CheckCircle2 className="w-8 h-8 text-cyan-400 mx-auto" />
-              <p className="text-sm font-semibold text-slate-100">Verification Link Sent</p>
-              <p className="text-xs text-slate-300 leading-relaxed">
+          <Card className="p-6 sm:p-8 space-y-5 bg-white border border-[#E5EAF1] rounded-xl shadow-xs">
+            <div className="p-4 rounded-lg bg-[#EEF4FF] border border-[#D0D7E2] text-center space-y-2">
+              <CheckCircle2 className="w-8 h-8 text-[#356AE6] mx-auto" />
+              <p className="text-sm font-semibold text-[#202938]">Verification Link Dispatched</p>
+              <p className="text-xs text-[#667085] leading-relaxed">
                 We sent a secure confirmation link to{' '}
-                <span className="font-semibold text-cyan-300">{email || 'your email'}</span>.
+                <span className="font-semibold text-[#2856C5]">{email || 'your email'}</span>.
                 Please check your inbox (and spam folder) and click the link to confirm your account.
               </p>
             </div>
 
             {message && (
-              <div className="p-3 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
+              <div className="p-3 rounded-lg bg-[#ECFDF3] border border-[#A6F4C5] text-[#027A48] text-xs flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 shrink-0" />
                 <span>{message}</span>
               </div>
             )}
 
             {error && (
-              <div className="p-3 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              <div className="p-3 rounded-lg bg-[#FEF3F2] border border-[#FECDCA] text-[#B42318] text-xs flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{error}</span>
               </div>
             )}
 
             <div className="space-y-3 pt-2">
-              <p className="text-xs text-slate-400 text-center">
+              <p className="text-xs text-[#667085] text-center">
                 Didn't receive the verification email?
               </p>
               <Button
@@ -106,17 +106,17 @@ export const VerifyEmailPage: React.FC = () => {
               </Button>
             </div>
 
-            <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
+            <div className="pt-2 border-t border-[#E5EAF1] flex items-center justify-between">
               <Link
                 to="/login"
-                className="text-xs text-cyan-400 hover:text-cyan-300 font-medium flex items-center gap-1"
+                className="text-xs text-[#356AE6] hover:text-[#2856C5] font-medium flex items-center gap-1"
               >
                 <span>Proceed to Sign In</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
               <Link
                 to="/register"
-                className="text-xs text-slate-400 hover:text-slate-300"
+                className="text-xs text-[#667085] hover:text-[#202938]"
               >
                 Change Email
               </Link>
